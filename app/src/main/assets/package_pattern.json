@@ -1,0 +1,1260 @@
+{
+	"download_to_remove": false,
+	"packages": [
+		{
+			"name": "AntiDetector",
+			"package": "com.z.zz.zzz.antidetector",
+			"path": "app-debug.apk"
+		},
+		{
+			"name": "神庙逃亡2",
+			"package": "com.imangi.templerun2",
+			"path": "109_c21506d5c01f6a693936815b1b7f63f8.apk"
+		},
+		{
+			"name": "汤姆猫炫跑",
+			"package": "com.outfit7.herodash.aligames",
+			"path": "109_a4246b156e15cd73dc5ca3b00c4e75bd.apk"
+		},
+		{
+			"name": "消灭病毒",
+			"package": "com.kunpo.viruswar.jrtt",
+			"path": "109_79e7cc81a05d1fe4ed0e3940969089cd.apk"
+		},
+		{
+			"name": "元气骑士",
+			"package": "com.knight.union.wdj",
+			"path": "109_498505f8b9b7bd30cc07ed8bd20d12d5.apk"
+		},
+		{
+			"name": "永不言弃2",
+			"package": "com.invictus.giveitup2.wdj",
+			"path": "109_de925d795f8fdabcbb7718e77d030d12.apk"
+		},
+		{
+			"name": "僵尸射手",
+			"package": "com.ifunren.shooter.jrtt",
+			"path": "110_2f70caac68dd718a927e58d0da762731.apk"
+		},
+		{
+			"name": "全民弹弹弹",
+			"package": "com.tantantan.jrtt",
+			"path": "109_2d223ce4e8d84e56f80bdcbe046d7b0f.apk"
+		},
+		{
+			"name": "神偷奶爸",
+			"package": "com.gameloft.android.ANMP.GloftDMCN",
+			"path": "109_44e11f53f0c820525d12b73aa27596e1.apk"
+		},
+		{
+			"name": "全民射手",
+			"package": "com.kwalee.gunpuzzle.bnn",
+			"path": "109_9e16afecbc51e006f4a9bfb950372697.apk"
+		},
+		{
+			"name": "嘴馋植物",
+			"package": "com.luckykat.plant.pt",
+			"path": "109_2706c68e7236fbd4b378fc199672b28b.apk"
+		},
+		{
+			"name": "向僵尸开炮",
+			"package": "com.tencent.tmgp.xjskp",
+			"path": "45F04BCA9175B8D8978E96C01D08F8B1.apk"
+		},
+		{
+			"name": "汤姆猫快跑",
+			"package": "com.tencent.tmgp.talkingtomcandyrun",
+			"path": "BB8CCFF188853301DD012326196136AD.apk"
+		},
+		{
+			"name": "滑雪大冒险",
+			"package": "com.yodo1.SkiSafari.TXYYB_01",
+			"path": "E3396B639FA2CB630F7C10B44BF1AB71.apk"
+		},
+		{
+			"name": "决斗火柴人",
+			"package": "com.tencent.tmgp.zg.jdhcr",
+			"path": "A769C8B495336BA5AFBE3121DB126719.apk"
+		},
+		{
+			"name": "完美的线",
+			"package": "com.supertapx.drawin.vivo",
+			"path": "4BB16035BA94CFF11CF4CEA70AD3F14B.apk"
+		},
+		{
+			"name": "贪吃蛇大作战",
+			"package": "com.wepie.snake.aligames",
+			"path": "109_332d6191bd7966121c8369f7c50c937f.apk"
+		},
+		{
+			"name": "波克捕鱼",
+			"package": "com.shiyi.aliby.aligames",
+			"path": "109_d6bafda2c7561197aefcf69f4e1f1c46.apk"
+		},
+		{
+			"name": "卡车模拟驾驶3D",
+			"package": "com.adatomobile.truckdrivingsimulator3D",
+			"path": "109_c0a9fa49be4fdceafcfdfdca73dcd2ff.apk"
+		},
+		{
+			"name": "停车大师3D2",
+			"package": "com.zsfz.tcds",
+			"path": "1_74fcf4701fc696be0e4bea1b7c851b25.apk"
+		},
+		{
+			"name": "rescue cut!",
+			"package": "com.app.rescuecut",
+			"path": "com.app.rescuecut_1.9.apk"
+		},
+		{
+			"name": "途游捕鱼大作战",
+			"package": "com.tuyoo.fish.official",
+			"path": "buyu-officialbydzz.apk"
+		},
+		{
+			"name": "模拟球球收集大作战",
+			"package": "com.efun.tcqqdzz.nearme",
+			"path": "233/17c7a7dc1d94e54eeaa3ac904c22ee97.apk"
+		},
+		{
+			"name": "捕鱼大作战",
+			"package": "com.tuyoo.fish.official",
+			"path": "233/fb61dace9d050dfdde65013c68496417.apk"
+		},
+		{
+			"name": "采矿大亨",
+			"package": "com.fluffyfairygames.idleminertycoon",
+			"path": "233/f8759a215a9f65d1e1ae6e41930b9c36.apk"
+		},
+		{
+			"name": "海洋世界大寻宝",
+			"package": "com.hysjdxb.vivo.xw",
+			"path": "233/8811a648002a8f519aec16d45d4e2179.apk"
+		},
+		{
+			"name": "天使纪元",
+			"package": "com.tsjy.jghy.lb",
+			"path": "233/b61bcfc198f4d831bc7ec6f930e9911e.apk"
+		},
+		{
+			"name": "王牌切水果",
+			"package": "com.leduo.wpqsg",
+			"path": "233/122a56359bbc72031c927c464b759aa1.apk"
+		},
+		{
+			"name": "梦幻植物园",
+			"package": "com.yxhd.mhzwy2.sm",
+			"path": "233/61beea7b1497ea63c5d30665e8127677.apk"
+		},
+		{
+			"name": "子弹先生",
+			"package": "com.lionstudios.mrbullet",
+			"path": "233/cbfb62363559335d61f5c0aea3bd5af4.apk"
+		},
+		{
+			"name": "疾速漂移",
+			"package": "com.tencent.tmgp.jspy",
+			"path": "233/eede3c89f88ab4ea238334680d8a2df5.apk"
+		},
+		{
+			"name": "明日之后",
+			"package": "com.netease.mrzh",
+			"path": "233/ba52b899f5b43c5a1a02e28a49c75258.apk"
+		},
+		{
+			"name": "数字涂色",
+			"package": "com.color.by.number.paint.ly.pixel.art.cn",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.color.by.number.paint.ly.pixel.art.cn/46c6455f062b7f16646e333147d4fc1a.apk"
+		},
+		{
+			"name": "开心消消乐",
+			"package": "com.happyelements.AndroidAnimal",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.happyelements.AndroidAnimal/8111244f7aceecddd540b1d1cab6ce1b.apk"
+		},
+		{
+			"name": "闲来麻将",
+			"package": "com.xianlai.mahjonghnsy",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.xianlai.mahjonghnsy/fb7e512f89c2f719dc408b07a0fc8a78.apk"
+		},
+		{
+			"name": "彩球碰撞大作战",
+			"package": "com.mingya.colorbump1.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.mingya.colorbump1.iapppay/809c84bda2415c695a5a60260469aa68.apk"
+		},
+		{
+			"name": "蛇蛇冲冲冲",
+			"package": "com.yunbu.snakecrash.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.snakecrash.iapppay/ba475bc5d2295676031bc5a10cf60e00.apk"
+		},
+		{
+			"name": "小鸡切水果",
+			"package": "com.yunbu.slidechicken.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.slidechicken.iapppay/d98ea07e1639a6317e853696ed54252b.apk"
+		},
+		{
+			"name": "真实模拟直线超车",
+			"package": "com.mingya.speedrider.alipay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.mingya.speedrider.alipay/3e6f3aa4ccd5d117046eb8c6a8cef986.apk"
+		},
+		{
+			"name": "停车高高手",
+			"package": "com.mingya.game.parkingmaster",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.mingya.game.parkingmaster/720d4f051aecd3964c05ded9b923d9cb.apk"
+		},
+		{
+			"name": "合成霸王龙",
+			"package": "com.mingya.dragonlegend",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.mingya.dragonlegend/bfd466a8d56724f8ae2cc5ba55aa5f78.apk"
+		},
+		{
+			"name": "最强农场大亨",
+			"package": "com.pinle.farmtycoon",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.pinle.farmtycoon/9ec5a19d1d0135906c21270b3e1d87ee.apk"
+		},
+		{
+			"name": "最强神射手",
+			"package": "com.yunbu.archeryelite",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.archeryelite/0f46e02ab68752e9f5d103f7655b266e.apk"
+		},
+		{
+			"name": "羽毛球高高手",
+			"package": "com.yunbu.badmintonleague.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.badmintonleague.iapppay/b8e0672a4ccebad2ae516fad88a2afdc.apk"
+		},
+		{
+			"name": "愤怒的小球",
+			"package": "com.yunbu.angryball.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.angryball.iapppay/ed1feb8d065297934ee24e4d30a41ab1.apk"
+		},
+		{
+			"name": "幻影弹球",
+			"package": "com.yunbu.ballblockgo.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.ballblockgo.iapppay/c1f3f07dbee44ffed2b7b6f07ad6d53d.apk"
+		},
+		{
+			"name": "真实摩托锦标赛",
+			"package": "com.yunbu.motorider.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.motorider.iapppay/b6b796e78719a6c70dc7ca493c401c10.apk"
+		},
+		{
+			"name": "先锋急救车",
+			"package": "com.mingya.ambulance",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.mingya.ambulance/e5d0841e61e2b86c42b676c89af4ab7e.apk"
+		},
+		{
+			"name": "街机台球大师",
+			"package": "com.yunbu.arcadepool.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.arcadepool.iapppay/b84ddbb92d52b710db8d23b596978ba7.apk"
+		},
+		{
+			"name": "迷你世界",
+			"package": "com.minitech.miniworld",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.minitech.miniworld/bf58659f39b4e053ad1a13fb5310590a.apk"
+		},
+		{
+			"name": "开心消消乐",
+			"package": "com.happyelements.AndroidAnimal",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.happyelements.AndroidAnimal/8111244f7aceecddd540b1d1cab6ce1b.apk"
+		},
+		{
+			"name": "狼人杀",
+			"package": "com.netease.lrs",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.netease.lrs/8c33b53491a05035bab1225dd991efbf.apk"
+		},
+		{
+			"name": "我的世界",
+			"package": "com.netease.x19",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.netease.x19/929b6dfae9b6ca7e3e522c52cba0c9f1.apk"
+		},
+		{
+			"name": "和平精英",
+			"package": "",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.netease.x19/929b6dfae9b6ca7e3e522c52cba0c9f1.apk"
+		},
+		{
+			"name": "王者荣耀",
+			"package": "",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.netease.x19/929b6dfae9b6ca7e3e522c52cba0c9f1.apk"
+		},
+		{
+			"name": "脑点子",
+			"package": "jp.co.translimit.braindots",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/jp.co.translimit.braindots/61784b6280e178ab1d904062ddabd4e1.apk"
+		},
+		{
+			"name": "香肠派对",
+			"package": "com.sofunny.Chicken",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.sofunny.Chicken/704be99c6fdfc32cce74da7ccdcd1281.apk"
+		},
+		{
+			"name": "掘地求升",
+			"package": "com.skyfox.jdqs",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.skyfox.jdqs/58d132c00aeef8cfb21074e0a228d2a5.apk"
+		},
+		{
+			"name": "火柴人绳索英雄2",
+			"package": "com.mgc.stickman.rope.hero.two",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.mgc.stickman.rope.hero.two/8586d66c1acb0f09700e7df92a203580.apk"
+		},
+		{
+			"name": "城市大亨",
+			"package": "com.mindstormstudios.tinysoda.gp",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.mindstormstudios.tinysoda.gp/63141ce24fc5d6183f2e23a43d6442e5.apk"
+		},
+		{
+			"name": "烹饪帝国",
+			"package": "com.stormx.gob",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.stormx.gob/ca62a081e10eed42d0cdb352f86df53b.apk"
+		},
+		{
+			"name": "剪短绳索",
+			"package": "com.rope.cut",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.rope.cut/f12c0b136b869faff4111441192ca24e.apk"
+		},
+		{
+			"name": "比萨大亨",
+			"package": "com.mindstormstudios.tinypizza.google",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.mindstormstudios.tinypizza.google/3b8d186d17e3871d52437885c662b129.apk"
+		},
+		{
+			"name": "城市建设者",
+			"package": "air.air.make.city.idle.build.game",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/air.air.make.city.idle.build.game/07bab53dd68603b23234be0f8fa49051.apk"
+		},
+		{
+			"name": "快乐颠球手",
+			"package": "com.SPSoftwareProductions.TheRealJuggle",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.SPSoftwareProductions.TheRealJuggle/656f905eea0e278ce64bec3bf68be072.apk"
+		},
+		{
+			"name": "水果忍者必须死",
+			"package": "com.ultralisk.game68.aligames",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.ultralisk.game68.aligames/d6ad0a122505a793cbdaa3eade58f2ed.apk"
+		},
+		{
+			"name": "我在长安开客栈",
+			"package": "com.shijun.android.kzhan.uc",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.shijun.android.kzhan.uc/1f58df798356e4530171f97afa84fc50.apk"
+		},
+		{
+			"name": "单机赛车",
+			"package": "com.djsc.vivo.jpfc",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.djsc.vivo.jpfc/5f726a09b9452c65d1a89ad6577c0c65.apk"
+		},
+		{
+			"name": "疯狂赛车驾驶",
+			"package": "com.crazy.snakevsblock.fkscjs.game233",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.crazy.snakevsblock.fkscjs.game233/8844201d21542019a44ddf4014b649b2.apk"
+		},
+		{
+			"name": "疯狂摩托车",
+			"package": "com.yxhd.fkmtc.m2345.by",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yxhd.fkmtc.m2345.by/48ef9ff589bc90c09cd76ad93145f611.apk"
+		},
+		{
+			"name": "迷你登山赛车",
+			"package": "com.ym.misc.by",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.ym.misc.by/dcd95adcb114d5dabebc96ab04b0906b.apk"
+		},
+		{
+			"name": "老司机模拟开车",
+			"package": "com.cars.mnjsds.qsbx",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.cars.mnjsds.qsbx/0c53f39938ac23c913e4b459486cfd69.apk"
+		},
+		{
+			"name": "保护球球",
+			"package": "com.dskj.bhqq",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.dskj.bhqq/74b95d145aa6438ea556aaf4ef018604.apk"
+		},
+		{
+			"name": "森林冰火人：勇闯森林神庙",
+			"package": "com.slbhrycslsm.efun.nearme",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.slbhrycslsm.efun.nearme/fa6f816b094da47800f572a4aec07d4c.apk"
+		},
+		{
+			"name": "神庙逃亡2",
+			"package": "com.imangi.templerun2",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.imangi.templerun2/90478dddb646524ccadb8a14ecbff524.apk"
+		},
+		{
+			"name": "飞机与塔防",
+			"package": "com.moye.tdfighter.aligames",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.moye.tdfighter.aligames/e7fbc038cfb035efe8c59f1fb8b3a8e9.apk"
+		},
+		{
+			"name": "追我啊",
+			"package": "com.dreagame.ZWA.aligames",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.dreagame.ZWA.aligames/8c28a60c366e818d3fc4f28678903038.apk"
+		},
+		{
+			"name": "未上锁的房间2",
+			"package": "com.east2west.theroomtwo.aligames",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.east2west.theroomtwo.aligames/1c403aef3b970724551f55651deefa4b.apk"
+		},
+		{
+			"name": "火柴人之战",
+			"package": "com.hcrzz.game.by",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.hcrzz.game.by/7dbd58a19f6ee6ed8552b8922008f0c7.apk"
+		},
+		{
+			"name": "火柴人英雄联盟",
+			"package": "com.hcrzzcj.game.game233",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.hcrzzcj.game.game233/c15ee293be6f2a20fbdcd1633664ae8e.apk"
+		},
+		{
+			"name": "孩子去哪野了",
+			"package": "com.hongshu.kidescape",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.hongshu.kidescape/d6e9abdb5e26d8504118e35ebf4a3c91.apk"
+		},
+		{
+			"name": "雨纪",
+			"package": "com.xuangames.yj.uc",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.xuangames.yj.uc/0ec2a4715c5a7ae47db4eb18fed4acae.apk"
+		},
+		{
+			"name": "流浪者小岛",
+			"package": "com.shandagames.tinker.meta",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.shandagames.tinker.meta/e18f898267ae7e5d9e28ca3ee44f0cae.apk"
+		},
+		{
+			"name": "恐怖奶奶",
+			"package": "com.dvloper.granny.fhp",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.dvloper.granny.fhp/c50565de9062350fb7fdcb743cacc81b.apk"
+		},
+		{
+			"name": "密室逃脱1逃离地牢",
+			"package": "com.martian.RoomEscape1.aibei",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.martian.RoomEscape1.aibei/44dd7946112a26894d49575104a8c920.apk"
+		},
+		{
+			"name": "小小驯龙师",
+			"package": "com.pps.dragon.aligames",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.pps.dragon.aligames/c7f36d8a8e5e7446288b1e4fd86f7d42.apk"
+		},
+		{
+			"name": "火柴人枪战王者",
+			"package": "com.mili.hcrqzwz.shoot",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.mili.hcrqzwz.shoot/6212a1d3a7a759c99bb59fa867f15870.apk"
+		},
+		{
+			"name": "僵尸大战菊花怪",
+			"package": "com.redwoods.jsdzjhg.aligames",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.redwoods.jsdzjhg.aligames/1636c99a70a6ea19e8dc372f0c385e58.apk"
+		},
+		{
+			"name": "儿童启蒙乐园",
+			"package": "com.huochuang.etqmly",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.huochuang.etqmly/3a9187efcd0f86a9a9c4231c7ed00c23.apk"
+		},
+		{
+			"name": "热血霸业",
+			"package": "com.yars.rxby",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yars.rxby/9f3d1b13426bce7276858c7f1f8a59e5.apk"
+		},
+		{
+			"name": "蛋蛋大乱斗",
+			"package": "com.setsnail.oddman",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.setsnail.oddman/71c0570b0578a2dcac53302352ea83e2.apk"
+		},
+		{
+			"name": "刀剑天下",
+			"package": "com.hoodinn.hgame.djtx.lb",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.hoodinn.hgame.djtx.lb/534ccfea54aa781f8e1194c69cc31880.apk"
+		},
+		{
+			"name": "刀剑天下",
+			"package": "com.hoodinn.hgame.djtx.lb",
+			"path": "233/534ccfea54aa781f8e1194c69cc31880_reverse-signed.apk"
+		},
+		{
+			"name": "火柴蜘蛛侠英雄2",
+			"package": "com.mgc.stickman.rope.hero.two1.elm",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.mgc.stickman.rope.hero.two1.elm/9b80685168bc4a50d7e6cf3f314821a4.apk"
+		},
+		{
+			"name": "猎魔远征",
+			"package": "com.dingtuo.lmyz.eyou.meta",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.dingtuo.lmyz.eyou.meta/74cd34124c6d9ffb3e3f82ac83a609db.apk"
+		},
+		{
+			"name": "快音",
+			"package": "com.kuaiyin.player",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.kuaiyin.player/0305f4b7ca6ca2d9f5f445f94b89e859.apk"
+		},
+		{
+			"name": "多多自走棋",
+			"package": "com.ilongyuan.autochess.ly_pre",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.ilongyuan.autochess.ly_pre/751ca23dbcdcd3c0039cf8e62663a844.apk"
+		},
+		{
+			"name": "轩辕剑龙舞云山",
+			"package": "com.netease.sword.meta",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.netease.sword.meta/f7c618f9f6c4f021a6a75c83d3a91d00.apk"
+		},
+		{
+			"name": "我的英雄学院：入学季",
+			"package": "com.playcrab.achilles.meta",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.playcrab.achilles.meta/51d226412c717443bee39f61804e83c7.apk"
+		},
+		{
+			"name": "浴血长空",
+			"package": "com.mobilefish.warwings.uc",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.mobilefish.warwings.uc/e9914b1a236ea17e25c785100a06e0ec.apk"
+		},
+		{
+			"name": "时尚派对沙龙",
+			"package": "com.cocoplay.cocosupermodel.bb.m233",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.cocoplay.cocosupermodel.bb.m233/72cd618f531fb4709c22f46f8d690faf.apk"
+		},
+		{
+			"name": "龙珠Z超神",
+			"package": "com.wk.lzzcc.meta",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.wk.lzzcc.meta/319efdd447fad4897d0a7131e64bfbef.apk"
+		},
+		{
+			"name": "黑洞大作战",
+			"package": "com.tentek.hole.fhp",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tentek.hole.fhp/b55e0a6fb055f717ef88cb045561947b.apk"
+		},
+		{
+			"name": "一直奔向月",
+			"package": "com.taomee.jjr.meta",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.taomee.jjr.meta/13ea4d100669271a52a41d0093ad3784.apk"
+		},
+		{
+			"name": "第五人格",
+			"package": "com.netease.dwrg",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.netease.dwrg/309045b3efa953f61147241f81ad135f.apk"
+		},
+		{
+			"name": "决战高尔夫",
+			"package": "com.gamecomb.golfclash.meta",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.gamecomb.golfclash.meta/01f2290f6c56d4b42076420da3bda0b8.apk"
+		},
+		{
+			"name": "布丁被吃掉了",
+			"package": "air.jp.ne.hap.purin",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/air.jp.ne.hap.purin/f6bda9ad5068c3d094ab48f602c53bbd.apk"
+		},
+		{
+			"name": "总有刁民想害朕2",
+			"package": "com.ze.dmx2.fgg",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.ze.dmx2.fgg/4813830872ff99d94695be3b52525bcb.apk"
+		},
+		{
+			"name": "有点私房钱不容易",
+			"package": "com.e8game.ydsfqbry.ls2",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.e8game.ydsfqbry.ls2/52614017df868057456c805266f320b8.apk"
+		},
+		{
+			"name": "老婆我回来了",
+			"package": "com.e8game.lpwhll.ls2",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.e8game.lpwhll.ls2/cf19d78e5744e9887cfc5e52577b0717.apk"
+		},
+		{
+			"name": "打工是不可能的",
+			"package": "com.e8game.dgsbknd.ls2",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.e8game.dgsbknd.ls2/56ac13e4fcf75b4398c080dfecde291d.apk"
+		},
+		{
+			"name": "逃离医院不容易",
+			"package": "com.e8game.tlyybry.ls2",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.e8game.tlyybry.ls2/dc6ec5a82164e7815b5a8c512b44453e.apk"
+		},
+		{
+			"name": "我要翘课",
+			"package": "com.pujiadev.skipschool",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.pujiadev.skipschool/a650eed4b82a9c96ad66a7c88f880970.apk"
+		},
+		{
+			"name": "逃出公司大作战",
+			"package": "com.tomato.ditchingwork2.a233",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tomato.ditchingwork2.a233/49a5bb70c29f4d9d136e90e03cbfeb2e.apk"
+		},
+		{
+			"name": "我的农场",
+			"package": "com.ym.wdnc.by",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.ym.wdnc.by/2ec4e0b06c5505938f854fdef0736202.apk"
+		},
+		{
+			"name": "深海垂钓",
+			"package": "com.zx.shenhaichuidiao.by",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.zx.shenhaichuidiao.by/944186f647d79c2b74c0f1bd242d0675.apk"
+		},
+		{
+			"name": "家国梦",
+			"package": "com.tencent.jgm",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tencent.jgm/9996f671f62ffbd3883531c19fba1b77.apk"
+		},
+		{
+			"name": "僵尸榨汁机",
+			"package": "com.catchers.viewkingdom.aligames",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.catchers.viewkingdom.aligames/d5bd475c767869c91ddf4eee5dae8045.apk"
+		},
+		{
+			"name": "梦想蛋糕屋",
+			"package": "com.yunbu.restauranttycoon.cake.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.restauranttycoon.cake.iapppay/766aed77515f525b6b2539cf2b160913.apk"
+		},
+		{
+			"name": "美食烹饪家",
+			"package": "com.yunbu.cookingchef.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.cookingchef.iapppay/0cdc48716655e633376a28f609f516fe.apk"
+		},
+		{
+			"name": "梦想植物园",
+			"package": "com.yxhd.mhzwy2.sm",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yxhd.mhzwy2.sm/61beea7b1497ea63c5d30665e8127677.apk"
+		},
+		{
+			"name": "疯狂打车",
+			"package": "com.changwan.fkdc",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.changwan.fkdc/2db378fd8685605b5c4859fadb089954.apk"
+		},
+		{
+			"name": "农村动物园",
+			"package": "com.foranj.zoofarm",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.foranj.zoofarm/45b3fef510e729d4291ab445b3d963da.apk"
+		},
+		{
+			"name": "模拟城市：我是市长",
+			"package": "com.ea.simcitymobile.gc",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.ea.simcitymobile.gc/802112cd3ed7a259f7640eaaeefb0d8f.apk"
+		},
+		{
+			"name": "合并小龙龙",
+			"package": "com.gramgames.mergedragons",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.gramgames.mergedragons/30da42b2aea51cff8da9f8125fcd1681.apk"
+		},
+		{
+			"name": "电梯达人",
+			"package": "com.huochuang.dtdr.dt",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.huochuang.dtdr.dt/35f87ce08ab71da640afe2a25d15812f.apk"
+		},
+		{
+			"name": "小猫跑酷",
+			"package": "com.wpbb.mmpk.by",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.wpbb.mmpk.by/ad353179dd32d191e10c248dae789c9e.apk"
+		},
+		{
+			"name": "滚动的球球",
+			"package": "com.Feelnside.SlopeDown.sw.by",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.Feelnside.SlopeDown.sw.by/0647cc47bcb71a0245988f1e749160e5.apk"
+		},
+		{
+			"name": "像素公路战争",
+			"package": "com.yxhd.xsglzz.by",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yxhd.xsglzz.by/d001ed89845f388c7f3f22e702052f67.apk"
+		},
+		{
+			"name": "梦幻城堡爱消除",
+			"package": "com.martian.mhcbaxc.uc",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.martian.mhcbaxc.uc/efff0c71ce56d7400a65a6f2ca464771.apk"
+		},
+		{
+			"name": "迷你灌篮世界",
+			"package": "com.yxhd.mbzdlk2.mngl",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yxhd.mbzdlk2.mngl/7cb151f55e780d08fde0f203dad6faf7.apk"
+		},
+		{
+			"name": "甜点消消",
+			"package": "com.yunbu.puppyblast.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.puppyblast.iapppay/c04b4a907a1ec7fdc6b834a5ea274b76.apk"
+		},
+		{
+			"name": "嗨皮小鸡",
+			"package": "com.changwan.hpxj",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.changwan.hpxj/3643162d9f6962e093f1ee2fa55e42a7.apk"
+		},
+		{
+			"name": "爱情公寓消消消",
+			"package": "com.pavostudio.lovehouse.wo.meta",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.pavostudio.lovehouse.wo.meta/4993010a9642b29f1c18a7a7e89eb560.apk"
+		},
+		{
+			"name": "飞屋消消消",
+			"package": "com.mf.monsterblast.meta",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.mf.monsterblast.meta/4a1c271b7b560c85e2b617b12edae4f7.apk"
+		},
+		{
+			"name": "泡泡精灵传奇",
+			"package": "com.yunbu.bubbleelfsaga",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.bubbleelfsaga/9eb6816587d9c9235ab184a2018dc3a4.apk"
+		},
+		{
+			"name": "愚蠢的僵尸",
+			"package": "com.huochuang.ycdjs.sj",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.huochuang.ycdjs.sj/7ec5d020ced10bc165513f6d8c2aac8b.apk"
+		},
+		{
+			"name": "爆炸猪",
+			"package": "com.idreamsky.pigbang.uc",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.idreamsky.pigbang.uc/e47a9cc8b532c2f43dc82c1598c5afa8.apk"
+		},
+		{
+			"name": "竞技江湖",
+			"package": "com.happysai.game.jjjh.aligames",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.happysai.game.jjjh.aligames/2a9123202d54af77e2db7e38c4dc534c.apk"
+		},
+		{
+			"name": "疾速火柴人",
+			"package": "com.jshcr.game.by",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.jshcr.game.by/f77afea626e3d0eac6e8622904916294.apk"
+		},
+		{
+			"name": "火柴人对打",
+			"package": "com.yzy.hcrdd.by",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yzy.hcrdd.by/f931090d14d29e9a1b5e9c07d37935fc.apk"
+		},
+		{
+			"name": "火柴人超级英雄",
+			"package": "com.lfml.vivo.hcrgame233",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.lfml.vivo.hcrgame233/feb42178a1951b910baac6c98fd1b7c8.apk"
+		},
+		{
+			"name": "射击大赛",
+			"package": "com.archery.go.bow.arrow.king.sports.game",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.archery.go.bow.arrow.king.sports.game/27556488a7005d289bce8efb9198e2c7.apk"
+		},
+		{
+			"name": "钢铁侠城市英雄",
+			"package": "com.ks.mrsjgmqs.gtxcsyx.xw",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.ks.mrsjgmqs.gtxcsyx.xw/c7023c50a334e1a96a3161dbc1a66e7b.apk"
+		},
+		{
+			"name": "荣耀狙击",
+			"package": "com.yunbu.sniperhonor.meta",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.sniperhonor.meta/51bdbd4904a71df25961c6ae18a195a7.apk"
+		},
+		{
+			"name": "穿越火线：枪战王者",
+			"package": "com.tencent.tmgp.cf",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tencent.tmgp.cf/a2b85d4e95e48b3036a8d4d785bfcd08.apk"
+		},
+		{
+			"name": "香肠大作战",
+			"package": "com.redwoods.xcdzz.aligames",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.redwoods.xcdzz.aligames/887933a016c3c7e6aaa89ad542ccb171.apk"
+		},
+		{
+			"name": "指尖五子棋",
+			"package": "com.zjkj.wuziqi",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.zjkj.wuziqi/becc2bdb48865715d281cb1ba861faba.apk"
+		},
+		{
+			"name": "四川麻将",
+			"package": "com.zengame.scmjxzdd.p365you",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.zengame.scmjxzdd.p365you/1dcb6012ce9d6743e6bcbd4cddf5fb68.apk"
+		},
+		{
+			"name": "电玩捕鱼千炮版",
+			"package": "com.szyp.goldfish6s",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.szyp.goldfish6s/80a3d7377ebb9da85f14b2ff792c7479.apk"
+		},
+		{
+			"name": "大神捕鱼",
+			"package": "com.yjh5.dsby.meta",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yjh5.dsby.meta/7825a671a7395d4030a6557cc71c4358.apk"
+		},
+		{
+			"name": "狼爪捕鱼达人",
+			"package": "com.lzbydr.hg.gamecenter",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.lzbydr.hg.gamecenter/bcf50224d519677ee64277e2b4a2fd51.apk"
+		},
+		{
+			"name": "天天斗地主(真人版)",
+			"package": "com.zengame.ttddzzrb.p365you",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.zengame.ttddzzrb.p365you/b485b9ee046d757f22e96bf3f5303d31.apk"
+		},
+		{
+			"name": "捕鱼达人千炮版",
+			"package": "com.tencent.tmgp.pkbydr",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tencent.tmgp.pkbydr/fc2689e3bd2b3c79283b82b83eff87ec.apk"
+		},
+		{
+			"name": "途游中国象棋",
+			"package": "com.example.chinesechess",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.example.chinesechess/9824ac0b789927bdf63034c75622f75b.apk"
+		},
+		{
+			"name": "老婆去哪嗨了",
+			"package": "com.hongshu.wife",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.hongshu.wife/42aeaf9c8735fe58bd662c40f298927d.apk"
+		},
+		{
+			"name": "猎魔远征",
+			"package": "com.dingtuo.lmyz.eyou.meta",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.dingtuo.lmyz.eyou.meta/74cd34124c6d9ffb3e3f82ac83a609db.apk"
+		},
+		{
+			"name": "火柴人王者激斗",
+			"package": "com.stickman.nshcr.hcrwzjd.xw",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.stickman.nshcr.hcrwzjd.xw/76783059ef1da8a82760954032d4b9ec.apk"
+		},
+		{
+			"name": "妈妈把我的泡面藏起来了3",
+			"package": "com.tygame.cngame32",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tygame.cngame32/85d52509be8bf3bbcced5bd9324f2e98.apk"
+		},
+		{
+			"name": "闲来斗地主",
+			"package": "com.tiancheng.doudizhu",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tiancheng.doudizhu/a51972b98eada424b9242c9e437e44f4.apk"
+		},
+		{
+			"name": "腾讯欢乐捕鱼",
+			"package": "com.tencent.hlfish",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tencent.hlfish/efb3dbe0db2ee99254400f08f1e5ec3f.apk"
+		},
+		{
+			"name": "爆炸传说",
+			"package": "com.ezjoynetwork.marbleblast4",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.ezjoynetwork.marbleblast4/727e9cd5bc8ea8b6bb5be03630d7c131.apk"
+		},
+		{
+			"name": "一起来捉妖",
+			"package": "com.tencent.gwgo",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tencent.gwgo/0b03380df61196e15cc68f4e61717c68.apk"
+		},
+		{
+			"name": "实况足球",
+			"package": "com.netease.pes",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.netease.pes/20b82d4637ce4e1fbc98b025e6654caf.apk"
+		},
+		{
+			"name": "魂斗罗：归来",
+			"package": "com.tencent.shootgame",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tencent.shootgame/19b6775d4b1737cc53556d3455fab74b.apk"
+		},
+		{
+			"name": "跑跑卡丁车",
+			"package": "com.tencent.tmgp.WePop",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tencent.tmgp.WePop/cfb9e84d222fb6de4617e29823117fca.apk"
+		},
+		{
+			"name": "宝宝超市管理员",
+			"package": "com.yunbu.babysupermarketmanager.chaos",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.babysupermarketmanager.chaos/31f9718296b7a062b9be9fcfad420c39.apk"
+		},
+		{
+			"name": "冰雪皇家婚礼",
+			"package": "com.yunbu.royalwedding.chaos",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.royalwedding.chaos/0b604f2c52d5942b3420f9f4a7210bd4.apk"
+		},
+		{
+			"name": "花花姑娘之魔法花园",
+			"package": "com.yunbu.magicgarden.chaos",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.magicgarden.chaos/289720d9c186d1a1815e6f1a5d57e88b.apk"
+		},
+		{
+			"name": "皇家公主制衣店",
+			"package": "com.yunbu.royaltailor.chaos",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.royaltailor.chaos/00683f9c9f191c997560fe46143a3dde.apk"
+		},
+		{
+			"name": "美少女魔法美妆",
+			"package": "com.yunbu.girlmagicmakeup.chaos",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.girlmagicmakeup.chaos/818982504a7d6b0b16547c19d0877310.apk"
+		},
+		{
+			"name": "嘻哈美妆秀",
+			"package": "com.yunbu.hiphopshow.chaos",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.hiphopshow.chaos/33ccee3423570cbca66fe4c85e30f4b6.apk"
+		},
+		{
+			"name": "梦想美发屋",
+			"package": "com.yunbu.dreamhairshop.chaos",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.dreamhairshop.chaos/c2c2d6a171da131a5a0e376d12460d57.apk"
+		},
+		{
+			"name": "公主婚纱裁缝店",
+			"package": "com.yunbu.weddingtailor.chaos",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.weddingtailor.chaos/49a9f33121ed265e8b1f734d83eb1ebe.apk"
+		},
+		{
+			"name": "赛尔号超级英雄",
+			"package": "com.skymoons.seer.uc",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.skymoons.seer.uc/759f84d49550af0e637fe860631b061b.apk"
+		},
+		{
+			"name": "QQ飞车",
+			"package": "com.tencent.tmgp.speedmobile",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tencent.tmgp.speedmobile/b8b39cc9b64fe127369f6552ae8fbb9b.apk"
+		},
+		{
+			"name": "蛋糕消消",
+			"package": "com.bitflash.cake.break",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.bitflash.cake.break/6a0a0a4ae9b253b120a2db4c9c9edb6b.apk"
+		},
+		{
+			"name": "水果糖爆炸3",
+			"package": "com.Match3Crush.FruitCandyBlast",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.Match3Crush.FruitCandyBlast/77c9ee12bd12ef1e708ff094285c8c4d.apk"
+		},
+		{
+			"name": "农场消消乐",
+			"package": "com.gamealliance.dropncrop",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.gamealliance.dropncrop/c880de8223987b184e9c90886a661897.apk"
+		},
+		{
+			"name": "天才宝宝学习身体(女生版)",
+			"package": "com.yunbu.humanbodygirl.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.humanbodygirl.iapppay/9bec03438d386c615ed2a0bc0d270a7a.apk"
+		},
+		{
+			"name": "天才宝宝学前启蒙",
+			"package": "com.yunbu.kidsabc.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.kidsabc.iapppay/e48581a17342f96351ce77dbf9a56511.apk"
+		},
+		{
+			"name": "天才宝宝探索太空",
+			"package": "com.yunbu.kidsspace.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.kidsspace.iapppay/9a6736d74ee846ff2c6648428d4ba11a.apk"
+		},
+		{
+			"name": "天才宝宝恐龙世界",
+			"package": "com.yunbu.dinosaurworld.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.dinosaurworld.iapppay/17f31ccd3a92942f0e1b19b15b3844e7.apk"
+		},
+		{
+			"name": "天才宝宝火车达人",
+			"package": "com.yunbu.kidstrain.iapppay",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.yunbu.kidstrain.iapppay/f2c6dd913a0314189fa5cf2dcc8659a6.apk"
+		},
+		{
+			"name": "宝宝学汉字",
+			"package": "com.sinyee.babybus.homeland",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.sinyee.babybus.homeland/55e959531b8faad3196695059e71eff4.apk"
+		},
+		{
+			"name": "宝宝神奇汽车",
+			"package": "com.sinyee.babybus.taxi",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.sinyee.babybus.taxi/36973c02e44d8e58024ff23d99473c90.apk"
+		},
+		{
+			"name": "宝宝从哪来",
+			"package": "com.sinyee.babybus.born",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.sinyee.babybus.born/0b71aed38f800f223b32dd783b1d0588.apk"
+		},
+		{
+			"name": "宝宝巴士奇妙屋",
+			"package": "com.sinyee.babybus.talk2kiki",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.sinyee.babybus.talk2kiki/c749500c812abf8814cff0edecc1b213.apk"
+		},
+		{
+			"name": "宝宝巴士儿歌",
+			"package": "com.sinyee.babybus.chants",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.sinyee.babybus.chants/ef6e5def355f22bbdd16fbefa45a4f5a.apk"
+		},
+		{
+			"name": "子弹射击",
+			"package": "com.shootgame.bullet.gun.giftmoney.gp",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.shootgame.bullet.gun.giftmoney.gp/2d833102329e100d56998112bbf432ff.apk"
+		},
+		{
+			"name": "特警和僵尸",
+			"package": "co.kr.medialog.swatandzombie",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/co.kr.medialog.swatandzombie/c30057118966fabbb6c2c235278e862d.apk"
+		},
+		{
+			"name": "跳跃的男孩",
+			"package": "jumping.boy.adventure",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/jumping.boy.adventure/ed84f66c82e44c91edb264c75025f0aa.apk"
+		},
+		{
+			"name": "战士战斗",
+			"package": "com.tickmanhostalaxyarshadowctionjordanretro",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tickmanhostalaxyarshadowctionjordanretro/f7ef9a9d38538cd90e2a95a20f0c8d70.apk"
+		},
+		{
+			"name": "天空女孩",
+			"package": "com.webzen.appmigos.skygirl.android",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.webzen.appmigos.skygirl.android/c5405741153315fd9e43af51b9b6308c.apk"
+		},
+		{
+			"name": "Sex Tap",
+			"package": "com.vstudio.SexTap",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.vstudio.SexTap/522c448ee991abab764b12a5669b45f0.apk"
+		},
+		{
+			"name": "玉米收藏家",
+			"package": "com.candycane.corncollector",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.candycane.corncollector/757090ab19e60eb815c037466b1dc027.apk"
+		},
+		{
+			"name": "跳跃的车轮",
+			"package": "com.jes.wheel",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.jes.wheel/4c9e624d17287009743818927298f3ee.apk"
+		},
+		{
+			"name": "粉刷匠大作战",
+			"package": "com.shandagames.bop.aligames",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.shandagames.bop.aligames/24d9086b3fa8af20e962609d93b24853.apk"
+		},
+		{
+			"name": "喵星大作战",
+			"package": "com.cats.idreamsky.uc",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.cats.idreamsky.uc/9d48a467fad48e645e1b1253109f3100.apk"
+		},
+		{
+			"name": "坦克进化大作战",
+			"package": "io.tankr",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/io.tankr/ccebf38aa04e4a1ae832357358ddb39a.apk"
+		},
+		{
+			"name": "派对大作战",
+			"package": "com.tomato.joy.sjpd.io",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.tomato.joy.sjpd.io/3d7a2db649b9ba5cb27da76188406f54.apk"
+		},
+		{
+			"name": "碰碰车大作战",
+			"package": "com.xiaoao.BumperCar.uc",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.xiaoao.BumperCar.uc/3af1b41af8defebb3afaa302e48f166f.apk"
+		},
+		{
+			"name": "捉迷藏大作战",
+			"package": "com.xiaoao.duomaomao.uc",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.xiaoao.duomaomao.uc/9a646e2e6124b98176591e25a2f614d2.apk"
+		},
+		{
+			"name": "年兽大作战",
+			"package": "com.magicred.NianShouDaZuoZhan.uc",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.magicred.NianShouDaZuoZhan.uc/1ea744a055aad16519804d007f261e23.apk"
+		},
+		{
+			"name": "二战风云",
+			"package": "com.wistone.war2victory",
+			"path": "https://game0.233xyx.com/game/apk/normal/v0/com.wistone.war2victory/156576af7eeea58625e2d8e2e3abc2cc.apk"
+		},
+		{
+			"name": "红果小说",
+			"package": "com.dragon.read",
+			"path": "http://dx12.198174.com/hgmfxsapp24132.apk"
+		},
+		{
+			"name": "米读极速版",
+			"package": "com.lechuan.mdwz",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/05775c4299b284d9d1a8eb936091c64dc018ebfc1/com.lechuan.mdwz.apk"
+		},
+		{
+			"name": "快看点",
+			"package": "com.yuncheapp.android.pearl",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/044994414935671f92d96e2e1f7d0054252401881/com.yuncheapp.android.pearl.apk"
+		},
+		{
+			"name": "新浪微博",
+			"package": "com.sina.weibo",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/057d2a58c9f80488117dc6405c729f157a55f94c6/com.sina.weibo.apk"
+		},
+		{
+			"name": "58同城",
+			"package": "com.wuba",
+			"path": "https://sdl.58cdn.com.cn/productor/2016/v9.3.2_batch/58client_v9.3.2_3.apk"
+		},
+		{
+			"name": "火山极速版",
+			"package": "com.ss.android.ugc.livelite",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/09d8a5a0e2edb6406b0d14804770698040a4046e5/com.ss.android.ugc.livelite.apk"
+		},
+		{
+			"name": "水滴保险商城",
+			"package": "com.shuidihuzhu.sdbao",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/09d82f46cabbd4e2732edfff01a72d2128c51f943/com.shuidihuzhu.sdbao.apk"
+		},
+		{
+			"name": "爱步行",
+			"package": "com.yixin.ibuxing",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/04a785523991e4b3a145f1e26cd0f70b52fa92ab8/com.yixin.ibuxing.apk"
+		},
+		{
+			"name": "疯读小说",
+			"package": "com.cootek.crazyreader",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/043da55d913f6465a1385174113292345309c87e5/com.cootek.crazyreader.apk"
+		},
+		{
+			"name": "美团",
+			"package": "com.sankuai.meituan",
+			"path": "https://v.meituan.net/mobile/app/Android/group-1000040203_2-meituan.apk"
+		},
+		{
+			"name": "步多多",
+			"package": "com.qsmy.walkmonkey",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/0e44a4774c04b45d9166d374e13e50c48ff42d27d/com.qsmy.walkmonkey.apk"
+		},
+		{
+			"name": "拼多多",
+			"package": "com.xunmeng.pinduoduo",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/064bd4b4cfb39c72e1858ea9f2556b5dea140fbce/com.xunmeng.pinduoduo.apk"
+		},
+		{
+			"name": "抖音极速版",
+			"package": "com.ss.android.ugc.aweme.lite",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/0e6404204d39330a5dadbdf58e249306c3742644e/com.ss.android.ugc.aweme.lite.apk"
+		},
+		{
+			"name": "腾讯新闻",
+			"package": "com.tencent.news",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/0a1885335e59812dd8c169b3d95d7770696404d6d/com.tencent.news.apk"
+		},
+		{
+			"name": "京东",
+			"package": "com.jingdong.app.mall",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/081d6562a5d715844c4565fe791833c735c40fb8d/com.jingdong.app.mall.apk"
+		},
+		{
+			"name": "爱走路",
+			"package": "com.love.walk.qsport",
+			"path": "http://9az8.qweqwi.com/azl_v1.0.9.1111.1820.apk"
+		},
+		{
+			"name": "快手",
+			"package": "com.smile.gifmaker",
+			"path": "https://js.a.kspkg.com/bs2/fes/kwai-android-generic-gifmakerrelease-6.10.2.11672_5d64a7.apk"
+		},
+		{
+			"name": "蛋壳公寓",
+			"package": "com.dankegongyu.customer",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/0d5f3c5af2bb04fcf00c36161166ad8134fcd36cd/com.dankegongyu.customer.apk"
+		},
+		{
+			"name": "美团外卖",
+			"package": "com.sankuai.meituan.takeoutnew",
+			"path": "https://dc2d8d5b0b9641aa7fb44379ca67b370.dd.cdntips.com/imtt.dd.qq.com/16891/apk/D38E460504853A06D40E7AEFA660CBA2.apk"
+		},
+		{
+			"name": "阳光养猪场",
+			"package": "com.songwo.pig",
+			"path": "https://7981926464ba2d45f682ce081a592ba0.dd.cdntips.com/imtt.dd.qq.com/16891/apk/1E32A8541C4F88A7DB8844096F8151B1.apk"
+		},
+		{
+			"name": "走不停",
+			"package": "com.zoubuting.zbt",
+			"path": "http://down-kuaila.91jingzhuang.com:20001/2019/Q3/zoubuting.apk"
+		},
+		{
+			"name": "众安保险",
+			"package": "com.zhongan.insurance",
+			"path": "https://ba47c271642f3faf5d83a1943d613925.dd.cdntips.com/imtt.dd.qq.com/16891/apk/F22D16D7D85E12D4F7ADF871A39D5716.apk"
+		},
+		{
+			"name": "摩天轮票务",
+			"package": "com.juqitech.niumowang",
+			"path": "https://imtt.dd.qq.com/16891/apk/D984CFEC9A1BA25FA12BE3537BD3E771.apk"
+		},
+		{
+			"name": "全民K歌",
+			"package": "com.tencent.karaoke",
+			"path": "https://p.channel.qq.com/rcps/d/1100107534/6.14.28.278-11_28_16-70f6b7_1100107534_191129154602a.apk"
+		},
+		{
+			"name": "萌推",
+			"package": "com.mengtuiapp.mall",
+			"path": "https://8a2bc9359a8b355066a9ceb9eeaaac63.dd.cdntips.com/imtt.dd.qq.com/16891/apk/B22355579AA3C75C1C10BA3E439A38BC.apk"
+		},
+		{
+			"name": "战统三国",
+			"package": "com.pbnet.ztsg",
+			"path": "http://gyxz189.syzjxz2018.cn/mi1/yx_lgq1/zhantongsanguo.apk"
+		},
+		{
+			"name": "走步宝",
+			"package": "com.songheng.tuji.duoduo",
+			"path": "https://ba47c271642f3faf5d83a1943d613925.dd.cdntips.com/imtt.dd.qq.com/16891/apk/F77C79AC2914B6C43A3E8A4E31D72D2B.apk"
+		},
+		{
+			"name": "玩赚星球",
+			"package": "com.planet.light2345",
+			"path": "https://dc2d8d5b0b9641aa7fb44379ca67b370.dd.cdntips.com/imtt.dd.qq.com/16891/apk/649BD4FE613DAA2E31234BBC57515A0C.apk"
+		},
+		{
+			"name": "TapTap",
+			"package": "com.taptap",
+			"path": "https://ba47c271642f3faf5d83a1943d613925.dd.cdntips.com/imtt.dd.qq.com/16891/apk/2D62FFF118D9132CA89016CE9A1D6E5E.apk"
+		},
+		{
+			"name": "闪动壁纸",
+			"package": "com.flash.matrix_wallpaper",
+			"path": "http://gyxza3.eymlz.com/a31/rj_zhoux1/sdbz.apk"
+		},
+		{
+			"name": "波波视频",
+			"package": "tv.yixia.bobo",
+			"path": "https://bbd5e31b3af9319f01be5757a0288511.dd.cdntips.com/imtt.dd.qq.com/16891/apk/E78BFADB22F31B4F47979BBD02497BA9.apk"
+		},
+		{
+			"name": "刷宝短视频",
+			"package": "com.jm.video",
+			"path": "https://f210aff7500dd7a139d65fd980b30978.dd.cdntips.com/imtt.dd.qq.com/16891/apk/FF23B6B96E584A20EA57E996E7D2170A.apk"
+		},
+		{
+			"name": "闪电盒子",
+			"package": "c.l.a",
+			"path": "http://apk.liquidnetwork.com/apk-version-control/Lightningbox/5.5.0.1/appbox_5.5.0.1_20191128_base_release_nologo_build3.apk"
+		},
+		{
+			"name": "疯狂金币城",
+			"package": "wz.merge.city",
+			"path": "http://down.tkunfs.cn/game/yx_fengkuangjingbichenapp.apk"
+		},
+		{
+			"name": "中国联通",
+			"package": "com.sinovatech.unicom.ui",
+			"path": "https://bbd5e31b3af9319f01be5757a0288511.dd.cdntips.com/imtt.dd.qq.com/16891/apk/84AF6A6E99430D1DD86BC6BE239B837D.apk"
+		},
+		{
+			"name": "每日优鲜",
+			"package": "cn.missfresh.application",
+			"path": "https://imtt.dd.qq.com/16891/apk/ED289E3144537BF395EF7B114A0474CD.apk?fsname=cn.missfresh.application_9.7.2_97200.apk"
+		},
+		{
+			"name": "合鑫资讯",
+			"package": "com.tongxin.info",
+			"path": "https://imtt.dd.qq.com/16891/apk/BA598DC0236030FF9CB9E4F583B11FA4.apk?fsname=com.tongxin.info_3.1.7_131.apk"
+		},
+		{
+			"name": "蓝月至尊版",
+			"package": "com.game.qytx.lyzzb",
+			"path": "https://pack.qiyutianxia.com/gamepacks/lyzzb_lhfy08.apk"
+		},
+		{
+			"name": "腾讯微视",
+			"package": "com.tencent.weishi",
+			"path": "https://11c6fabda28737282236a54be74ad36d.dd.cdntips.com/imtt.dd.qq.com/16891/apk/68A1905C9F35EA81F953C497910E50B8.apk"
+		},
+		{
+			"name": "唯品会",
+			"package": "com.achievo.vipshop",
+			"path": "https://ba47c271642f3faf5d83a1943d613925.dd.cdntips.com/imtt.dd.qq.com/16891/apk/67BF48BD51E5662A4F521045FAB4AABB.apk"
+		},
+		{
+			"name": "省钱快报",
+			"package": "com.jzyd.coupon",
+			"path": "https://ba47c271642f3faf5d83a1943d613925.dd.cdntips.com/imtt.dd.qq.com/16891/apk/E09203293A7BF5F0504CCF18FE6E6B96.apk"
+		},
+		{
+			"name": "途虎养车",
+			"package": "cn.TuHu.android",
+			"path": "https://b32aa33f4de6b2d8bc7ce38be9fe6e5b.dd.cdntips.com/imtt.dd.qq.com/16891/apk/87B33271720FFE8A6985208B3B0234AC.apk"
+		},
+		{
+			"name": "百度",
+			"package": "com.baidu.searchbox",
+			"path": "https://a87993516156314bead98e8a34afe63e.dd.cdntips.com/imtt.dd.qq.com/16891/apk/9FC944D8BD097AAC21F272DD46256CCC.apk"
+		},
+		{
+			"name": "猫扑运动",
+			"package": "com.mop.catsports",
+			"path": "https://b6.market.xiaomi.com/download/AppStore/08c5a58b905e0e5c643582107d772cb7ccb42cfb0/com.mop.catsports.apk"
+		},
+		{
+			"name": "欢乐养猪场",
+			"package": "happy.merge.pigpig",
+			"path": "https://down10.xiazaidb.com/app/huanleyangzhuchang.apk"
+		},
+		{
+			"name": "欢乐摇钱树",
+			"package": "wz.merge.goldtree",
+			"path": "https://down2.cudown.com/app/huanleyaoqianshu.apk"
+		}
+	]
+}

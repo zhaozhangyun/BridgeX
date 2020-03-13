@@ -1,0 +1,14 @@
+{
+  "logger": {
+    "default_tag": "bridgex",
+    "show_all_stack": true,
+    "max_stack_index": 16,
+    "stack_package": {
+      "enable": true,
+      "package": ""
+    },
+    "export_json": true
+  },
+  "debuggable": true,
+  "external_dir": ""
+}
