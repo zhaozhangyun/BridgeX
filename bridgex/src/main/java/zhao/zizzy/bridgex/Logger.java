@@ -62,7 +62,7 @@ public class Logger {
 
     public static void log(int source) {
         if (instance == null) {
-            new NullPointerException("The Logger instance is null!");
+            throw new NullPointerException("The Logger instance is null!");
         }
 
         instance.atomI.incrementAndGet();
@@ -71,7 +71,7 @@ public class Logger {
 
     public static void log(long source) {
         if (instance == null) {
-            new NullPointerException("The Logger instance is null!");
+            throw new NullPointerException("The Logger instance is null!");
         }
 
         instance.atomI.incrementAndGet();
@@ -80,7 +80,7 @@ public class Logger {
 
     public static void log(float source) {
         if (instance == null) {
-            new NullPointerException("The Logger instance is null!");
+            throw new NullPointerException("The Logger instance is null!");
         }
 
         instance.atomI.incrementAndGet();
@@ -89,7 +89,7 @@ public class Logger {
 
     public static void log(double source) {
         if (instance == null) {
-            new NullPointerException("The Logger instance is null!");
+            throw new NullPointerException("The Logger instance is null!");
         }
 
         instance.atomI.incrementAndGet();
@@ -98,7 +98,7 @@ public class Logger {
 
     public static void log(boolean source) {
         if (instance == null) {
-            new NullPointerException("The Logger instance is null!");
+            throw new NullPointerException("The Logger instance is null!");
         }
 
         instance.atomI.incrementAndGet();
@@ -107,7 +107,7 @@ public class Logger {
 
     public static void log() {
         if (instance == null) {
-            new NullPointerException("The Logger instance is null!");
+            throw new NullPointerException("The Logger instance is null!");
         }
 
         instance.atomI.incrementAndGet();
@@ -116,7 +116,7 @@ public class Logger {
 
     public static void log(Object source) {
         if (instance == null) {
-            new NullPointerException("The Logger instance is null!");
+            throw new NullPointerException("The Logger instance is null!");
         }
 
         instance.atomI.incrementAndGet();
@@ -127,7 +127,7 @@ public class Logger {
 
     public static void log(Object... args) {
         if (instance == null) {
-            new NullPointerException("The Logger instance is null!");
+            throw new NullPointerException("The Logger instance is null!");
         }
 
         instance.atomI.incrementAndGet();
@@ -153,7 +153,7 @@ public class Logger {
 
     public static void log(String tag, Object source) {
         if (instance == null) {
-            new NullPointerException("The Logger instance is null!");
+            throw new NullPointerException("The Logger instance is null!");
         }
 
         instance.atomI.incrementAndGet();
