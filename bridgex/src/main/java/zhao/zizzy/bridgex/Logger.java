@@ -370,6 +370,9 @@ public class Logger {
     }
 
     private int diff(String clazz, String stackPackage) {
+        if (debuggable) {
+            Log.v(defaultTag, "call diff(): clazz=" + clazz + ", stackPackage=" + stackPackage);
+        }
         if (TextUtils.isEmpty(clazz)) {
             return 0;
         }
