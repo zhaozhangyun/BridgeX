@@ -5,6 +5,7 @@
     "max_stack_index": 16,
     "stack_package": {
       "enable": true,
+      "start_index": 0,
       "package": ""
     },
     "export_json": true

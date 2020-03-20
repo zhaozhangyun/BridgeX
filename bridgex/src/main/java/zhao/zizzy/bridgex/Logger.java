@@ -40,6 +40,7 @@ public class Logger {
     private int maxLogStackIndex;
     private boolean showAllStack;
     private boolean enableStackPackage;
+    private int startIndex;
     private String stackPackage;
     private boolean exportJson;
     private File exportJsonDir;
@@ -52,6 +53,7 @@ public class Logger {
         showAllStack = builder.showAllStack;
         maxLogStackIndex = builder.maxLogStackIndex;
         enableStackPackage = builder.enableStackPackage;
+        startIndex = builder.startIndex;
         stackPackage = builder.stackPackage;
         exportJson = builder.exportJson;
         exportJsonDir = builder.exportJsonDir;
@@ -187,7 +189,7 @@ public class Logger {
             Log.v(tag + " ++++++", getFormatLog(source), throwable);
         }
 
-        int currentIndex = atomI.incrementAndGet();
+        int currentIndex = atomI.incrementAndGet() + startIndex;
         if (debuggable) {
             Log.v(instance.defaultTag, "atomI: " + atomI.get());
             Log.v(instance.defaultTag, "currentIndex: " + currentIndex);
@@ -524,6 +526,7 @@ public class Logger {
         private boolean showAllStack;
         private int maxLogStackIndex;
         private boolean enableStackPackage;
+        private int startIndex;
         private String stackPackage;
         private boolean exportJson;
         private File exportJsonDir;
@@ -557,6 +560,14 @@ public class Logger {
 
         LoggerBuilder enableStackPackage(boolean enableStackPackage) {
             this.enableStackPackage = enableStackPackage;
+            return this;
+        }
+
+        LoggerBuilder startIndex(int index) {
+            if (index < 0) {
+                index = 0;
+            }
+            this.startIndex = index;
             return this;
         }
 

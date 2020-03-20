@@ -57,6 +57,8 @@ public class BridgeX {
                                 .maxLogStackIndex(json.optJSONObject("logger").optInt("max_stack_index"))
                                 .enableStackPackage(json.optJSONObject("logger").optJSONObject("stack_package")
                                         .optBoolean("enable"))
+                                .startIndex(json.optJSONObject("logger").optJSONObject("stack_package")
+                                        .optInt("start_index"))
                                 .stackPackage(json.optJSONObject("logger").optJSONObject("stack_package")
                                         .optString("package"))
                                 .exportJson(json.optJSONObject("logger").optBoolean("export_json"))
