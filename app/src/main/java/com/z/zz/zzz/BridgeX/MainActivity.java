@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import zhao.zizzy.bridgex.BridgeX;
+import zhao.zizzy.bridgex.LogBridge;
 import zhao.zizzy.bridgex.Logger;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        LogBridge.inject(new LoggerImpl());
 
         BridgeX.init(this);
 

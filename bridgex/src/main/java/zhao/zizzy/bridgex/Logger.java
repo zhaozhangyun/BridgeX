@@ -258,6 +258,8 @@ public class Logger {
                 if (!TextUtils.isEmpty(jsonFilePath)) {
                     stackBuilder.append("\n++++++ : ").append(jsonFilePath);
                 }
+
+                LogBridge.log(tag, source);
             } else if (showAllStack && i > currentIndex) {
                 if (enableStackPackage) {
                     int diffValue = diff(className, stackPackage);
