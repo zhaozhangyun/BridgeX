@@ -31,23 +31,23 @@
     .param p2, "priority"    # I
     .param p3, "tag"    # Ljava/lang/String;
 
-    .line 616
+    .line 649
     iput-object p1, p0, Lzhao/zizzy/bridgex/Logger$ImmediateLogWriter;->this$0:Lzhao/zizzy/bridgex/Logger;
 
     invoke-direct {p0}, Ljava/io/Writer;-><init>()V
 
-    .line 610
+    .line 643
     const/4 v0, 0x0
 
     iput v0, p0, Lzhao/zizzy/bridgex/Logger$ImmediateLogWriter;->written:I
 
-    .line 617
+    .line 650
     iput p2, p0, Lzhao/zizzy/bridgex/Logger$ImmediateLogWriter;->priority:I
 
-    .line 618
+    .line 651
     iput-object p3, p0, Lzhao/zizzy/bridgex/Logger$ImmediateLogWriter;->tag:Ljava/lang/String;
 
-    .line 619
+    .line 652
     return-void
 .end method
 
@@ -56,21 +56,21 @@
 .method public close()V
     .locals 0
 
-    .line 641
+    .line 674
     return-void
 .end method
 
 .method public flush()V
     .locals 0
 
-    .line 636
+    .line 669
     return-void
 .end method
 
 .method public getWritten()I
     .locals 1
 
-    .line 622
+    .line 655
     iget v0, p0, Lzhao/zizzy/bridgex/Logger$ImmediateLogWriter;->written:I
 
     return v0
@@ -82,7 +82,7 @@
     .param p2, "off"    # I
     .param p3, "len"    # I
 
-    .line 630
+    .line 663
     iget v0, p0, Lzhao/zizzy/bridgex/Logger$ImmediateLogWriter;->written:I
 
     iget v1, p0, Lzhao/zizzy/bridgex/Logger$ImmediateLogWriter;->priority:I
@@ -101,6 +101,6 @@
 
     iput v0, p0, Lzhao/zizzy/bridgex/Logger$ImmediateLogWriter;->written:I
 
-    .line 631
+    .line 664
     return-void
 .end method

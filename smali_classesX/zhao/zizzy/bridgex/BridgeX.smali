@@ -111,7 +111,7 @@
     .locals 4
     .param p0, "name"    # Ljava/lang/String;
 
-    .line 87
+    .line 89
     sget-object v0, Lzhao/zizzy/bridgex/BridgeX;->EXTERNAL_DIR:Ljava/io/File;
 
     invoke-static {v0}, Lzhao/zizzy/bridgex/BridgeX;->ensureCreated(Ljava/io/File;)Z
@@ -120,7 +120,7 @@
 
     if-nez v0, :cond_0
 
-    .line 88
+    .line 90
     sget-object v0, Lzhao/zizzy/bridgex/BridgeX;->sContext:Landroid/content/Context;
 
     invoke-virtual {v0, p0}, Landroid/content/Context;->getDatabasePath(Ljava/lang/String;)Ljava/io/File;
@@ -133,7 +133,7 @@
 
     return-object v0
 
-    .line 91
+    .line 93
     :cond_0
     new-instance v0, Ljava/io/File;
 
@@ -143,7 +143,7 @@
 
     invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    .line 92
+    .line 94
     .local v0, "dbp":Ljava/io/File;
     invoke-static {v0}, Lzhao/zizzy/bridgex/BridgeX;->ensureCreated(Ljava/io/File;)Z
 
@@ -151,7 +151,7 @@
 
     if-nez v1, :cond_1
 
-    .line 93
+    .line 95
     sget-object v1, Lzhao/zizzy/bridgex/BridgeX;->sContext:Landroid/content/Context;
 
     invoke-virtual {v1, p0}, Landroid/content/Context;->getDatabasePath(Ljava/lang/String;)Ljava/io/File;
@@ -164,13 +164,13 @@
 
     return-object v1
 
-    .line 95
+    .line 97
     :cond_1
     sget-boolean v1, Lzhao/zizzy/bridgex/BridgeX;->DEBUGGABLE:Z
 
     if-eqz v1, :cond_2
 
-    .line 96
+    .line 98
     sget-object v1, Lzhao/zizzy/bridgex/BridgeX;->DEFAULT_TAG:Ljava/lang/String;
 
     new-instance v2, Ljava/lang/StringBuilder;
@@ -189,7 +189,7 @@
 
     invoke-static {v1, v2}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 99
+    .line 101
     :cond_2
     new-instance v1, Ljava/io/File;
 
@@ -406,21 +406,46 @@
 
     move-result-object v6
 
-    const-string v7, "package"
+    const-string v7, "start_index"
 
     .line 61
-    invoke-virtual {v6, v7}, Lorg/json/JSONObject;->optString(Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v6, v7}, Lorg/json/JSONObject;->optInt(Ljava/lang/String;)I
 
-    move-result-object v6
+    move-result v6
 
     .line 60
-    invoke-virtual {v5, v6}, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->stackPackage(Ljava/lang/String;)Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
+    invoke-virtual {v5, v6}, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->startIndex(I)Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
 
     move-result-object v5
 
     const-string v6, "logger"
 
     .line 62
+    invoke-virtual {v4, v6}, Lorg/json/JSONObject;->optJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
+
+    move-result-object v6
+
+    const-string v7, "stack_package"
+
+    invoke-virtual {v6, v7}, Lorg/json/JSONObject;->optJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
+
+    move-result-object v6
+
+    const-string v7, "package"
+
+    .line 63
+    invoke-virtual {v6, v7}, Lorg/json/JSONObject;->optString(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v6
+
+    .line 62
+    invoke-virtual {v5, v6}, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->stackPackage(Ljava/lang/String;)Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
+
+    move-result-object v5
+
+    const-string v6, "logger"
+
+    .line 64
     invoke-virtual {v4, v6}, Lorg/json/JSONObject;->optJSONObject(Ljava/lang/String;)Lorg/json/JSONObject;
 
     move-result-object v6
@@ -435,7 +460,7 @@
 
     move-result-object v5
 
-    .line 63
+    .line 65
     invoke-virtual {v5}, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->build()Lzhao/zizzy/bridgex/Logger;
 
     move-result-object v5
@@ -444,13 +469,13 @@
     :try_end_1
     .catchall {:try_start_1 .. :try_end_1} :catchall_0
 
-    .line 67
+    .line 69
     .end local v2    # "size":I
     .end local v3    # "buffer":[B
     .end local v4    # "json":Lorg/json/JSONObject;
     if-eqz v1, :cond_1
 
-    .line 69
+    .line 71
     :try_start_2
     invoke-virtual {v1}, Ljava/io/InputStream;->close()V
     :try_end_2
@@ -459,11 +484,11 @@
 
     goto :goto_0
 
-    .line 64
+    .line 66
     :catchall_0
     move-exception v2
 
-    .line 65
+    .line 67
     .local v2, "th":Ljava/lang/Throwable;
     :try_start_3
     sget-object v3, Lzhao/zizzy/bridgex/BridgeX;->DEFAULT_TAG:Ljava/lang/String;
@@ -474,50 +499,50 @@
     :try_end_3
     .catchall {:try_start_3 .. :try_end_3} :catchall_1
 
-    .line 67
+    .line 69
     nop
 
     .end local v2    # "th":Ljava/lang/Throwable;
     if-eqz v1, :cond_1
 
-    .line 69
+    .line 71
     :try_start_4
     invoke-virtual {v1}, Ljava/io/InputStream;->close()V
     :try_end_4
     .catch Ljava/io/IOException; {:try_start_4 .. :try_end_4} :catch_0
     .catchall {:try_start_4 .. :try_end_4} :catchall_2
 
-    .line 71
+    .line 73
     :goto_0
     goto :goto_2
 
-    .line 70
+    .line 72
     :catch_0
     move-exception v2
 
     goto :goto_0
 
-    .line 67
+    .line 69
     :catchall_1
     move-exception v2
 
     if-eqz v1, :cond_0
 
-    .line 69
+    .line 71
     :try_start_5
     invoke-virtual {v1}, Ljava/io/InputStream;->close()V
     :try_end_5
     .catch Ljava/io/IOException; {:try_start_5 .. :try_end_5} :catch_1
     .catchall {:try_start_5 .. :try_end_5} :catchall_2
 
-    .line 71
+    .line 73
     goto :goto_1
 
-    .line 70
+    .line 72
     :catch_1
     move-exception v3
 
-    .line 71
+    .line 73
     :cond_0
     :goto_1
     nop
@@ -526,7 +551,7 @@
     :try_start_6
     throw v2
 
-    .line 75
+    .line 77
     .end local v1    # "is":Ljava/io/InputStream;
     .restart local p0    # "context":Landroid/content/Context;
     :cond_1
@@ -544,7 +569,7 @@
 
     throw v1
 
-    .line 77
+    .line 79
     :cond_2
     :goto_3
     return-void
@@ -555,7 +580,7 @@
     .param p0, "fileName"    # Ljava/lang/String;
     .param p1, "content"    # Ljava/lang/Object;
 
-    .line 110
+    .line 112
     const-string v0, "."
 
     invoke-virtual {p0, v0}, Ljava/lang/String;->indexOf(Ljava/lang/String;)I
@@ -566,14 +591,14 @@
 
     if-eq v1, v2, :cond_0
 
-    .line 111
+    .line 113
     const-string v1, "\\."
 
     invoke-virtual {p0, v1}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
 
     move-result-object v1
 
-    .line 112
+    .line 114
     .local v1, "splited":[Ljava/lang/String;
     new-instance v2, Ljava/lang/StringBuilder;
 
@@ -607,7 +632,7 @@
 
     move-result-object p0
 
-    .line 115
+    .line 117
     .end local v1    # "splited":[Ljava/lang/String;
     :cond_0
     new-instance v0, Ljava/io/File;
@@ -618,7 +643,7 @@
 
     invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    .line 116
+    .line 118
     .local v0, "fileDir":Ljava/io/File;
     invoke-static {v0}, Lzhao/zizzy/bridgex/BridgeX;->ensureCreated(Ljava/io/File;)Z
 
@@ -626,10 +651,10 @@
 
     if-nez v1, :cond_1
 
-    .line 117
+    .line 119
     return-void
 
-    .line 120
+    .line 122
     :cond_1
     new-instance v1, Ljava/io/File;
 
@@ -639,13 +664,13 @@
 
     move-result-object v1
 
-    .line 121
+    .line 123
     .local v1, "fp":Ljava/lang/String;
     sget-boolean v2, Lzhao/zizzy/bridgex/BridgeX;->DEBUGGABLE:Z
 
     if-eqz v2, :cond_2
 
-    .line 122
+    .line 124
     sget-object v2, Lzhao/zizzy/bridgex/BridgeX;->DEFAULT_TAG:Ljava/lang/String;
 
     new-instance v3, Ljava/lang/StringBuilder;
@@ -664,11 +689,11 @@
 
     invoke-static {v2, v3}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 125
+    .line 127
     :cond_2
     const/4 v2, 0x0
 
-    .line 127
+    .line 129
     .local v2, "out":Ljava/io/BufferedWriter;
     :try_start_0
     new-instance v3, Ljava/io/BufferedWriter;
@@ -687,7 +712,7 @@
 
     move-object v2, v3
 
-    .line 128
+    .line 130
     invoke-virtual {p1}, Ljava/lang/Object;->toString()Ljava/lang/String;
 
     move-result-object v3
@@ -696,38 +721,38 @@
     :try_end_0
     .catchall {:try_start_0 .. :try_end_0} :catchall_0
 
-    .line 131
+    .line 133
     nop
 
-    .line 133
+    .line 135
     :try_start_1
     invoke-virtual {v2}, Ljava/io/BufferedWriter;->close()V
 
-    .line 135
+    .line 137
     :goto_0
     goto :goto_1
 
-    .line 134
+    .line 136
     :catch_0
     move-exception v3
 
     goto :goto_0
 
-    .line 129
+    .line 131
     :catchall_0
     move-exception v3
 
-    .line 131
+    .line 133
     if-eqz v2, :cond_3
 
-    .line 133
+    .line 135
     invoke-virtual {v2}, Ljava/io/BufferedWriter;->close()V
     :try_end_1
     .catch Ljava/io/IOException; {:try_start_1 .. :try_end_1} :catch_0
 
     goto :goto_0
 
-    .line 138
+    .line 140
     :cond_3
     :goto_1
     return-void
