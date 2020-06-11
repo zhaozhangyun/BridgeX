@@ -1,10 +1,14 @@
 package zhao.zizzy.bridgex;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.DeadSystemException;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.core.content.ContextCompat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +37,6 @@ public class Logger {
         DEBUG = false;
     }
 
-    private Context context;
     private AtomicInteger atomI;
     private String defaultTag;
     private boolean debuggable;
@@ -47,7 +50,6 @@ public class Logger {
     private Map<String, String> fileCache;
 
     Logger(LoggerBuilder builder) {
-        context = builder.context;
         defaultTag = builder.tag;
         debuggable = builder.debuggable;
         showAllStack = builder.showAllStack;
@@ -219,7 +221,8 @@ public class Logger {
                     jsonFilePath = exportJson(source);
                 }
                 source = format(source);
-            } catch (JSONException e) {
+            } catch (Throwable t) {
+                t.printStackTrace();
             }
         }
 
@@ -582,11 +585,20 @@ public class Logger {
         }
 
         LoggerBuilder exportJson(boolean exportJson) {
-            this.exportJson = exportJson;
+            int permission1 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int permission2 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (permission1 != PackageManager.PERMISSION_GRANTED ||
+                    permission2 != PackageManager.PERMISSION_GRANTED) {
+                return this;
+            }
 
             if (externalDir == null) {
-                throw new IllegalStateException("You must call externalDir method first!");
+                return this;
             }
+
+            this.exportJson = exportJson;
 
             File jsonDir = new File(externalDir, "json");
             ensureCreated(jsonDir);
@@ -599,6 +611,14 @@ public class Logger {
         LoggerBuilder externalDir(String dir) {
             if (TextUtils.isEmpty(dir)) {
                 dir = EXT_DIR_NAME;
+            }
+            int permission1 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int permission2 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (permission1 != PackageManager.PERMISSION_GRANTED ||
+                    permission2 != PackageManager.PERMISSION_GRANTED) {
+                return this;
             }
             this.externalDir = this.context.getExternalFilesDir(dir);
             ensureCreated(externalDir);

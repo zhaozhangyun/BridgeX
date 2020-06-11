@@ -11,5 +11,5 @@
     "export_json": true
   },
   "debuggable": true,
-  "external_dir": ""
+  "external_dir": "bridgex"
 }
