@@ -209,16 +209,23 @@ public class Logger {
         }
 
         if (source != null) {
+            // check json
+            WeakReference wr = null;
             try {
-                // check json
-                new WeakReference<>(new JSONObject(source.toString()));
+                wr = new WeakReference<>(new JSONObject(source.toString()));
+            } catch (Throwable th1) {
+                try {
+                    wr = new WeakReference<>(new JSONArray(source.toString()));
+                } catch (Throwable th2) {
+                }
+            }
+
+            if (wr != null) {
                 source = formatJson(source);
                 if (exportJson) {
                     jsonFilePath = exportJson(source);
                 }
                 source = format(source);
-            } catch (Throwable t) {
-                t.printStackTrace();
             }
         }
 
