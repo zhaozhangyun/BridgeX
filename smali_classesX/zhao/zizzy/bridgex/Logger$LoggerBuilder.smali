@@ -47,17 +47,17 @@
     .locals 1
     .param p1, "context"    # Landroid/content/Context;
 
-    .line 540
+    .line 536
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 541
+    .line 537
     invoke-virtual {p1}, Landroid/content/Context;->getApplicationContext()Landroid/content/Context;
 
     move-result-object v0
 
     iput-object v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->context:Landroid/content/Context;
 
-    .line 542
+    .line 538
     const-class v0, Lzhao/zizzy/bridgex/Logger;
 
     invoke-virtual {v0}, Ljava/lang/Class;->getSimpleName()Ljava/lang/String;
@@ -66,12 +66,12 @@
 
     iput-object v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->tag:Ljava/lang/String;
 
-    .line 543
+    .line 539
     const/16 v0, 0x10
 
     iput v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->maxLogStackIndex:I
 
-    .line 544
+    .line 540
     return-void
 .end method
 
@@ -79,7 +79,7 @@
     .locals 1
     .param p0, "x0"    # Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
 
-    .line 525
+    .line 521
     iget-object v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->tag:Ljava/lang/String;
 
     return-object v0
@@ -89,7 +89,7 @@
     .locals 1
     .param p0, "x0"    # Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
 
-    .line 525
+    .line 521
     iget-boolean v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->debuggable:Z
 
     return v0
@@ -99,7 +99,7 @@
     .locals 1
     .param p0, "x0"    # Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
 
-    .line 525
+    .line 521
     iget-boolean v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->showAllStack:Z
 
     return v0
@@ -109,7 +109,7 @@
     .locals 1
     .param p0, "x0"    # Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
 
-    .line 525
+    .line 521
     iget v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->maxLogStackIndex:I
 
     return v0
@@ -119,7 +119,7 @@
     .locals 1
     .param p0, "x0"    # Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
 
-    .line 525
+    .line 521
     iget-boolean v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->enableStackPackage:Z
 
     return v0
@@ -129,7 +129,7 @@
     .locals 1
     .param p0, "x0"    # Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
 
-    .line 525
+    .line 521
     iget v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->startIndex:I
 
     return v0
@@ -139,7 +139,7 @@
     .locals 1
     .param p0, "x0"    # Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
 
-    .line 525
+    .line 521
     iget-object v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->stackPackage:Ljava/lang/String;
 
     return-object v0
@@ -149,7 +149,7 @@
     .locals 1
     .param p0, "x0"    # Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
 
-    .line 525
+    .line 521
     iget-boolean v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->exportJson:Z
 
     return v0
@@ -159,7 +159,7 @@
     .locals 1
     .param p0, "x0"    # Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
 
-    .line 525
+    .line 521
     iget-object v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->exportJsonDir:Ljava/io/File;
 
     return-object v0
@@ -189,10 +189,10 @@
     .locals 0
     .param p1, "debuggable"    # Z
 
-    .line 547
+    .line 543
     iput-boolean p1, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->debuggable:Z
 
-    .line 548
+    .line 544
     return-object p0
 .end method
 
@@ -200,10 +200,10 @@
     .locals 0
     .param p1, "tag"    # Ljava/lang/String;
 
-    .line 552
+    .line 548
     iput-object p1, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->tag:Ljava/lang/String;
 
-    .line 553
+    .line 549
     return-object p0
 .end method
 
@@ -211,203 +211,147 @@
     .locals 0
     .param p1, "enableStackPackage"    # Z
 
-    .line 567
+    .line 563
     iput-boolean p1, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->enableStackPackage:Z
 
-    .line 568
+    .line 564
     return-object p0
 .end method
 
 .method exportJson(Z)Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
-    .locals 6
+    .locals 4
     .param p1, "exportJson"    # Z
 
-    .line 588
-    iget-object v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->context:Landroid/content/Context;
+    .line 593
+    iget-object v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->externalDir:Ljava/io/File;
 
-    invoke-virtual {v0}, Landroid/content/Context;->getApplicationContext()Landroid/content/Context;
+    if-eqz v0, :cond_1
 
-    move-result-object v0
-
-    const-string v1, "android.permission.WRITE_EXTERNAL_STORAGE"
-
-    invoke-static {v0, v1}, Landroidx/core/content/ContextCompat;->checkSelfPermission(Landroid/content/Context;Ljava/lang/String;)I
+    invoke-virtual {v0}, Ljava/io/File;->exists()Z
 
     move-result v0
 
-    .line 590
-    .local v0, "permission1":I
-    iget-object v1, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->context:Landroid/content/Context;
-
-    invoke-virtual {v1}, Landroid/content/Context;->getApplicationContext()Landroid/content/Context;
-
-    move-result-object v1
-
-    const-string v2, "android.permission.READ_EXTERNAL_STORAGE"
-
-    invoke-static {v1, v2}, Landroidx/core/content/ContextCompat;->checkSelfPermission(Landroid/content/Context;Ljava/lang/String;)I
-
-    move-result v1
-
-    .line 592
-    .local v1, "permission2":I
-    if-nez v0, :cond_2
-
-    if-eqz v1, :cond_0
+    if-nez v0, :cond_0
 
     goto :goto_0
 
     .line 597
     :cond_0
-    iget-object v2, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->externalDir:Ljava/io/File;
-
-    if-nez v2, :cond_1
-
-    .line 598
-    return-object p0
-
-    .line 601
-    :cond_1
     iput-boolean p1, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->exportJson:Z
 
-    .line 603
-    new-instance v2, Ljava/io/File;
+    .line 599
+    new-instance v0, Ljava/io/File;
 
-    iget-object v3, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->externalDir:Ljava/io/File;
+    iget-object v1, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->externalDir:Ljava/io/File;
 
-    const-string v4, "json"
+    const-string v2, "json"
 
-    invoke-direct {v2, v3, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v0, v1, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    .line 604
-    .local v2, "jsonDir":Ljava/io/File;
-    invoke-static {v2}, Lzhao/zizzy/bridgex/Logger;->access$900(Ljava/io/File;)Z
+    .line 600
+    .local v0, "jsonDir":Ljava/io/File;
+    invoke-static {v0}, Lzhao/zizzy/bridgex/Logger;->access$900(Ljava/io/File;)Z
 
-    .line 605
-    new-instance v3, Ljava/io/File;
+    .line 601
+    new-instance v1, Ljava/io/File;
 
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v4
+    move-result-wide v2
 
-    invoke-static {v4, v5}, Ljava/lang/String;->valueOf(J)Ljava/lang/String;
+    invoke-static {v2, v3}, Ljava/lang/String;->valueOf(J)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v2
 
-    invoke-static {v4}, Lzhao/zizzy/bridgex/Md5Util;->getMd5(Ljava/lang/String;)Ljava/lang/String;
+    invoke-static {v2}, Lzhao/zizzy/bridgex/Md5Util;->getMd5(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v2
 
-    invoke-direct {v3, v2, v4}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
+    invoke-direct {v1, v0, v2}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
 
-    iput-object v3, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->exportJsonDir:Ljava/io/File;
+    iput-object v1, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->exportJsonDir:Ljava/io/File;
 
-    .line 606
-    invoke-static {v3}, Lzhao/zizzy/bridgex/Logger;->access$900(Ljava/io/File;)Z
+    .line 602
+    invoke-static {v1}, Lzhao/zizzy/bridgex/Logger;->access$900(Ljava/io/File;)Z
 
-    .line 607
-    iget-object v3, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->tag:Ljava/lang/String;
+    .line 603
+    iget-object v1, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->tag:Ljava/lang/String;
 
-    new-instance v4, Ljava/lang/StringBuilder;
+    new-instance v2, Ljava/lang/StringBuilder;
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v5, "==========> export json folder path: "
+    const-string v3, "==========> export json folder path: "
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    iget-object v5, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->exportJsonDir:Ljava/io/File;
+    iget-object v3, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->exportJsonDir:Ljava/io/File;
 
-    invoke-virtual {v5}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
+    invoke-virtual {v3}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
 
-    move-result-object v5
+    move-result-object v3
 
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v4
+    move-result-object v2
 
-    invoke-static {v3, v4}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v1, v2}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 608
+    .line 604
     return-object p0
 
     .line 594
-    .end local v2    # "jsonDir":Ljava/io/File;
-    :cond_2
+    .end local v0    # "jsonDir":Ljava/io/File;
+    :cond_1
     :goto_0
     return-object p0
 .end method
 
 .method externalDir(Ljava/lang/String;)Lzhao/zizzy/bridgex/Logger$LoggerBuilder;
-    .locals 3
+    .locals 1
     .param p1, "dir"    # Ljava/lang/String;
 
-    .line 612
+    .line 608
     invoke-static {p1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v0
 
     if-eqz v0, :cond_0
 
-    .line 613
+    .line 609
     const-string p1, "bridgex"
 
-    .line 615
+    .line 620
     :cond_0
+    :try_start_0
     iget-object v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->context:Landroid/content/Context;
 
-    invoke-virtual {v0}, Landroid/content/Context;->getApplicationContext()Landroid/content/Context;
+    invoke-virtual {v0, p1}, Landroid/content/Context;->getExternalFilesDir(Ljava/lang/String;)Ljava/io/File;
 
     move-result-object v0
 
-    const-string v1, "android.permission.WRITE_EXTERNAL_STORAGE"
-
-    invoke-static {v0, v1}, Landroidx/core/content/ContextCompat;->checkSelfPermission(Landroid/content/Context;Ljava/lang/String;)I
-
-    move-result v0
-
-    .line 617
-    .local v0, "permission1":I
-    iget-object v1, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->context:Landroid/content/Context;
-
-    invoke-virtual {v1}, Landroid/content/Context;->getApplicationContext()Landroid/content/Context;
-
-    move-result-object v1
-
-    const-string v2, "android.permission.READ_EXTERNAL_STORAGE"
-
-    invoke-static {v1, v2}, Landroidx/core/content/ContextCompat;->checkSelfPermission(Landroid/content/Context;Ljava/lang/String;)I
-
-    move-result v1
-
-    .line 619
-    .local v1, "permission2":I
-    if-nez v0, :cond_2
-
-    if-eqz v1, :cond_1
-
-    goto :goto_0
-
-    .line 623
-    :cond_1
-    iget-object v2, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->context:Landroid/content/Context;
-
-    invoke-virtual {v2, p1}, Landroid/content/Context;->getExternalFilesDir(Ljava/lang/String;)Ljava/io/File;
-
-    move-result-object v2
-
-    iput-object v2, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->externalDir:Ljava/io/File;
-
-    .line 624
-    invoke-static {v2}, Lzhao/zizzy/bridgex/Logger;->access$900(Ljava/io/File;)Z
-
-    .line 625
-    return-object p0
+    iput-object v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->externalDir:Ljava/io/File;
 
     .line 621
-    :cond_2
+    invoke-static {v0}, Lzhao/zizzy/bridgex/Logger;->access$900(Ljava/io/File;)Z
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+
+    .line 624
+    goto :goto_0
+
+    .line 622
+    :catchall_0
+    move-exception v0
+
+    .line 623
+    .local v0, "th":Ljava/lang/Throwable;
+    invoke-virtual {v0}, Ljava/lang/Throwable;->printStackTrace()V
+
+    .line 625
+    .end local v0    # "th":Ljava/lang/Throwable;
     :goto_0
     return-object p0
 .end method
@@ -416,10 +360,10 @@
     .locals 0
     .param p1, "maxLogStackIndex"    # I
 
-    .line 562
+    .line 558
     iput p1, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->maxLogStackIndex:I
 
-    .line 563
+    .line 559
     return-object p0
 .end method
 
@@ -427,10 +371,10 @@
     .locals 0
     .param p1, "showAllStack"    # Z
 
-    .line 557
+    .line 553
     iput-boolean p1, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->showAllStack:Z
 
-    .line 558
+    .line 554
     return-object p0
 .end method
 
@@ -438,25 +382,25 @@
     .locals 1
     .param p1, "stackPackage"    # Ljava/lang/String;
 
-    .line 580
+    .line 576
     invoke-static {p1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
     move-result v0
 
     if-eqz v0, :cond_0
 
-    .line 581
+    .line 577
     iget-object v0, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->context:Landroid/content/Context;
 
     invoke-virtual {v0}, Landroid/content/Context;->getPackageName()Ljava/lang/String;
 
     move-result-object p1
 
-    .line 583
+    .line 579
     :cond_0
     iput-object p1, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->stackPackage:Ljava/lang/String;
 
-    .line 584
+    .line 580
     return-object p0
 .end method
 
@@ -464,16 +408,16 @@
     .locals 0
     .param p1, "index"    # I
 
-    .line 572
+    .line 568
     if-gez p1, :cond_0
 
-    .line 573
+    .line 569
     const/4 p1, 0x0
 
-    .line 575
+    .line 571
     :cond_0
     iput p1, p0, Lzhao/zizzy/bridgex/Logger$LoggerBuilder;->startIndex:I
 
-    .line 576
+    .line 572
     return-object p0
 .end method

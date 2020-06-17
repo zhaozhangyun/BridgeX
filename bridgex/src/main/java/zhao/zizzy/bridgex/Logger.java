@@ -1,14 +1,10 @@
 package zhao.zizzy.bridgex;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.DeadSystemException;
 import android.text.TextUtils;
 import android.util.Log;
-
-import androidx.core.content.ContextCompat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -585,16 +581,16 @@ public class Logger {
         }
 
         LoggerBuilder exportJson(boolean exportJson) {
-            int permission1 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            int permission2 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE);
-            if (permission1 != PackageManager.PERMISSION_GRANTED ||
-                    permission2 != PackageManager.PERMISSION_GRANTED) {
-                return this;
-            }
+//            int permission1 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//            int permission2 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
+//                    Manifest.permission.READ_EXTERNAL_STORAGE);
+//            if (permission1 != PackageManager.PERMISSION_GRANTED ||
+//                    permission2 != PackageManager.PERMISSION_GRANTED) {
+//                return this;
+//            }
 
-            if (externalDir == null) {
+            if (externalDir == null || !externalDir.exists()) {
                 return this;
             }
 
@@ -612,16 +608,20 @@ public class Logger {
             if (TextUtils.isEmpty(dir)) {
                 dir = EXT_DIR_NAME;
             }
-            int permission1 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            int permission2 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE);
-            if (permission1 != PackageManager.PERMISSION_GRANTED ||
-                    permission2 != PackageManager.PERMISSION_GRANTED) {
-                return this;
+//            int permission1 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//            int permission2 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
+//                    Manifest.permission.READ_EXTERNAL_STORAGE);
+//            if (permission1 != PackageManager.PERMISSION_GRANTED ||
+//                    permission2 != PackageManager.PERMISSION_GRANTED) {
+//                return this;
+//            }
+            try {
+                this.externalDir = this.context.getExternalFilesDir(dir);
+                ensureCreated(externalDir);
+            } catch (Throwable th) {
+                th.printStackTrace();
             }
-            this.externalDir = this.context.getExternalFilesDir(dir);
-            ensureCreated(externalDir);
             return this;
         }
 
