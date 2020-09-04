@@ -2,7 +2,12 @@ package com.z.zz.zzz.BridgeX;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        checkAPP(this);
 
         LogBridge.inject(new LoggerImpl());
 
@@ -62,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-
 //        try {
 //            is = getResources().getAssets().open("package_pattern.json");
 //            int size = is.available();
@@ -95,5 +101,18 @@ public class MainActivity extends AppCompatActivity {
         Logger.log();
         Logger.log(fuck);
         Logger.log("sick", fuck);
+    }
+
+    private void checkAPP(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), PackageManager.GET_SIGNATURES);
+            Signature[] signs = packageInfo.signatures;
+            Signature sign = signs[0];
+            int hashcode = sign.hashCode();
+            Log.i("test", "hashCode : " + hashcode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
