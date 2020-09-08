@@ -1,11 +1,13 @@
 package zhao.zizzy.bridgex;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Build;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.lang.reflect.Constructor;
@@ -17,12 +19,7 @@ import java.util.Arrays;
 
 public class Reflactor {
 
-    /**
-     * @param signText hex-encoded string representing the signature
-     *                 {@link Signature#toCharsString()}
-     *                 Signatures are expected to be a hex-encoded ASCII string.
-     */
-    public static void hookPMS(Context context, String signText) {
+    public static void hookPMS(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             HiddenApiUtil.exemptAll();
         }
@@ -40,11 +37,18 @@ public class Reflactor {
                     currentActivityThread,
                     "sPackageManager");
 
+            /**
+             * signature-hook-mode: 0 text 1 hashcode
+             */
+            int signMode = getMateDate(context, "bridgex.signature-hook-mode");
+            String signText = getMateDate(context, "bridgex.signature-hook-text");
+            int signHashCode = getMateDate(context, "bridgex.signature-hook-hashcode");
+
             // 准备好代理对象, 用来替换原始的对象
             Class<?> iPackageManagerInterface = Class.forName("android.content.pm.IPackageManager");
             Object proxy = Proxy.newProxyInstance(iPackageManagerInterface.getClassLoader(),
                     new Class<?>[]{iPackageManagerInterface},
-                    new HookHandler(sPackageManager, context.getPackageName(), signText));
+                    new HookHandler(sPackageManager, context.getPackageName(), signMode, signText, signHashCode));
 
             // 1. 替换掉ActivityThread里面的 sPackageManager 字段
             setFieldObject(
@@ -179,12 +183,23 @@ public class Reflactor {
         private static final String TAG = "HookHandler";
         private Object base;
         private String packageName;
+        private int signMode;
         private String signText;
+        private int signHashcode;
 
-        HookHandler(Object base, String packageName, String signText) {
+        /**
+         * @param signText hex-encoded string representing the signature
+         *                 {@link Signature#toCharsString()}
+         *                 Signatures are expected to be a hex-encoded ASCII string.
+         */
+        HookHandler(Object base, String packageName, int signMode, String signText, int signHashcode) {
             this.base = base;
             this.packageName = packageName;
+            this.signMode = signMode;
             this.signText = signText;
+            this.signHashcode = signHashcode;
+            Log.i(TAG, "HookHandler<init>: packageName=" + packageName + ", signMode=" + signMode
+                    + ", signText=" + signText + ", signHashcode=" + signHashcode);
         }
 
         @Override
@@ -193,27 +208,62 @@ public class Reflactor {
             if ("getPackageInfo".equals(method.getName())) {
                 String pkg = (String) args[0];
                 int flag = (int) args[1];
-                if (pkg.equals(packageName) && flag == PackageManager.GET_SIGNATURES) {
-                    Log.i(TAG, "!!!! Bingooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
-                    Signature signature = new Signature(signText);
-                    Log.i(TAG, "The signature hashcode is " + signature.hashCode());
 
-//                    Class<?> clazz = signature.getClass();
-//                    Field mHaveHashCodeF = clazz.getDeclaredField("mHaveHashCode");
-//                    mHaveHashCodeF.setAccessible(true);
-//                    mHaveHashCodeF.set(signature, true);
-//
-//                    Field mHashCodeF = clazz.getDeclaredField("mHashCode");
-//                    mHashCodeF.setAccessible(true);
-//                    mHashCodeF.set(signature, signHash);
+                PackageInfo info = (PackageInfo) method.invoke(base, args);
+                if (info != null) {
+                    if (pkg.equals(packageName) && flag == PackageManager.GET_SIGNATURES) {
+                        Log.i(TAG, "!!!! Bingooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+                        Signature signature;
 
-                    PackageInfo info = (PackageInfo) method.invoke(base, args);
-                    info.signatures[0] = signature;
+                        switch (signMode) {
+                            case 0:
+                                if (TextUtils.isEmpty(signText)) {
+                                    throw new IllegalArgumentException("Oops!!! The signature text is empty.");
+                                }
+                                signature = new Signature(signText);
+                                Log.i(TAG, "The hooked signature hashcode is " + signature.hashCode());
+                                info.signatures[0] = signature;
+                                break;
+                            case 1:
+                                signature = info.signatures[0];
+                                Log.i(TAG, "The origin signature hashcode is " + signature.hashCode());
+                                Class<?> clazz = signature.getClass();
+                                Field mHaveHashCodeF = clazz.getDeclaredField("mHaveHashCode");
+                                mHaveHashCodeF.setAccessible(true);
+                                mHaveHashCodeF.set(signature, true);
+
+                                Field mHashCodeF = clazz.getDeclaredField("mHashCode");
+                                mHashCodeF.setAccessible(true);
+                                mHashCodeF.set(signature, signHashcode);
+                                break;
+                            default:
+                                throw new IllegalArgumentException("Invalid signature mode: " + signMode);
+                        }
+                    }
                     return info;
                 }
             }
             return method.invoke(base, args);
         }
+    }
+
+    private static <T> T getMateDate(Context context, String metadata) {
+        T result;
+
+        try {
+            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(
+                    context.getPackageName(), PackageManager.GET_META_DATA);
+            if (applicationInfo == null
+                    || !applicationInfo.metaData.containsKey(metadata)
+                    || (result = (T) applicationInfo.metaData.get(metadata)) == null) {
+                return null;
+            }
+            return result;
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
+
+        return null;
     }
 
     static class HiddenApiUtil {
