@@ -11,5 +11,7 @@
     "export_json": true
   },
   "debuggable": true,
+  "is_hook_pms_enabled": true,
+  "is_stetho_enabled": true,
   "external_dir": "bridgex"
 }

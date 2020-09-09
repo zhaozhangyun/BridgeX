@@ -3,6 +3,8 @@ package zhao.zizzy.bridgex;
 import android.content.Context;
 import android.util.Log;
 
+import com.facebook.stetho.Stetho;
+
 import org.json.JSONObject;
 
 import java.io.BufferedWriter;
@@ -35,7 +37,11 @@ public class BridgeX {
         }
     }
 
-    public static void init(Context context) {
+    public static void attach(Context context) {
+        init(context);
+    }
+
+    private static void init(Context context) {
         sContext = context;
         if (logger == null) {
             synchronized (lock) {
@@ -63,6 +69,20 @@ public class BridgeX {
                                         .optString("package"))
                                 .exportJson(json.optJSONObject("logger").optBoolean("export_json"))
                                 .build();
+                        if (json.optBoolean("is_hook_pms_enabled")) {
+                            try {
+                                Reflactor.hookPMS(context.getApplicationContext());
+                            } catch (Throwable th) {
+                                th.printStackTrace();
+                            }
+                        }
+                        if (json.optBoolean("is_stetho_enabled")) {
+                            try {
+                                Stetho.initializeWithDefaults(context.getApplicationContext());
+                            } catch (Throwable th) {
+                                th.printStackTrace();
+                            }
+                        }
                     } catch (Throwable th) {
                         Log.e(DEFAULT_TAG, "parse bridgex_conf.json error", th);
                     } finally {

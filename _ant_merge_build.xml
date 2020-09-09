@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project
+    name="bridgex-core"
+    basedir="/mnt/f/Android/BridgeX/bridgex/libs"
+    default="makeSuperJar" >
+ 
+    <target
+        name="makeSuperJar"
+        description="description" >
+ 
+        <jar destfile="bridgex-core.jar" >
+        <zipfileset src="jetified-stetho-1.5.1.jar" />
+        <zipfileset src="jetified-stetho-js-rhino-1.5.1.jar" />
+        <zipfileset src="jetified-stetho-okhttp-1.5.1.jar"/>
+        <zipfileset src="jetified-stetho-okhttp3-1.5.1.jar" />
+        <zipfileset src="jetified-stetho-urlconnection-1.5.1.jar" />
+        <zipfileset src="commons-cli-1.2.jar" />
+        <zipfileset src="classes.jar" />
+        </jar>
+    </target>
+ 
+</project>

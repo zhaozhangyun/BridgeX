@@ -1,7 +1,6 @@
 package com.z.zz.zzz.BridgeX;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -9,7 +8,6 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.util.Log;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -19,7 +17,7 @@ import zhao.zizzy.bridgex.BridgeX;
 import zhao.zizzy.bridgex.LogBridge;
 import zhao.zizzy.bridgex.Logger;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         LogBridge.inject(new LoggerImpl());
 
-        BridgeX.init(this);
+        BridgeX.attach(this);
 
         Logger.log();
         Logger.log("hello, world");
