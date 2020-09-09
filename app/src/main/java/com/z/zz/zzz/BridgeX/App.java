@@ -3,6 +3,8 @@ package com.z.zz.zzz.BridgeX;
 import android.app.Application;
 import android.content.Context;
 
+import zhao.zizzy.bridgex.BridgeX;
+
 public class App extends Application {
 
     @Override
@@ -14,10 +16,12 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        try {
-            System.loadLibrary("bridgex-core");
-        } catch (Throwable th) {
-            th.printStackTrace();
-        }
+//        try {
+//            System.loadLibrary("bridgex-core");
+//        } catch (Throwable th) {
+//            th.printStackTrace();
+//        }
+
+        BridgeX.attach(this);
     }
 }
