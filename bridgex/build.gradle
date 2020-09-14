@@ -25,9 +25,9 @@ android {
 dependencies {
 //    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.facebook.stetho:stetho:+'
-    implementation 'com.facebook.stetho:stetho-okhttp3:+'//okhttp3.0以上使用
-    implementation 'com.facebook.stetho:stetho-okhttp:+'
-    implementation 'com.facebook.stetho:stetho-urlconnection:+'
-    implementation 'com.facebook.stetho:stetho-js-rhino:+'
+    compileOnly 'com.facebook.stetho:stetho:+'
+    compileOnly 'com.facebook.stetho:stetho-okhttp3:+'//okhttp3.0以上使用
+    compileOnly 'com.facebook.stetho:stetho-okhttp:+'
+    compileOnly 'com.facebook.stetho:stetho-urlconnection:+'
+    compileOnly 'com.facebook.stetho:stetho-js-rhino:+'
 }

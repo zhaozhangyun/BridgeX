@@ -3,8 +3,6 @@ package zhao.zizzy.bridgex;
 import android.content.Context;
 import android.util.Log;
 
-import com.facebook.stetho.Stetho;
-
 import org.json.JSONObject;
 
 import java.io.BufferedWriter;
@@ -13,6 +11,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+
+import zhao.zizzy.bridgex.multidex.AssetsMultiDex;
 
 public class BridgeX {
 
@@ -42,7 +42,14 @@ public class BridgeX {
     }
 
     private static void init(Context context) {
-        sContext = context;
+        sContext = context.getApplicationContext();
+
+        try {
+            AssetsMultiDex.install(sContext, "bridgex-dex");
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
+
         if (logger == null) {
             synchronized (lock) {
                 if (logger == null) {
@@ -78,7 +85,7 @@ public class BridgeX {
                         }
                         if (json.optBoolean("is_stetho_enabled")) {
                             try {
-                                Stetho.initializeWithDefaults(context.getApplicationContext());
+                                StethoHelper.initializeStetho(sContext);
                             } catch (Throwable th) {
                                 th.printStackTrace();
                             }
