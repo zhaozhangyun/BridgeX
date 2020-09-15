@@ -1,4 +1,4 @@
-package zhao.zizzy.bridgex.multidex;
+package zizzy.zhao.bridgex.multidex;
 
 import android.content.Context;
 import android.text.TextUtils;

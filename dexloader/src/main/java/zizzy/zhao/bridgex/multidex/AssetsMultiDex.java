@@ -1,9 +1,8 @@
-package zhao.zizzy.bridgex.multidex;
+package zizzy.zhao.bridgex.multidex;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.util.Log;
 

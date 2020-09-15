@@ -1,4 +1,4 @@
-package zhao.zizzy.bridgex;
+package zizzy.zhao.bridgex.core;
 
 import android.text.TextUtils;
 import android.util.Log;

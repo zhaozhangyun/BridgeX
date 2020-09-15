@@ -3,7 +3,8 @@ package com.z.zz.zzz.BridgeX;
 import android.app.Application;
 import android.content.Context;
 
-import zhao.zizzy.bridgex.BridgeX;
+import zizzy.zhao.bridgex.core.BridgeX;
+import zizzy.zhao.bridgex.multidex.AssetsMultiDex;
 
 public class App extends Application {
 
@@ -22,6 +23,11 @@ public class App extends Application {
 //            th.printStackTrace();
 //        }
 
+        try {
+            AssetsMultiDex.install(this, "bridgex-dex");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         BridgeX.attach(this);
     }
 }

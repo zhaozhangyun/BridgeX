@@ -2,7 +2,7 @@ package com.z.zz.zzz.BridgeX;
 
 import android.util.Log;
 
-import zhao.zizzy.bridgex.LogBridge;
+import zizzy.zhao.bridgex.core.LogBridge;
 
 public class LoggerImpl implements LogBridge.ILogger {
 

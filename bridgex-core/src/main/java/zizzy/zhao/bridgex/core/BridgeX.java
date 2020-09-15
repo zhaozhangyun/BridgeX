@@ -1,4 +1,4 @@
-package zhao.zizzy.bridgex;
+package zizzy.zhao.bridgex.core;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,8 +11,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-
-import zhao.zizzy.bridgex.multidex.AssetsMultiDex;
 
 public class BridgeX {
 
@@ -43,12 +41,6 @@ public class BridgeX {
 
     private static void init(Context context) {
         sContext = context.getApplicationContext();
-
-        try {
-            AssetsMultiDex.install(sContext, "bridgex-dex");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         if (logger == null) {
             synchronized (lock) {

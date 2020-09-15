@@ -1,4 +1,4 @@
-package zhao.zizzy.bridgex;
+package zizzy.zhao.bridgex.core;
 
 import java.io.PrintWriter;
 import java.io.Writer;

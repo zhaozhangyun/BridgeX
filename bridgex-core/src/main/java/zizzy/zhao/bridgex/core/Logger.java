@@ -1,4 +1,4 @@
-package zhao.zizzy.bridgex;
+package zizzy.zhao.bridgex.core;
 
 import android.content.Context;
 import android.os.Build;
@@ -111,7 +111,7 @@ public class Logger {
         }
 
         instance.atomI.incrementAndGet();
-        log(null);
+        log(new Object[]{});
     }
 
     public static void log(Object source) {

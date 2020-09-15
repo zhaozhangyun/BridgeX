@@ -1,3 +1,3 @@
 include ':app'
-include ':bridgex'
+include ':bridgex-core'
 include ':dexloader'

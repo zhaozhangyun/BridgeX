@@ -13,9 +13,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 
-import zhao.zizzy.bridgex.BridgeX;
-import zhao.zizzy.bridgex.LogBridge;
-import zhao.zizzy.bridgex.Logger;
+import zizzy.zhao.bridgex.core.LogBridge;
+import zizzy.zhao.bridgex.core.Logger;
 
 public class MainActivity extends Activity {
 
