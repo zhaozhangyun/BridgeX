@@ -42,25 +42,33 @@ public class AssetsMultiDex {
     private AssetsMultiDex() {
     }
 
+    static {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            HiddenApiWrapper.exemptAll();
+        }
+    }
+
     public static void install(Context context) {
         Context ctx = context.getApplicationContext() == null ? context : context.getApplicationContext();
-        install(ctx, "bridgex-dex");
+        install(ctx, "bridgex-dex", false);
     }
 
     /**
      * 安装Assets中的apk文件
      */
-    public static void install(Context context, String assetsDexDir) {
+    public static void install(Context context, String assetsDexDir, boolean forceClearOldDexCache) {
         Log.i(TAG, "install begin ...");
         if (installed.get()) {
             Log.i(TAG, "installed");
             return;
         }
-        try {
-            clearOldDexDir(context);
-        } catch (Exception e) {
-            Log.w(TAG, "Something went wrong when trying to clear old MultiDex extraction, "
-                    + "continuing without cleaning.", e);
+        if (forceClearOldDexCache) {
+            try {
+                clearOldDexDir(context);
+            } catch (Exception e) {
+                Log.w(TAG, "Something went wrong when trying to clear old MultiDex extraction, "
+                        + "continuing without cleaning.", e);
+            }
         }
         AssetsManager.copyAllAssetsApk(context, assetsDexDir);
         Log.d(TAG, "SDK_INT: " + Build.VERSION.SDK_INT);
@@ -129,7 +137,7 @@ public class AssetsMultiDex {
                 });
                 List<File> files = new ArrayList<>();
                 for (File f : szFiles) {
-                    Log.d(TAG, "load file: " + f.getName());
+                    Log.v(TAG, "load file: " + f.getName());
                     files.add(f);
                 }
                 Log.d(TAG, "loader before: " + context.getClassLoader());
@@ -426,4 +434,44 @@ public class AssetsMultiDex {
         }
     }
 
+    static class HiddenApiWrapper {
+        private static Method sSetHiddenApiExemptions;
+        private static Object sVMRuntime;
+
+        static {
+            try {
+                Method forNameMethod = Class.class.getDeclaredMethod("forName", String.class);
+                Method getDeclaredMethodMethod = Class.class.getDeclaredMethod(
+                        "getDeclaredMethod", String.class, Class[].class);
+
+                Class vmRuntimeClass = (Class) forNameMethod.invoke(null, "dalvik.system.VMRuntime");
+                sSetHiddenApiExemptions = (Method) getDeclaredMethodMethod.invoke(vmRuntimeClass,
+                        "setHiddenApiExemptions", new Class[]{String[].class});
+                Method getVMRuntimeMethod = (Method) getDeclaredMethodMethod.invoke(vmRuntimeClass,
+                        "getRuntime", null);
+                sVMRuntime = getVMRuntimeMethod.invoke(null);
+            } catch (Throwable th) {
+                th.printStackTrace();
+            }
+        }
+
+        static boolean setExemptions(String... methods) {
+            if ((sSetHiddenApiExemptions == null) || (sVMRuntime == null)) {
+                return false;
+            }
+
+            try {
+                sSetHiddenApiExemptions.invoke(sVMRuntime, new Object[]{methods});
+                return true;
+            } catch (Throwable th) {
+                th.printStackTrace();
+                return false;
+            }
+        }
+
+        static boolean exemptAll() {
+            Log.i("HiddenApiWrapper", "Start execute exemptAll method ...");
+            return setExemptions("L");
+        }
+    }
 }
