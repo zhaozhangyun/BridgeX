@@ -42,10 +42,15 @@ public class AssetsMultiDex {
     private AssetsMultiDex() {
     }
 
+    public static void install(Context context) {
+        Context ctx = context.getApplicationContext() == null ? context : context.getApplicationContext();
+        install(ctx, "bridgex-dex");
+    }
+
     /**
      * 安装Assets中的apk文件
      */
-    public static void install(Context context, String assetsDexDir) throws Exception {
+    public static void install(Context context, String assetsDexDir) {
         Log.i(TAG, "install begin ...");
         if (installed.get()) {
             Log.i(TAG, "installed");
@@ -60,7 +65,7 @@ public class AssetsMultiDex {
         AssetsManager.copyAllAssetsApk(context, assetsDexDir);
         Log.d(TAG, "SDK_INT: " + Build.VERSION.SDK_INT);
         if (Build.VERSION.SDK_INT < MIN_SDK_VERSION) {
-            throw new Exception("Multi dex installation failed. SDK "
+            throw new RuntimeException("Multi dex installation failed. SDK "
                     + Build.VERSION.SDK_INT
                     + " is unsupported. Min SDK version is " + MIN_SDK_VERSION
                     + ".");
@@ -132,7 +137,7 @@ public class AssetsMultiDex {
                 Log.d(TAG, "loader end: " + context.getClassLoader());
             }
         } catch (Exception e) {
-            throw new Exception("Multi dex installation failed (" + e.getMessage() + ").");
+            Log.e(TAG, "Multi dex installation failed (" + e.getMessage() + ").");
         }
         installed.set(true);
         Log.i(TAG, "install done");

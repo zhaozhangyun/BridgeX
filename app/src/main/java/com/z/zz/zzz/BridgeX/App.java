@@ -11,6 +11,7 @@ public class App extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        AssetsMultiDex.install(base);
     }
 
     @Override
@@ -23,11 +24,6 @@ public class App extends Application {
 //            th.printStackTrace();
 //        }
 
-        try {
-            AssetsMultiDex.install(this, "bridgex-dex");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         BridgeX.attach(this);
     }
 }
