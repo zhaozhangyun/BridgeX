@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 /**
  * @version $Id: AssetsManager.java, v 0.1 2015年12月11日 下午4:41:10 mochuan.zhb Exp $
@@ -24,6 +25,7 @@ class AssetsManager {
     static final String APK_DIR = "secondary-dexes";
     //文件结尾过滤
     static final String FILE_FILTER = ".dex";
+    static final String DEFAULT_ASSETS_DEX_DIR = "bridgex-dex";
 
     /**
      * 将资源文件中的apk文件拷贝到私有目录中
@@ -39,7 +41,7 @@ class AssetsManager {
             if (!dex.exists()) {
                 dex.mkdirs();
             }
-            String assetsDexPath = assetsDexDir == null ? "" : assetsDexDir;
+            String assetsDexPath = TextUtils.isEmpty(assetsDexDir) ? DEFAULT_ASSETS_DEX_DIR : assetsDexDir;
             Log.v(TAG, "assetsDexPath: " + assetsDexPath);
             String[] fileNames = assetManager.list(assetsDexPath);
             for (String fileName : fileNames) {
@@ -49,18 +51,17 @@ class AssetsManager {
                 in = assetManager.open(TextUtils.isEmpty(assetsDexPath) ? fileName
                         : assetsDexPath + "/" + fileName);
                 File dexFile = new File(dex, fileName);
-                Log.v(TAG, "dexFile: " + dexFile);
                 String fileMd5 = null;
                 String streamMd5 = MD5.getFileStreamMD5(in);
                 if (dexFile.exists()) {
                     fileMd5 = MD5.getFileMD5(dexFile);
                 }
                 if (!TextUtils.isEmpty(streamMd5) && !TextUtils.isEmpty(fileMd5) && streamMd5.equals(fileMd5)) {
-                    Log.i(TAG, String.format("[%s] md5 no change", fileName));
+                    Log.v(TAG, String.format("[%s] md5 no change", fileName));
                     continue;
                 }
                 if (dexFile.exists() && !streamMd5.equals(fileMd5)) {
-                    Log.i(TAG, String.format("[%s] md5 changed to %s", fileName, streamMd5));
+                    Log.v(TAG, String.format("[%s] md5 changed to %s", fileName, streamMd5));
                 }
                 // Because of closing to the InputStream, so open assets again.
                 in = assetManager.open(TextUtils.isEmpty(assetsDexPath) ? fileName
@@ -73,7 +74,8 @@ class AssetsManager {
                 }
                 out.flush();
             }
-            Log.i(TAG, String.format("### copy dex(es) cost: %dms", (System.currentTimeMillis() - startTime)));
+            Log.i(TAG, String.format("###### install %s from assets/%s cost %dms", Arrays.toString(fileNames),
+                    assetsDexPath, (System.currentTimeMillis() - startTime)));
         } catch (Throwable th) {
             th.printStackTrace();
         } finally {

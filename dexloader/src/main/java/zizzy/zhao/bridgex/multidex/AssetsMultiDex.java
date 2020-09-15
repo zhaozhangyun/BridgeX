@@ -6,9 +6,12 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -49,28 +52,48 @@ public class AssetsMultiDex {
     }
 
     public static void install(Context context) {
-        Context ctx = context.getApplicationContext() == null ? context : context.getApplicationContext();
-        install(ctx, "bridgex-dex", false);
-    }
-
-    /**
-     * 安装Assets中的apk文件
-     */
-    public static void install(Context context, String assetsDexDir, boolean forceClearOldDexCache) {
         Log.i(TAG, "install begin ...");
         if (installed.get()) {
             Log.i(TAG, "installed");
             return;
         }
+
+        Context ctx = context.getApplicationContext() == null ? context : context.getApplicationContext();
+        String assetsDexDir = null;
+        boolean forceClearOldDexCache = false;
+        InputStream is = null;
+        try {
+            is = ctx.getResources().getAssets().open("bridgex_conf.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+
+            JSONObject json = new JSONObject(new String(buffer)).optJSONObject("multi_dex");
+            if (json == null) {
+                throw new IllegalArgumentException("Oops!!! No configuration: multi_dex.");
+            }
+            assetsDexDir = json.optString("assets_dex_dir");
+            forceClearOldDexCache = json.optBoolean("force_clear_old_dex_cache");
+        } catch (Throwable th) {
+            Log.e(TAG, "parse bridgex_conf.json error: " + th);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+
         if (forceClearOldDexCache) {
             try {
-                clearOldDexDir(context);
+                clearOldDexDir(ctx);
             } catch (Exception e) {
                 Log.w(TAG, "Something went wrong when trying to clear old MultiDex extraction, "
                         + "continuing without cleaning.", e);
             }
         }
-        AssetsManager.copyAllAssetsApk(context, assetsDexDir);
+        AssetsManager.copyAllAssetsApk(ctx, assetsDexDir);
         Log.d(TAG, "SDK_INT: " + Build.VERSION.SDK_INT);
         if (Build.VERSION.SDK_INT < MIN_SDK_VERSION) {
             throw new RuntimeException("Multi dex installation failed. SDK "
@@ -79,7 +102,7 @@ public class AssetsMultiDex {
                     + ".");
         }
         try {
-            ApplicationInfo applicationInfo = getApplicationInfo(context);
+            ApplicationInfo applicationInfo = getApplicationInfo(ctx);
             if (applicationInfo == null) {
                 // Looks like running on a test Context, so just return without
                 // patching.
@@ -110,7 +133,7 @@ public class AssetsMultiDex {
                  */
                 ClassLoader loader;
                 try {
-                    loader = context.getClassLoader();
+                    loader = ctx.getClassLoader();
                 } catch (RuntimeException e) {
                     /*
                      * Ignore those exceptions so that we don't break tests
@@ -128,7 +151,7 @@ public class AssetsMultiDex {
                             + "Skip patching.");
                 }
                 // 获取dex文件列表
-                File dexDir = context.getDir(AssetsManager.APK_DIR, Context.MODE_PRIVATE);
+                File dexDir = ctx.getDir(AssetsManager.APK_DIR, Context.MODE_PRIVATE);
                 File[] szFiles = dexDir.listFiles(new FilenameFilter() {
                     @Override
                     public boolean accept(File dir, String filename) {
@@ -140,9 +163,9 @@ public class AssetsMultiDex {
                     Log.v(TAG, "load file: " + f.getName());
                     files.add(f);
                 }
-                Log.d(TAG, "loader before: " + context.getClassLoader());
+                Log.d(TAG, "loader before: " + ctx.getClassLoader());
                 installSecondaryDexes(loader, dexDir, files);
-                Log.d(TAG, "loader end: " + context.getClassLoader());
+                Log.d(TAG, "loader end: " + ctx.getClassLoader());
             }
         } catch (Exception e) {
             Log.e(TAG, "Multi dex installation failed (" + e.getMessage() + ").");
