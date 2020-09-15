@@ -46,7 +46,7 @@ public class AssetsMultiDex {
     /**
      * 安装Assets中的apk文件
      */
-    public static void install(Context context, String assetsDexDir) {
+    public static void install(Context context, String assetsDexDir) throws Exception {
         Log.i(TAG, "install begin ...");
         if (installed.get()) {
             Log.i(TAG, "installed");
@@ -59,10 +59,9 @@ public class AssetsMultiDex {
                     + "continuing without cleaning.", e);
         }
         AssetsManager.copyAllAssetsApk(context, assetsDexDir);
-        Log.i(TAG, "install");
-        Log.i(TAG, "SDK_INT: " + Build.VERSION.SDK_INT);
+        Log.d(TAG, "SDK_INT: " + Build.VERSION.SDK_INT);
         if (Build.VERSION.SDK_INT < MIN_SDK_VERSION) {
-            throw new RuntimeException("Multi dex installation failed. SDK "
+            throw new Exception("Multi dex installation failed. SDK "
                     + Build.VERSION.SDK_INT
                     + " is unsupported. Min SDK version is " + MIN_SDK_VERSION
                     + ".");
@@ -107,16 +106,14 @@ public class AssetsMultiDex {
                      * or a android.content.ContextWrapper with a null base
                      * Context.
                      */
-                    Log.w(TAG, "Failure while trying to obtain Context class loader. "
-                            + "Must be running in test mode. Skip patching.", e);
-                    return;
+                    throw new Exception("Failure while trying to obtain Context class loader. "
+                            + "Must be running in test mode. Skip patching. " + e);
                 }
                 if (loader == null) {
                     // Note, the context class loader is null when running
                     // Robolectric tests.
-                    Log.e(TAG, "Context class loader is null. Must be running in test mode. "
+                    throw new Exception("Context class loader is null. Must be running in test mode. "
                             + "Skip patching.");
-                    return;
                 }
                 // 获取dex文件列表
                 File dexDir = context.getDir(AssetsManager.APK_DIR, Context.MODE_PRIVATE);
@@ -128,35 +125,34 @@ public class AssetsMultiDex {
                 });
                 List<File> files = new ArrayList<>();
                 for (File f : szFiles) {
-                    Log.i(TAG, "load file:" + f.getName());
+                    Log.d(TAG, "load file: " + f.getName());
                     files.add(f);
                 }
-                Log.i(TAG, "loader before:" + context.getClassLoader());
+                Log.d(TAG, "loader before: " + context.getClassLoader());
                 installSecondaryDexes(loader, dexDir, files);
-                Log.i(TAG, "loader end:" + context.getClassLoader());
+                Log.d(TAG, "loader end: " + context.getClassLoader());
             }
         } catch (Exception e) {
-            throw new RuntimeException("Multi dex installation failed (" + e.getMessage() + ").");
+            throw new Exception("Multi dex installation failed (" + e.getMessage() + ").");
         }
         installed.set(true);
         Log.i(TAG, "install done");
     }
 
-    private static ApplicationInfo getApplicationInfo(Context context) throws NameNotFoundException {
+    private static ApplicationInfo getApplicationInfo(Context context) throws Exception {
         PackageManager pm;
         String packageName;
         try {
             pm = context.getPackageManager();
             packageName = context.getPackageName();
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             /*
              * Ignore those exceptions so that we don't break tests relying on
              * Context like a android.test.mock.MockContext or a
              * android.content.ContextWrapper with a null base Context.
              */
-            Log.w(TAG, "Failure while trying to obtain ApplicationInfo from Context. "
-                    + "Must be running in test mode. Skip patching.", e);
-            return null;
+            throw new Exception("Failure while trying to obtain ApplicationInfo from Context. "
+                    + "Must be running in test mode. Skip patching. " + e);
         }
         if (pm == null || packageName == null) {
             // This is most likely a mock context, so just return without

@@ -29,7 +29,6 @@ class AssetsManager {
      * 将资源文件中的apk文件拷贝到私有目录中
      */
     static void copyAllAssetsApk(Context context, String assetsDexDir) {
-        Log.i(TAG, "call copyAllAssetsApk()");
         AssetManager assetManager = context.getAssets();
         long startTime = System.currentTimeMillis();
 
@@ -40,9 +39,8 @@ class AssetsManager {
             if (!dex.exists()) {
                 dex.mkdirs();
             }
-            Log.d(TAG, "dexPath: " + dex);
             String assetsDexPath = assetsDexDir == null ? "" : assetsDexDir;
-            Log.d(TAG, "assetsDexPath: " + assetsDexPath);
+            Log.v(TAG, "assetsDexPath: " + assetsDexPath);
             String[] fileNames = assetManager.list(assetsDexPath);
             for (String fileName : fileNames) {
                 if (!fileName.endsWith(FILE_FILTER)) {
@@ -63,7 +61,7 @@ class AssetsManager {
                     Log.i(TAG, fileName + "no change");
                     return;
                 }
-                Log.i(TAG, fileName + " chaneged");
+                Log.i(TAG, fileName + " md5 chaneged");
                 // Because of closing to the InputStream, so open assets again.
                 in = assetManager.open(TextUtils.isEmpty(assetsDexPath) ? fileName
                         : assetsDexPath + "/" + fileName);
@@ -74,7 +72,6 @@ class AssetsManager {
                     out.write(buffer, 0, read);
                 }
                 out.flush();
-                Log.i(TAG, dexFile + " copy over");
             }
             Log.i(TAG, String.format("### copy dex(es) cost: %dms", (System.currentTimeMillis() - startTime)));
         } catch (Throwable th) {

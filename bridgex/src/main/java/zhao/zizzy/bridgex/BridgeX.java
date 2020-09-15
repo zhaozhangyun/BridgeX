@@ -46,8 +46,8 @@ public class BridgeX {
 
         try {
             AssetsMultiDex.install(sContext, "bridgex-dex");
-        } catch (Throwable th) {
-            th.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         if (logger == null) {
