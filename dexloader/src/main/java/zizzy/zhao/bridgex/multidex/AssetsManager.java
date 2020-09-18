@@ -21,8 +21,6 @@ import java.util.Arrays;
 class AssetsManager {
 
     static final String TAG = "AssetsManager";
-    //从assets复制出去的apk的目标目录
-    static final String APK_DIR = "secondary-dexes";
     //文件结尾过滤
     static final String FILE_FILTER = ".dex";
     static final String DEFAULT_ASSETS_DEX_DIR = "bridgex-dex";
@@ -30,14 +28,14 @@ class AssetsManager {
     /**
      * 将资源文件中的apk文件拷贝到私有目录中
      */
-    static void copyAllAssetsApk(Context context, String assetsDexDir) {
+    static void copyAllAssetsApk(Context context, String codeCacheSecondaryFolderName, String assetsDexDir) {
         AssetManager assetManager = context.getAssets();
         long startTime = System.currentTimeMillis();
 
         InputStream in = null;
         OutputStream out = null;
         try {
-            File dex = context.getDir(APK_DIR, Context.MODE_PRIVATE);
+            File dex = context.getDir(codeCacheSecondaryFolderName, Context.MODE_PRIVATE);
             if (!dex.exists()) {
                 dex.mkdirs();
             }

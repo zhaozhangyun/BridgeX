@@ -37,6 +37,7 @@ import dalvik.system.DexFile;
 public class AssetsMultiDex {
 
     private static final String TAG = "AssetsMultiDex";
+    private static final String CODE_CACHE_SECONDARY_FOLDER_NAME = "secondary-dexes";
     private static AtomicBoolean installed = new AtomicBoolean(false);
     private static final int MAX_SUPPORTED_SDK_VERSION = 20;
     private static final int MIN_SDK_VERSION = 4;
@@ -93,7 +94,7 @@ public class AssetsMultiDex {
                         + "continuing without cleaning.", e);
             }
         }
-        AssetsManager.copyAllAssetsApk(ctx, assetsDexDir);
+        AssetsManager.copyAllAssetsApk(ctx, CODE_CACHE_SECONDARY_FOLDER_NAME, assetsDexDir);
         Log.d(TAG, "SDK_INT: " + Build.VERSION.SDK_INT);
         if (Build.VERSION.SDK_INT < MIN_SDK_VERSION) {
             throw new RuntimeException("Multi dex installation failed. SDK "
@@ -151,7 +152,7 @@ public class AssetsMultiDex {
                             + "Skip patching.");
                 }
                 // 获取dex文件列表
-                File dexDir = ctx.getDir(AssetsManager.APK_DIR, Context.MODE_PRIVATE);
+                File dexDir = ctx.getDir(CODE_CACHE_SECONDARY_FOLDER_NAME, Context.MODE_PRIVATE);
                 File[] szFiles = dexDir.listFiles(new FilenameFilter() {
                     @Override
                     public boolean accept(File dir, String filename) {
@@ -288,7 +289,7 @@ public class AssetsMultiDex {
 
     private static void clearOldDexDir(Context context) throws Exception {
         try {
-            File dexDir = context.getDir(AssetsManager.APK_DIR, Context.MODE_PRIVATE);
+            File dexDir = context.getDir(CODE_CACHE_SECONDARY_FOLDER_NAME, Context.MODE_PRIVATE);
             if (dexDir.isDirectory()) {
                 Log.i(TAG, "Clearing old secondary dex dir (" + dexDir.getPath() + ").");
                 File[] files = dexDir.listFiles();
