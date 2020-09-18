@@ -4,14 +4,14 @@ import android.app.Application;
 import android.content.Context;
 
 import zizzy.zhao.bridgex.core.BridgeX;
-import zizzy.zhao.bridgex.multidex.AssetsMultiDex;
+import zizzy.zhao.bridgex.multidex.MultiDeX;
 
 public class App extends Application {
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        AssetsMultiDex.install(base);
+        MultiDeX.install(base);
     }
 
     @Override

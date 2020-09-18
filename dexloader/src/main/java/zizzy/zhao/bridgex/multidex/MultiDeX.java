@@ -8,14 +8,18 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -27,14 +31,7 @@ import java.util.zip.ZipFile;
 
 import dalvik.system.DexFile;
 
-/**
- * @version $Id: AssetsDex.java, v 0.1 2015年12月10日 下午5:36:23 mochuan.zhb Exp $
- * @Author Zheng Haibo
- * @Company Alibaba Group
- * @PersonalWebsite http://www.mobctrl.net
- * @Description ClassLoader
- */
-public class AssetsMultiDex {
+public class MultiDeX {
 
     private static final String TAG = "AssetsMultiDex";
     private static final String CODE_CACHE_SECONDARY_FOLDER_NAME = "secondary-dexes";
@@ -42,8 +39,12 @@ public class AssetsMultiDex {
     private static final int MAX_SUPPORTED_SDK_VERSION = 20;
     private static final int MIN_SDK_VERSION = 4;
     private static final Set<String> installedApk = new HashSet<>();
+    private static final String LOCK_FILENAME = "MultiDex.lock";
+    private static RandomAccessFile lockRaf;
+    private static FileChannel lockChannel;
+    private static FileLock cacheLock;
 
-    private AssetsMultiDex() {
+    private MultiDeX() {
     }
 
     static {
@@ -57,6 +58,13 @@ public class AssetsMultiDex {
         if (installed.get()) {
             Log.i(TAG, "installed");
             return;
+        }
+
+        if (Build.VERSION.SDK_INT < MIN_SDK_VERSION) {
+            throw new RuntimeException("Multi dex installation failed. SDK "
+                    + Build.VERSION.SDK_INT
+                    + " is unsupported. Min SDK version is " + MIN_SDK_VERSION
+                    + ".");
         }
 
         Context ctx = context.getApplicationContext() == null ? context : context.getApplicationContext();
@@ -94,14 +102,10 @@ public class AssetsMultiDex {
                         + "continuing without cleaning.", e);
             }
         }
+
         AssetsManager.copyAllAssetsApk(ctx, CODE_CACHE_SECONDARY_FOLDER_NAME, assetsDexDir);
         Log.d(TAG, "SDK_INT: " + Build.VERSION.SDK_INT);
-        if (Build.VERSION.SDK_INT < MIN_SDK_VERSION) {
-            throw new RuntimeException("Multi dex installation failed. SDK "
-                    + Build.VERSION.SDK_INT
-                    + " is unsupported. Min SDK version is " + MIN_SDK_VERSION
-                    + ".");
-        }
+
         try {
             ApplicationInfo applicationInfo = getApplicationInfo(ctx);
             if (applicationInfo == null) {
@@ -151,6 +155,7 @@ public class AssetsMultiDex {
                     throw new Exception("Context class loader is null. Must be running in test mode. "
                             + "Skip patching.");
                 }
+
                 // 获取dex文件列表
                 File dexDir = ctx.getDir(CODE_CACHE_SECONDARY_FOLDER_NAME, Context.MODE_PRIVATE);
                 File[] szFiles = dexDir.listFiles(new FilenameFilter() {
@@ -159,14 +164,53 @@ public class AssetsMultiDex {
                         return filename.endsWith(AssetsManager.FILE_FILTER);
                     }
                 });
+
+                File lockFile = new File(dexDir, LOCK_FILENAME);
+                lockRaf = new RandomAccessFile(lockFile, "rw");
+                try {
+                    lockChannel = lockRaf.getChannel();
+                    try {
+                        Log.i(TAG, "Blocking on lock " + lockFile.getPath());
+                        cacheLock = lockChannel.lock();
+                    } catch (IOException | RuntimeException | Error e) {
+                        closeQuietly(lockChannel);
+                        throw e;
+                    }
+                    Log.i(TAG, lockFile.getPath() + " locked");
+                } catch (IOException | RuntimeException | Error e) {
+                    closeQuietly(lockRaf);
+                    throw e;
+                }
+
                 List<File> files = new ArrayList<>();
                 for (File f : szFiles) {
                     Log.v(TAG, "load file: " + f.getName());
                     files.add(f);
                 }
-                Log.d(TAG, "loader before: " + ctx.getClassLoader());
-                installSecondaryDexes(loader, dexDir, files);
-                Log.d(TAG, "loader end: " + ctx.getClassLoader());
+
+                IOException closeException = null;
+                try {
+                    if (!cacheLock.isValid()) {
+                        throw new IllegalStateException("MultiDexExtractor was closed");
+                    }
+
+                    Log.d(TAG, "loader before: " + ctx.getClassLoader());
+                    installSecondaryDexes(loader, dexDir, files);
+                    Log.d(TAG, "loader end: " + ctx.getClassLoader());
+                } finally {
+                    try {
+                        cacheLock.release();
+                        lockChannel.close();
+                        lockRaf.close();
+                    } catch (IOException e) {
+                        // Delay throw of close exception to ensure we don't override some exception
+                        // thrown during the try block.
+                        closeException = e;
+                    }
+                }
+                if (closeException != null) {
+                    throw closeException;
+                }
             }
         } catch (Exception e) {
             Log.e(TAG, "Multi dex installation failed (" + e.getMessage() + ").");
@@ -175,27 +219,49 @@ public class AssetsMultiDex {
         Log.i(TAG, "install done");
     }
 
-    private static ApplicationInfo getApplicationInfo(Context context) throws Exception {
-        PackageManager pm;
-        String packageName;
+//    private static ApplicationInfo getApplicationInfo(Context context) throws Exception {
+//        PackageManager pm;
+//        String packageName;
+//        try {
+//            pm = context.getPackageManager();
+//            packageName = context.getPackageName();
+//        } catch (Exception e) {
+//            /*
+//             * Ignore those exceptions so that we don't break tests relying on
+//             * Context like a android.test.mock.MockContext or a
+//             * android.content.ContextWrapper with a null base Context.
+//             */
+//            throw new Exception("Failure while trying to obtain ApplicationInfo from Context. "
+//                    + "Must be running in test mode. Skip patching. " + e);
+//        }
+//        if (pm == null || packageName == null) {
+//            // This is most likely a mock context, so just return without
+//            // patching.
+//            return null;
+//        }
+//        return pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+//    }
+
+    private static ApplicationInfo getApplicationInfo(Context context) {
         try {
-            pm = context.getPackageManager();
-            packageName = context.getPackageName();
-        } catch (Exception e) {
-            /*
-             * Ignore those exceptions so that we don't break tests relying on
-             * Context like a android.test.mock.MockContext or a
-             * android.content.ContextWrapper with a null base Context.
+            /* Due to package install races it is possible for a process to be started from an old
+             * apk even though that apk has been replaced. Querying for ApplicationInfo by package
+             * name may return information for the new apk, leading to a runtime with the old main
+             * dex file and new secondary dex files. This leads to various problems like
+             * ClassNotFoundExceptions. Using context.getApplicationInfo() should result in the
+             * process having a consistent view of the world (even if it is of the old world). The
+             * package install races are eventually resolved and old processes are killed.
              */
-            throw new Exception("Failure while trying to obtain ApplicationInfo from Context. "
-                    + "Must be running in test mode. Skip patching. " + e);
-        }
-        if (pm == null || packageName == null) {
-            // This is most likely a mock context, so just return without
-            // patching.
+            return context.getApplicationInfo();
+        } catch (RuntimeException e) {
+            /* Ignore those exceptions so that we don't break tests relying on Context like
+             * a android.test.mock.MockContext or a android.content.ContextWrapper with a null
+             * base Context.
+             */
+            Log.w(TAG, "Failure while trying to obtain ApplicationInfo from Context. " +
+                    "Must be running in test mode. Skip patching.", e);
             return null;
         }
-        return pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
     }
 
     private static void installSecondaryDexes(ClassLoader loader, File dexDir, List<File> files)
@@ -313,6 +379,17 @@ public class AssetsMultiDex {
             }
         } catch (Throwable th) {
             throw new Exception(th);
+        }
+    }
+
+    /**
+     * Closes the given {@code Closeable}. Suppresses any IO exceptions.
+     */
+    private static void closeQuietly(Closeable closeable) {
+        try {
+            closeable.close();
+        } catch (IOException e) {
+            Log.w(TAG, "Failed to close resource", e);
         }
     }
 
@@ -455,47 +532,6 @@ public class AssetsMultiDex {
             expandFieldArray(loader, "mFiles", extraFiles);
             expandFieldArray(loader, "mZips", extraZips);
             expandFieldArray(loader, "mDexs", extraDexs);
-        }
-    }
-
-    static class HiddenApiWrapper {
-        private static Method sSetHiddenApiExemptions;
-        private static Object sVMRuntime;
-
-        static {
-            try {
-                Method forNameMethod = Class.class.getDeclaredMethod("forName", String.class);
-                Method getDeclaredMethodMethod = Class.class.getDeclaredMethod(
-                        "getDeclaredMethod", String.class, Class[].class);
-
-                Class vmRuntimeClass = (Class) forNameMethod.invoke(null, "dalvik.system.VMRuntime");
-                sSetHiddenApiExemptions = (Method) getDeclaredMethodMethod.invoke(vmRuntimeClass,
-                        "setHiddenApiExemptions", new Class[]{String[].class});
-                Method getVMRuntimeMethod = (Method) getDeclaredMethodMethod.invoke(vmRuntimeClass,
-                        "getRuntime", null);
-                sVMRuntime = getVMRuntimeMethod.invoke(null);
-            } catch (Throwable th) {
-                th.printStackTrace();
-            }
-        }
-
-        static boolean setExemptions(String... methods) {
-            if ((sSetHiddenApiExemptions == null) || (sVMRuntime == null)) {
-                return false;
-            }
-
-            try {
-                sSetHiddenApiExemptions.invoke(sVMRuntime, new Object[]{methods});
-                return true;
-            } catch (Throwable th) {
-                th.printStackTrace();
-                return false;
-            }
-        }
-
-        static boolean exemptAll() {
-            Log.i("HiddenApiWrapper", "Start execute exemptAll method ...");
-            return setExemptions("L");
         }
     }
 }
