@@ -19,6 +19,18 @@ import java.util.Arrays;
 
 public class Reflactor {
 
+    public static Object getInterfaceProxy(String interfaceName, InvocationHandler invocationHandler) {
+        Class iListenerClass = Reflection.forName(interfaceName);
+        if (iListenerClass == null) {
+            return null;
+        }
+        return Proxy.newProxyInstance(
+                iListenerClass.getClassLoader(),
+                new Class[]{iListenerClass},
+                invocationHandler
+        );
+    }
+
     public static void hookPMS(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             HiddenApiWrapper.exemptAll();
@@ -211,6 +223,16 @@ public class Reflactor {
                 }
             }
             return method.invoke(base, args);
+        }
+    }
+
+    static class ProxyHandler implements InvocationHandler {
+        public ProxyHandler(Object[] params) {
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            return null;
         }
     }
 }
