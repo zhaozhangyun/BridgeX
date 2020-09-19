@@ -11,13 +11,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
-/**
- * @version $Id: AssetsManager.java, v 0.1 2015年12月11日 下午4:41:10 mochuan.zhb Exp $
- * @Author Zheng Haibo
- * @Company Alibaba Group
- * @PersonalWebsite http://www.mobctrl.net
- * @Description
- */
 class AssetsManager {
 
     static final String TAG = "AssetsManager";

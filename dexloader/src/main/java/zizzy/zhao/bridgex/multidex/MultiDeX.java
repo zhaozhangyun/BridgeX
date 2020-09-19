@@ -43,6 +43,8 @@ public class MultiDeX {
     private static RandomAccessFile lockRaf;
     private static FileChannel lockChannel;
     private static FileLock cacheLock;
+    private static long starttime;
+    private static long endtime;
 
     private MultiDeX() {
     }
@@ -66,6 +68,8 @@ public class MultiDeX {
                     + " is unsupported. Min SDK version is " + MIN_SDK_VERSION
                     + ".");
         }
+
+        starttime = System.currentTimeMillis();
 
         Context ctx = context.getApplicationContext() == null ? context : context.getApplicationContext();
         String assetsDexDir = null;
@@ -216,7 +220,9 @@ public class MultiDeX {
             Log.e(TAG, "Multi dex installation failed (" + e.getMessage() + ").");
         }
         installed.set(true);
-        Log.i(TAG, "install done");
+        endtime = System.currentTimeMillis();
+        Log.i(TAG, "install done!!!");
+        Log.i(TAG, "###### install multidex cost " + (endtime - starttime) + "ms");
     }
 
 //    private static ApplicationInfo getApplicationInfo(Context context) throws Exception {
@@ -364,17 +370,17 @@ public class MultiDeX {
                     return;
                 }
                 for (File oldFile : files) {
-                    Log.i(TAG, "Trying to delete old file " + oldFile.getPath() + " of size " + oldFile.length());
-                    if (!oldFile.delete()) {
-                        Log.w(TAG, "Failed to delete old file " + oldFile.getPath());
+                    Log.i(TAG, "Trying to delete old file (" + oldFile.getName() + ") of size " + oldFile.length());
+                    if (oldFile.isFile() && !oldFile.delete()) {
+                        Log.w(TAG, "Failed to delete old file (" + oldFile.getName() + ")");
                     } else {
-                        Log.i(TAG, "Success to delete old file " + oldFile.getPath());
+                        Log.i(TAG, "Success to delete old file (" + oldFile.getName() + ")");
                     }
                 }
-                if (!dexDir.delete()) {
-                    Log.w(TAG, "Failed to delete secondary dex dir " + dexDir.getPath());
+                if (dexDir.isDirectory() && !dexDir.delete()) {
+                    Log.w(TAG, "Failed to delete secondary dex dir (" + dexDir.getName() + ")");
                 } else {
-                    Log.i(TAG, "Success to delete old secondary dex dir " + dexDir.getPath());
+                    Log.i(TAG, "Success to delete old secondary dex dir (" + dexDir.getName() + ")");
                 }
             }
         } catch (Throwable th) {
@@ -386,21 +392,22 @@ public class MultiDeX {
         try {
             File dexDir = context.getDir(CODE_CACHE_SECONDARY_FOLDER_NAME, Context.MODE_PRIVATE);
             if (dexDir.isDirectory()) {
-                Log.i(TAG, "Clearing old secondary dex dir (" + dexDir.getPath() + ").");
+                Log.i(TAG, "Clearing old secondary dex in dir (" + dexDir.getPath() + ").");
                 File[] files = dexDir.listFiles();
                 if (files == null) {
                     Log.w(TAG, "Failed to list secondary dex dir content (" + dexDir.getPath() + ").");
                     return;
                 }
                 for (File oldFile : files) {
+                    if (!oldFile.isFile()) {
+                        continue;
+                    }
                     if (MD5.getFileMD5(oldFile).equals(fileMd5)) {
-                        Log.i(TAG, "Trying to delete old file " + oldFile.getPath() + " of size " + oldFile.length());
+                        Log.i(TAG, "Trying to delete old file (" + oldFile.getName() + ") of md5 " + fileMd5);
                         if (!oldFile.delete()) {
-                            Log.w(TAG, "Failed to delete old file " + oldFile.getPath()
-                                    + " [" + fileMd5 + "]");
+                            Log.w(TAG, "Failed to delete old file (" + oldFile.getName() + ")");
                         } else {
-                            Log.i(TAG, "Success to delete old file " + oldFile.getPath()
-                                    + " [" + fileMd5 + "]");
+                            Log.i(TAG, "Success to delete old file (" + oldFile.getName() + ")");
                         }
                     }
                 }
