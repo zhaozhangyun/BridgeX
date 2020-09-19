@@ -21,21 +21,23 @@ public class Reflactor {
 
     public static void hookPMS(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            HiddenApiUtil.exemptAll();
+            HiddenApiWrapper.exemptAll();
         }
 
         try {
             // 获取全局的ActivityThread对象
-            Object currentActivityThread = getFieldObject(
+            Object currentActivityThread = Reflection.readField(
                     "android.app.ActivityThread",
-                    null,
-                    "sCurrentActivityThread");
+                    "sCurrentActivityThread",
+                    null
+            );
 
             // 获取ActivityThread里面原始的 sPackageManager
-            Object sPackageManager = getFieldObject(
+            Object sPackageManager = Reflection.readField(
                     "android.app.ActivityThread",
-                    currentActivityThread,
-                    "sPackageManager");
+                    "sPackageManager",
+                    currentActivityThread
+            );
 
             /**
              * signature-hook-mode: 0 text 1 hashcode
@@ -45,25 +47,29 @@ public class Reflactor {
             int signHashCode = getMateDate(context, "bridgex.signature-hook-hashcode");
 
             // 准备好代理对象, 用来替换原始的对象
-            Class<?> iPackageManagerInterface = Class.forName("android.content.pm.IPackageManager");
-            Object proxy = Proxy.newProxyInstance(iPackageManagerInterface.getClassLoader(),
-                    new Class<?>[]{iPackageManagerInterface},
-                    new HookHandler(sPackageManager, context.getPackageName(), signMode, signText, signHashCode));
+            Class iPackageManagerInterface = Reflection.forName("android.content.pm.IPackageManager");
+            Object proxy = Proxy.newProxyInstance(
+                    iPackageManagerInterface.getClassLoader(),
+                    new Class[]{iPackageManagerInterface},
+                    new HookHandler(sPackageManager, context.getPackageName(), signMode, signText, signHashCode)
+            );
 
             // 1. 替换掉ActivityThread里面的 sPackageManager 字段
-            setFieldObject(
+            Reflection.writeField(
                     "android.app.ActivityThread",
-                    currentActivityThread,
                     "sPackageManager",
-                    proxy);
+                    currentActivityThread,
+                    proxy
+            );
 
             // 2. 替换 ApplicationPackageManager 里面的 mPm 对象
             PackageManager pm = context.getPackageManager();
-            setFieldObject(
+            Reflection.writeField(
                     "android.app.ApplicationPackageManager",
-                    pm,
                     "mPM",
-                    proxy);
+                    pm,
+                    proxy
+            );
         } catch (Throwable th) {
             th.printStackTrace();
         }
@@ -121,62 +127,23 @@ public class Reflactor {
         return constructor.newInstance(new Object[]{iBinder});
     }
 
-    private static Object createObject(String className, Class[] pareTyples, Object[] pareVaules)
-            throws Throwable {
-        Class r = Class.forName(className);
-        Constructor ctor = r.getDeclaredConstructor(pareTyples);
-        ctor.setAccessible(true);
-        return ctor.newInstance(pareVaules);
-    }
+    private static <T> T getMateDate(Context context, String metadata) {
+        T result;
 
-    private static Object invokeInstanceMethod(Object obj, String methodName, Class[] pareTyples,
-                                               Object[] pareVaules) throws Throwable {
-        //调用一个private方法
-        Method method = obj.getClass().getDeclaredMethod(methodName, pareTyples); //在指定类中获取指定的方法
-        method.setAccessible(true);
-        return method.invoke(obj, pareVaules);
-    }
+        try {
+            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(
+                    context.getPackageName(), PackageManager.GET_META_DATA);
+            if (applicationInfo == null
+                    || !applicationInfo.metaData.containsKey(metadata)
+                    || (result = (T) applicationInfo.metaData.get(metadata)) == null) {
+                return null;
+            }
+            return result;
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
 
-    /**
-     * 反射静态方法
-     *
-     * @param className   类名
-     * @param method_name 方法名
-     * @param pareTyples  参数类型class
-     * @param pareVaules  对应类型的参数值
-     * @return
-     */
-    private static Object invokeStaticMethod(String className, String method_name,
-                                             Class[] pareTyples, Object[] pareVaules)
-            throws Throwable {
-        Class obj_class = Class.forName(className);
-        Method method = obj_class.getDeclaredMethod(method_name, pareTyples);
-        method.setAccessible(true);
-        return method.invoke(null, pareVaules);
-    }
-
-    /**
-     * 反射属性
-     *
-     * @param className
-     * @param obj
-     * @param filedName
-     * @return
-     */
-    private static Object getFieldObject(String className, Object obj, String filedName)
-            throws Throwable {
-        Class obj_class = Class.forName(className);
-        Field field = obj_class.getDeclaredField(filedName);
-        field.setAccessible(true);
-        return field.get(obj);
-    }
-
-    private static void setFieldObject(String classname, Object obj, String filedName,
-                                       Object filedVaule) throws Throwable {
-        Class obj_class = Class.forName(classname);
-        Field field = obj_class.getDeclaredField(filedName);
-        field.setAccessible(true);
-        field.set(obj, filedVaule);
+        return null;
     }
 
     static class HookHandler implements InvocationHandler {
@@ -244,65 +211,6 @@ public class Reflactor {
                 }
             }
             return method.invoke(base, args);
-        }
-    }
-
-    private static <T> T getMateDate(Context context, String metadata) {
-        T result;
-
-        try {
-            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(
-                    context.getPackageName(), PackageManager.GET_META_DATA);
-            if (applicationInfo == null
-                    || !applicationInfo.metaData.containsKey(metadata)
-                    || (result = (T) applicationInfo.metaData.get(metadata)) == null) {
-                return null;
-            }
-            return result;
-        } catch (Throwable th) {
-            th.printStackTrace();
-        }
-
-        return null;
-    }
-
-    static class HiddenApiUtil {
-        private static Method sSetHiddenApiExemptions;
-        private static Object sVMRuntime;
-
-        static {
-            try {
-                Method forNameMethod = Class.class.getDeclaredMethod("forName", String.class);
-                Method getDeclaredMethodMethod = Class.class.getDeclaredMethod(
-                        "getDeclaredMethod", String.class, Class[].class);
-
-                Class vmRuntimeClass = (Class) forNameMethod.invoke(null, "dalvik.system.VMRuntime");
-                sSetHiddenApiExemptions = (Method) getDeclaredMethodMethod.invoke(vmRuntimeClass,
-                        "setHiddenApiExemptions", new Class[]{String[].class});
-                Method getVMRuntimeMethod = (Method) getDeclaredMethodMethod.invoke(vmRuntimeClass,
-                        "getRuntime", null);
-                sVMRuntime = getVMRuntimeMethod.invoke(null);
-            } catch (Throwable th) {
-                th.printStackTrace();
-            }
-        }
-
-        static boolean setExemptions(String... methods) {
-            if ((sSetHiddenApiExemptions == null)
-                    || (sVMRuntime == null)) {
-                return false;
-            }
-
-            try {
-                sSetHiddenApiExemptions.invoke(sVMRuntime, new Object[]{methods});
-                return true;
-            } catch (Throwable e) {
-                return false;
-            }
-        }
-
-        static boolean exemptAll() {
-            return setExemptions("L");
         }
     }
 }
