@@ -33,7 +33,7 @@ import dalvik.system.DexFile;
 
 public class MultiDeX {
 
-    private static final String TAG = "AssetsMultiDex";
+    private static final String TAG = "MultiDeX";
     private static final String CODE_CACHE_SECONDARY_FOLDER_NAME = "secondary-dexes";
     private static AtomicBoolean installed = new AtomicBoolean(false);
     private static final int MAX_SUPPORTED_SDK_VERSION = 20;
