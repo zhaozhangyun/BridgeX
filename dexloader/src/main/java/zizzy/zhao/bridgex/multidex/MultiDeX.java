@@ -382,6 +382,34 @@ public class MultiDeX {
         }
     }
 
+    static void clearOldDex(Context context, String fileMd5) throws Exception {
+        try {
+            File dexDir = context.getDir(CODE_CACHE_SECONDARY_FOLDER_NAME, Context.MODE_PRIVATE);
+            if (dexDir.isDirectory()) {
+                Log.i(TAG, "Clearing old secondary dex dir (" + dexDir.getPath() + ").");
+                File[] files = dexDir.listFiles();
+                if (files == null) {
+                    Log.w(TAG, "Failed to list secondary dex dir content (" + dexDir.getPath() + ").");
+                    return;
+                }
+                for (File oldFile : files) {
+                    if (MD5.getFileMD5(oldFile).equals(fileMd5)) {
+                        Log.i(TAG, "Trying to delete old file " + oldFile.getPath() + " of size " + oldFile.length());
+                        if (!oldFile.delete()) {
+                            Log.w(TAG, "Failed to delete old file " + oldFile.getPath()
+                                    + " [" + fileMd5 + "]");
+                        } else {
+                            Log.i(TAG, "Success to delete old file " + oldFile.getPath()
+                                    + " [" + fileMd5 + "]");
+                        }
+                    }
+                }
+            }
+        } catch (Throwable th) {
+            throw new Exception(th);
+        }
+    }
+
     /**
      * Closes the given {@code Closeable}. Suppresses any IO exceptions.
      */

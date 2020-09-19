@@ -1,6 +1,5 @@
 package zizzy.zhao.bridgex.multidex;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -10,7 +9,7 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-class MD5 {
+public class MD5 {
 
     /**
      * 默认的密码字符串组合，用来将字节转换成 16 进制表示的字符,apache校验下载的文件的正确性用的就是默认的这个组合
@@ -33,7 +32,7 @@ class MD5 {
      * @param content 要生成的字符串
      * @return
      */
-    static String getMD5(String content) {
+    public static String getMD5(String content) {
         return getMD5String(content.getBytes());
     }
 
@@ -44,22 +43,19 @@ class MD5 {
      * @param md5PwdStr 已知的md5校验码
      * @return
      */
-    static boolean checkPassword(String password, String md5PwdStr) {
+    public static boolean checkPassword(String password, String md5PwdStr) {
         String s = getMD5(password);
         return s.equals(md5PwdStr);
     }
 
-    /**
-     * 生成文件的md5校验值
-     */
-    static String getFileMD5(File file) throws Exception {
+    public static String getFileMD5(File file) throws Exception {
         InputStream fis = new FileInputStream(file);
         return getFileStreamMD5(fis);
     }
 
-    static String getFileStreamMD5(InputStream is) throws Exception {
+    public static String getFileStreamMD5(InputStream is) throws Exception {
         byte[] buffer = new byte[1024];
-        int numRead = 0;
+        int numRead;
         while ((numRead = is.read(buffer)) > 0) {
             messagedigest.update(buffer, 0, numRead);
         }
@@ -67,13 +63,7 @@ class MD5 {
         return bufferToHex(messagedigest.digest());
     }
 
-    private static String getMD5String(byte[] bytes) {
-        messagedigest.update(bytes);
-        return bufferToHex(messagedigest.digest());
-    }
-
-    static boolean compareToMd5(Context context, File filePath,
-                                final InputStream is) {
+    public static boolean compareToMd5(File filePath, InputStream is) {
         boolean result = false;
 
         String fileMd5 = null;
@@ -90,12 +80,16 @@ class MD5 {
         } catch (Exception e) {
         }
 
-        if (!TextUtils.isEmpty(fileMd5) && !TextUtils.isEmpty(originMd5)
-                && fileMd5.equals(originMd5)) {
+        if (!TextUtils.isEmpty(fileMd5) && !TextUtils.isEmpty(originMd5) && fileMd5.equals(originMd5)) {
             result = true;
         }
 
         return result;
+    }
+
+    private static String getMD5String(byte[] bytes) {
+        messagedigest.update(bytes);
+        return bufferToHex(messagedigest.digest());
     }
 
     private static String bufferToHex(byte bytes[]) {

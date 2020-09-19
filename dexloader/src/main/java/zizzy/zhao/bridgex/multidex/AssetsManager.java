@@ -49,17 +49,13 @@ class AssetsManager {
                 in = assetManager.open(TextUtils.isEmpty(assetsDexPath) ? fileName
                         : assetsDexPath + "/" + fileName);
                 File dexFile = new File(dex, fileName);
-                String fileMd5 = null;
-                String streamMd5 = MD5.getFileStreamMD5(in);
-                if (dexFile.exists()) {
-                    fileMd5 = MD5.getFileMD5(dexFile);
-                }
-                if (!TextUtils.isEmpty(streamMd5) && !TextUtils.isEmpty(fileMd5) && streamMd5.equals(fileMd5)) {
+                if (MD5.compareToMd5(dexFile, in)) {
                     Log.v(TAG, String.format("[%s] md5 no change", fileName));
                     continue;
-                }
-                if (dexFile.exists() && !streamMd5.equals(fileMd5)) {
-                    Log.v(TAG, String.format("[%s] md5 changed to %s", fileName, streamMd5));
+                } else if (dexFile.exists()) {
+                    Log.v(TAG, String.format("[%s] md5 changed", fileName));
+                    String oldDexMd5 = MD5.getFileMD5(dexFile);
+                    MultiDeX.clearOldDex(context, oldDexMd5);
                 }
                 // Because of closing to the InputStream, so open assets again.
                 in = assetManager.open(TextUtils.isEmpty(assetsDexPath) ? fileName
