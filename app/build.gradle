@@ -18,6 +18,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jni']
+        }
+    }
 }
 
 dependencies {
@@ -25,4 +31,5 @@ dependencies {
 
     implementation project(path: ':bridgex-dexloader')
     compileOnly project(path: ':bridgex-core')
+    implementation project(path: ':bridgex-arthook')
 }

@@ -15,6 +15,7 @@ import java.io.InputStream;
 
 import zizzy.zhao.bridgex.core.LogBridge;
 import zizzy.zhao.bridgex.core.Logger;
+import zizzy.zhao.bridgex.hook.HookBridge;
 
 public class MainActivity extends Activity {
 
@@ -27,6 +28,15 @@ public class MainActivity extends Activity {
 
         LogBridge.inject(new LoggerImpl());
 
+        HookBridge.getInstance().executeHook(
+                MainActivity.class.getName(),
+                "fuckBridge",
+                "Ljava/lang/String;"
+        );
+
+        fuckBridge("fuck !!!");
+
+        /*
         Logger.log();
         Logger.log("hello, world");
         Logger.log(1, "call create", "call create1", "uin");
@@ -63,6 +73,7 @@ public class MainActivity extends Activity {
                 }
             }
         }
+         */
 
 //        try {
 //            is = getResources().getAssets().open("package_pattern.json");
