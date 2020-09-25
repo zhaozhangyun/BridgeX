@@ -7,7 +7,7 @@
     "show_all_stack": true,
     "max_stack_index": 16,
     "stack_package": {
-      "enable": true,
+      "enable": false,
       "start_index": 0,
       "package": ""
     },

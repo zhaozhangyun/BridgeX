@@ -7,6 +7,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import zizzy.zhao.bridgex.core.utils.HiddenApiWrapper;
+
 public class Reflection {
 
     private static final String TAG = "Reflection";

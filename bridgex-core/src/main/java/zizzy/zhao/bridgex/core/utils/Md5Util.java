@@ -1,4 +1,4 @@
-package zizzy.zhao.bridgex.core;
+package zizzy.zhao.bridgex.core.utils;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,11 +13,11 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-class Md5Util {
+public class Md5Util {
 
     private static final String TAG = Md5Util.class.getSimpleName();
 
-    static String getMd5(String input) {
+    public static String getMd5(String input) {
         if (TextUtils.isEmpty(input)) {
             return null;
         }
@@ -48,7 +48,7 @@ class Md5Util {
         return md5StrBuff.toString();
     }
 
-    static boolean checkMD5(String md5, File updateFile) {
+    public static boolean checkMD5(String md5, File updateFile) {
         if (TextUtils.isEmpty(md5) || updateFile == null) {
             Log.e(TAG, "MD5 string empty or updateFile null");
             return false;
@@ -66,7 +66,7 @@ class Md5Util {
         return calculatedDigest.equalsIgnoreCase(md5);
     }
 
-    static String getMd5(File updateFile) {
+    public static String getMd5(File updateFile) {
         MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("MD5");

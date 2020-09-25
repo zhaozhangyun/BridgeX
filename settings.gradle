@@ -1,3 +1,4 @@
 include ':app'
 include ':bridgex-core'
-include ':dexloader'
+include ':bridgex-dexloader'
+include ':bridgex-arthook'

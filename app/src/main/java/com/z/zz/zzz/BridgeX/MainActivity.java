@@ -27,8 +27,6 @@ public class MainActivity extends Activity {
 
         LogBridge.inject(new LoggerImpl());
 
-//        BridgeX.attach(this);
-
         Logger.log();
         Logger.log("hello, world");
         Logger.log(1, "call create", "call create1", "uin");

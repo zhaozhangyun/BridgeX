@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.IInterface;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -17,19 +18,17 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 
+import zizzy.zhao.bridgex.core.reflect.base.ReflectClass;
+import zizzy.zhao.bridgex.core.reflect.base.ReflectConstructor;
+import zizzy.zhao.bridgex.core.reflect.delegate.ActivityThreadDelegate;
+import zizzy.zhao.bridgex.core.reflect.base.ReflectObjectField;
+import zizzy.zhao.bridgex.core.reflect.delegate.ApplicationPackageManagerDelegate;
+import zizzy.zhao.bridgex.core.reflect.delegate.ServiceManagerDelegate;
+import zizzy.zhao.bridgex.core.utils.HiddenApiWrapper;
+
 public class Reflactor {
 
-    public static Object getInterfaceProxy(String interfaceName, InvocationHandler invocationHandler) {
-        Class iListenerClass = Reflection.forName(interfaceName);
-        if (iListenerClass == null) {
-            return null;
-        }
-        return Proxy.newProxyInstance(
-                iListenerClass.getClassLoader(),
-                new Class[]{iListenerClass},
-                invocationHandler
-        );
-    }
+    private static final String TAG = "Reflactor";
 
     public static void hookPMS(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -38,18 +37,20 @@ public class Reflactor {
 
         try {
             // 获取全局的ActivityThread对象
-            Object currentActivityThread = Reflection.readField(
-                    "android.app.ActivityThread",
-                    "sCurrentActivityThread",
-                    null
-            );
+//            Object currentActivityThread = Reflection.readField(
+//                    "android.app.ActivityThread",
+//                    "sCurrentActivityThread",
+//                    null
+//            );
+            ReflectObjectField sCurrentActivityThread = ActivityThreadDelegate.sCurrentActivityThread;
 
             // 获取ActivityThread里面原始的 sPackageManager
-            Object sPackageManager = Reflection.readField(
-                    "android.app.ActivityThread",
-                    "sPackageManager",
-                    currentActivityThread
-            );
+//            Object sPackageManager = Reflection.readField(
+//                    "android.app.ActivityThread",
+//                    "sPackageManager",
+//                    currentActivityThread
+//            );
+            ReflectObjectField sPackageManager = ActivityThreadDelegate.sPackageManager;
 
             /**
              * signature-hook-mode: 0 text 1 hashcode
@@ -59,29 +60,39 @@ public class Reflactor {
             int signHashCode = getMateDate(context, "bridgex.signature-hook-hashcode");
 
             // 准备好代理对象, 用来替换原始的对象
-            Class iPackageManagerInterface = Reflection.forName("android.content.pm.IPackageManager");
+//            Class iPackageManagerInterface = Reflection.forName("android.content.pm.IPackageManager");
+            ReflectClass iPackageManager = ReflectClass.load("android.content.pm.IPackageManager");
+
             Object proxy = Proxy.newProxyInstance(
-                    iPackageManagerInterface.getClassLoader(),
-                    new Class[]{iPackageManagerInterface},
-                    new HookHandler(sPackageManager, context.getPackageName(), signMode, signText, signHashCode)
+                    iPackageManager.getOrigClass().getClassLoader(),
+                    new Class[]{iPackageManager.getOrigClass()},
+                    new HookHandler(
+                            sPackageManager.get(sCurrentActivityThread.get()),
+                            context.getPackageName(),
+                            signMode,
+                            signText,
+                            signHashCode
+                    )
             );
 
             // 1. 替换掉ActivityThread里面的 sPackageManager 字段
-            Reflection.writeField(
-                    "android.app.ActivityThread",
-                    "sPackageManager",
-                    currentActivityThread,
-                    proxy
-            );
+//            Reflection.writeField(
+//                    "android.app.ActivityThread",
+//                    "sPackageManager",
+//                    currentActivityThread,
+//                    proxy
+//            );
+            sPackageManager.set(sCurrentActivityThread.get(), proxy);
 
             // 2. 替换 ApplicationPackageManager 里面的 mPm 对象
             PackageManager pm = context.getPackageManager();
-            Reflection.writeField(
-                    "android.app.ApplicationPackageManager",
-                    "mPM",
-                    pm,
-                    proxy
-            );
+//            Reflection.writeField(
+//                    "android.app.ApplicationPackageManager",
+//                    "mPM",
+//                    pm,
+//                    proxy
+//            );
+            ApplicationPackageManagerDelegate.mPM.set(pm, (IInterface) proxy);
         } catch (Throwable th) {
             th.printStackTrace();
         }
@@ -127,16 +138,23 @@ public class Reflactor {
     }
 
     private static Object getIPackageManager() throws Throwable {
-        Class<?> serviceManagerClass = Class.forName("android.os.ServiceManager");
-        Method getServiceMethod = serviceManagerClass.getDeclaredMethod("getService", String.class);
-        getServiceMethod.setAccessible(true);
-        Object iBinder = getServiceMethod.invoke(null, new String[]{"package"});
+//        Class<?> serviceManagerClass = Class.forName("android.os.ServiceManager");
+//        Method getServiceMethod = serviceManagerClass.getDeclaredMethod("getService", String.class);
+//        getServiceMethod.setAccessible(true);
+//        Object iBinder = getServiceMethod.invoke(null, new String[]{"package"});
 
-        Class<?> iPackageManager$Stub$ProxyClass = Class.forName("android.content.pm.IPackageManager$Stub$Proxy");
-        Constructor constructor = iPackageManager$Stub$ProxyClass.getDeclaredConstructor(IBinder.class);
-        constructor.setAccessible(true);
+        IBinder iBinder = ServiceManagerDelegate.getService.invoke("package");
+        Log.v(TAG, "invoke obj: " + iBinder);
 
-        return constructor.newInstance(new Object[]{iBinder});
+//        Class<?> iPackageManager$Stub$ProxyClass = Class.forName("android.content.pm.IPackageManager$Stub$Proxy");
+//        Constructor constructor = iPackageManager$Stub$ProxyClass.getDeclaredConstructor(IBinder.class);
+//        constructor.setAccessible(true);
+//
+//        return constructor.newInstance(new Object[]{iBinder});
+
+        ReflectClass sClass = ReflectClass.load("android.content.pm.IPackageManager$Stub$Proxy");
+        ReflectConstructor constructor = (ReflectConstructor<IBinder>) sClass.getConstructor(IBinder.class);
+        return constructor.newInstance(iBinder);
     }
 
     private static <T> T getMateDate(Context context, String metadata) {
@@ -223,16 +241,6 @@ public class Reflactor {
                 }
             }
             return method.invoke(base, args);
-        }
-    }
-
-    static class ProxyHandler implements InvocationHandler {
-        public ProxyHandler(Object[] params) {
-        }
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            return null;
         }
     }
 }
