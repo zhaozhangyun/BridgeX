@@ -1,10 +1,12 @@
 package zizzy.zhao.bridgex.multidex;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -48,9 +50,24 @@ public class MD5 {
         return s.equals(md5PwdStr);
     }
 
-    public static String getFileMD5(File file) throws Exception {
-        InputStream fis = new FileInputStream(file);
-        return getFileStreamMD5(fis);
+    public static String getFileMD5(File file) {
+        InputStream is = null;
+        try {
+            is = new FileInputStream(file);
+            return getFileStreamMD5(is);
+        } catch (Throwable th) {
+            th.printStackTrace();
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return null;
     }
 
     public static String getFileStreamMD5(InputStream is) throws Exception {
@@ -59,11 +76,10 @@ public class MD5 {
         while ((numRead = is.read(buffer)) > 0) {
             messagedigest.update(buffer, 0, numRead);
         }
-        is.close();
         return bufferToHex(messagedigest.digest());
     }
 
-    public static boolean compareToMd5(File filePath, InputStream is) {
+    public static boolean compareToAssetsFile(Context context, File filePath, String filename) {
         boolean result = false;
 
         String fileMd5 = null;
@@ -74,10 +90,21 @@ public class MD5 {
             }
         }
 
+        InputStream is = null;
         String originMd5 = null;
         try {
+            is = context.getAssets().open(filename);
             originMd5 = getFileStreamMD5(is);
         } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         if (!TextUtils.isEmpty(fileMd5) && !TextUtils.isEmpty(originMd5) && fileMd5.equals(originMd5)) {

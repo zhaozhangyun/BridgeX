@@ -1,4 +1,4 @@
-package zizzy.zhao.bridgex.core;
+package zizzy.zhao.bridgex.core.reflect;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;

@@ -1,4 +1,4 @@
-package zizzy.zhao.bridgex.core;
+package zizzy.zhao.bridgex.core.reflect;
 
 import android.os.Build;
 import android.util.Log;

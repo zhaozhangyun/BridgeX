@@ -188,7 +188,7 @@ public class MultiDeX {
 
                 List<File> files = new ArrayList<>();
                 for (File f : szFiles) {
-                    Log.v(TAG, "load file: " + f.getName());
+                    Log.v(TAG, "load file [" + f.getName() + "] with md5(" + MD5.getFileMD5(f) + ")");
                     files.add(f);
                 }
 
