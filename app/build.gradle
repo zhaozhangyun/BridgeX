@@ -27,10 +27,14 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar, *.aar'])
+    compileOnly fileTree(dir: 'libs', include: ['*.jar, *.aar'])
 
     implementation project(path: ':bridgex-dexloader')
     compileOnly project(path: ':bridgex-base')
     compileOnly project(path: ':bridgex-core')
     implementation project(path: ':bridgex-arthook')
+
+    //OkHttp
+    implementation 'com.squareup.okhttp3:okhttp:3.4.2'
+    implementation 'com.squareup.okio:okio:1.9.0'
 }

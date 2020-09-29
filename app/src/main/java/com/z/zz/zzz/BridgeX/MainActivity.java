@@ -8,11 +8,7 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.util.Log;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-
+import okhttp3.OkHttpClient;
 import zizzy.zhao.bridgex.base.reflect.base.ReflectClass;
 import zizzy.zhao.bridgex.core.LogBridge;
 import zizzy.zhao.bridgex.core.Logger;
@@ -28,6 +24,19 @@ public class MainActivity extends Activity {
         checkAPP(this);
 
         LogBridge.inject(new LoggerImpl());
+
+        try {
+            HookBridge.getInstance().executeHook(
+                    "okhttp3.OkHttpClient$Builder",
+                    "<init>",
+                    "()V",
+                    ReflectClass.load("zizzy.zhao.bridgex.core.OkhttpMethodHook").getOrigClass()
+            );
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
+
+        new OkHttpClient.Builder().build();
 
         try {
             HookBridge.getInstance().executeHook(

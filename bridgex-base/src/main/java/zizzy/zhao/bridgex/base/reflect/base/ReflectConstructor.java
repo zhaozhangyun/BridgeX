@@ -15,6 +15,7 @@ public class ReflectConstructor<T> {
         try {
             return (T) mConstructor.newInstance();
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -23,6 +24,7 @@ public class ReflectConstructor<T> {
         try {
             return (T) mConstructor.newInstance(params);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

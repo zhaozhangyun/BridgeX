@@ -80,6 +80,7 @@ public class Util {
         }
 
         Log.d(TAG, "The params is " + Arrays.toString(params));
+
         return params;
     }
 

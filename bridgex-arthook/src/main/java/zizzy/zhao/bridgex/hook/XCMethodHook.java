@@ -47,7 +47,9 @@ public abstract class XCMethodHook extends XC_MethodHook {
         }
 
         Object result = executeHookedMethod(param);
-        param.setResult(result);
+        if (result != null) {
+            param.setResult(result);
+        }
     }
 
     @Override

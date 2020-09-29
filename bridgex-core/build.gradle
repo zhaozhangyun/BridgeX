@@ -33,4 +33,7 @@ dependencies {
 
     compileOnly project(':bridgex-base')
     compileOnly project(':bridgex-arthook')
+
+    compileOnly "me.weishu:free_reflection:2.2.0"
+    compileOnly 'me.weishu.exposed:exposed-xposedapi:0.4.5'
 }
