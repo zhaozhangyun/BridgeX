@@ -1,8 +1,12 @@
 package zizzy.zhao.bridgex.base.reflect.base;
 
+import android.util.Log;
+
 import java.lang.reflect.Field;
 
 public class ReflectObjectField<T> extends ReflectField {
+    private static final String TAG = "ReflectObjectField";
+
     public ReflectObjectField(ReflectClass klass, Field field) {
         super(klass, field);
     }
@@ -19,6 +23,7 @@ public class ReflectObjectField<T> extends ReflectField {
         try {
             return (T) mField.get(object);
         } catch (Exception e) {
+            Log.e(TAG, "get error: ", e);
             return null;
         }
     }
@@ -35,7 +40,7 @@ public class ReflectObjectField<T> extends ReflectField {
         try {
             mField.set(obj, value);
         } catch (Exception e) {
-            //Ignore
+            Log.e(TAG, "set error: ", e);
         }
     }
 }

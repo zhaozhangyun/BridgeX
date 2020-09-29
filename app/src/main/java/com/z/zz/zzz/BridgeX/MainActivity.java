@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient;
 import zizzy.zhao.bridgex.base.reflect.base.ReflectClass;
 import zizzy.zhao.bridgex.core.LogBridge;
 import zizzy.zhao.bridgex.core.Logger;
+import zizzy.zhao.bridgex.core.delegate.OkHttpClientDelegate;
 import zizzy.zhao.bridgex.hook.HookBridge;
 
 public class MainActivity extends Activity {
@@ -27,10 +28,10 @@ public class MainActivity extends Activity {
 
         try {
             HookBridge.getInstance().executeHook(
-                    "okhttp3.OkHttpClient$Builder",
+                    OkHttpClientDelegate.Builder.getOrigClass().getName(),
                     "<init>",
                     "()V",
-                    ReflectClass.load("zizzy.zhao.bridgex.core.OkhttpMethodHook").getOrigClass()
+                    ReflectClass.load("zizzy.zhao.bridgex.core.OkHttpMethodHook").getOrigClass()
             );
         } catch (Throwable th) {
             th.printStackTrace();

@@ -31,7 +31,6 @@ public class ReflectClass {
             throws NoSuchMethodException {
         Constructor constructor = mClass.getDeclaredConstructor();
         constructor.setAccessible(true);
-
         return new ReflectConstructor(this, constructor);
     }
 
@@ -39,7 +38,6 @@ public class ReflectClass {
             throws NoSuchMethodException {
         Constructor constructor = mClass.getDeclaredConstructor(paramTypes);
         constructor.setAccessible(true);
-
         return new ReflectConstructor(this, constructor);
     }
 
@@ -47,7 +45,6 @@ public class ReflectClass {
             throws NoSuchMethodException {
         Method method = mClass.getDeclaredMethod(name, argTypes);
         method.setAccessible(true);
-
         return new ReflectMethod(this, method);
     }
 

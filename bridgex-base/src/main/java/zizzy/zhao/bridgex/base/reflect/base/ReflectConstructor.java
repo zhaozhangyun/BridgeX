@@ -1,8 +1,11 @@
 package zizzy.zhao.bridgex.base.reflect.base;
 
+import android.util.Log;
+
 import java.lang.reflect.Constructor;
 
 public class ReflectConstructor<T> {
+    private static final String TAG = "ReflectConstructor";
     private final ReflectClass mClass;
     private final Constructor mConstructor;
 
@@ -15,7 +18,7 @@ public class ReflectConstructor<T> {
         try {
             return (T) mConstructor.newInstance();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "newInstance error: ", e);
             return null;
         }
     }
@@ -24,7 +27,7 @@ public class ReflectConstructor<T> {
         try {
             return (T) mConstructor.newInstance(params);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "newInstance error: ", e);
             return null;
         }
     }

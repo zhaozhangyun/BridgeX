@@ -23,7 +23,7 @@ public class ReflectMethod<T> {
         try {
             return invokeWithException(receiverOrArgs);
         } catch (Throwable e) {
-            Log.e("ReflectMethod", "invoke error: " + e.getMessage());
+            Log.e("ReflectMethod", "invoke error: ", e);
         }
         return null;
     }
