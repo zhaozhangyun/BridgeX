@@ -1,6 +1,6 @@
 {
   "multi_dex": {
-    "force_clear_old_dex_cache": false
+    "force_clear_old_dex_cache": true
   },
   "logger": {
     "default_tag": "bridgex",

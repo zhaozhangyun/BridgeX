@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 
+import zizzy.zhao.bridgex.base.reflect.base.ReflectClass;
 import zizzy.zhao.bridgex.core.LogBridge;
 import zizzy.zhao.bridgex.core.Logger;
 import zizzy.zhao.bridgex.hook.HookBridge;
@@ -28,11 +29,16 @@ public class MainActivity extends Activity {
 
         LogBridge.inject(new LoggerImpl());
 
-        HookBridge.getInstance().executeHook(
-                MainActivity.class.getName(),
-                "fuckBridge",
-                "Ljava/lang/String;"
-        );
+        try {
+            HookBridge.getInstance().executeHook(
+                    MainActivity.class.getName(),
+                    "fuckBridge",
+                    "Ljava/lang/String;",
+                    ReflectClass.load("zizzy.zhao.bridgex.hook.module.mltad.MltAdMethodHook").getOrigClass()
+            );
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
 
         fuckBridge("fuck !!!");
 

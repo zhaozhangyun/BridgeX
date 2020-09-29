@@ -3,11 +3,11 @@ package zizzy.zhao.bridgex.hook;
 import android.util.Log;
 
 import de.robv.android.xposed.DexposedBridge;
-import zizzy.zhao.bridgex.core.reflect.base.ReflectClass;
-import zizzy.zhao.bridgex.core.utils.Util;
-import zizzy.zhao.bridgex.hook.mltad.MltAdMethodHook;
+import zizzy.zhao.bridgex.base.reflect.base.ReflectClass;
+import zizzy.zhao.bridgex.base.reflect.base.ReflectConstructor;
+import zizzy.zhao.bridgex.base.utils.Util;
 
-public class HookBridge {
+public class HookBridge<T extends XCMethodHook> {
     private static final String TAG = "HookBridge";
 
     private static class Holder {
@@ -18,13 +18,15 @@ public class HookBridge {
         return Holder.instance;
     }
 
-    public void executeHook(String className, String methodName, String paramSig) {
-        if (!findAndHookMethod(className, methodName, paramSig)) {
+    public void executeHook(String className, String methodName, String paramSig,
+                            Class<T> methodHookClass) {
+        if (!findAndHookMethod(className, methodName, paramSig, methodHookClass)) {
             Log.e(TAG, "Oops!!! Failed to find and hook method.");
         }
     }
 
-    private boolean findAndHookMethod(String className, String methodName, String paramSig) {
+    private boolean findAndHookMethod(String className, String methodName, String paramSig,
+                                      Class<T> methodHookClass) {
         Class[] srcArgs = Util.getMethodArgs(paramSig, null);
 
         try {
@@ -32,7 +34,11 @@ public class HookBridge {
             for (int i = 0; i < srcArgs.length; ++i) {
                 mergedSrcArgs[i] = srcArgs[i];
             }
-            mergedSrcArgs[srcArgs.length] = new MltAdMethodHook(srcArgs);
+
+            ReflectClass sClass = ReflectClass.load(methodHookClass);
+            ReflectConstructor constructor = (ReflectConstructor<T>) sClass.getConstructor(Class[].class);
+            Object instance = constructor.newInstance(srcArgs);
+            mergedSrcArgs[srcArgs.length] = instance;
 
             DexposedBridge.findAndHookMethod(
                     ReflectClass.load(className).getOrigClass(),

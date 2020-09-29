@@ -1,4 +1,6 @@
 include ':app'
+include ':bridgex-base'
 include ':bridgex-core'
 include ':bridgex-dexloader'
 include ':bridgex-arthook'
+include ':mltad'

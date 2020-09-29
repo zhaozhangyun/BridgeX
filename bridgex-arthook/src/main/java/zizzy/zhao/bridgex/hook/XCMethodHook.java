@@ -9,8 +9,9 @@ import de.robv.android.xposed.XC_MethodHook;
 
 public abstract class XCMethodHook extends XC_MethodHook {
     private static final String TAG = "XC_MethodHook_Impl";
+    public static final int INVALID = -1;
     private Activity activity;
-    private int argIndex;
+    private int callbackIndex = INVALID;
     private Class[] srcArgs;
 
     public XCMethodHook(Class[] srcArgs) {
@@ -25,7 +26,7 @@ public abstract class XCMethodHook extends XC_MethodHook {
         return activity;
     }
 
-    protected abstract void executeHookedMethod(MethodHookParam param);
+    protected abstract Object executeHookedMethod(MethodHookParam param);
 
     protected abstract void endHookedMethod(MethodHookParam param);
 
@@ -39,15 +40,14 @@ public abstract class XCMethodHook extends XC_MethodHook {
         for (int i = 0; i < srcArgs.length; ++i) {
             Class interfaceClass = srcArgs[i];
             if (interfaceClass.isInterface()) {
-                argIndex = i;
-                Log.d(TAG, "The interface [" + interfaceClass + "] index is " + argIndex);
+                callbackIndex = i;
+                Log.d(TAG, "The interface [" + interfaceClass + "] index is " + callbackIndex);
                 break;
             }
         }
 
-        executeHookedMethod(param);
-
-        param.setResult(true);
+        Object result = executeHookedMethod(param);
+        param.setResult(result);
     }
 
     @Override

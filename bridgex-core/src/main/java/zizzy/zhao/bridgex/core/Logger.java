@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import zizzy.zhao.bridgex.core.utils.Md5Util;
+import zizzy.zhao.bridgex.base.utils.Md5Util;
 
 public class Logger {
 

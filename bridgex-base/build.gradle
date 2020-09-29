@@ -24,13 +24,4 @@ android {
 
 dependencies {
 //    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    compileOnly 'com.facebook.stetho:stetho:+'
-    compileOnly 'com.facebook.stetho:stetho-okhttp3:+'//okhttp3.0以上使用
-    compileOnly 'com.facebook.stetho:stetho-okhttp:+'
-    compileOnly 'com.facebook.stetho:stetho-urlconnection:+'
-    compileOnly 'com.facebook.stetho:stetho-js-rhino:+'
-
-    compileOnly project(':bridgex-base')
-    compileOnly project(':bridgex-arthook')
 }

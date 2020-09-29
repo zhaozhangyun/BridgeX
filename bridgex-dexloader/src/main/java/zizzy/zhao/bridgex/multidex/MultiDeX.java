@@ -370,6 +370,9 @@ public class MultiDeX {
                     return;
                 }
                 for (File oldFile : files) {
+                    if (oldFile.isFile() && oldFile.getName().endsWith(".lock")) {
+                        continue;
+                    }
                     Log.i(TAG, "Trying to delete old file (" + oldFile.getName() + ") of size " + oldFile.length());
                     if (oldFile.isFile() && !oldFile.delete()) {
                         Log.w(TAG, "Failed to delete old file (" + oldFile.getName() + ")");
