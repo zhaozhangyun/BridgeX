@@ -14,21 +14,12 @@ public class OkHttpMethodHook extends XCMethodHook {
     }
 
     @Override
-    protected Object executeHookedMethod(MethodHookParam param) {
-        return null;
-    }
-
-    @Override
-    protected void endHookedMethod(MethodHookParam param) {
-        try {
-            Object stethoInterceptorIns = StethoInterceptorDelegate.constructor.newInstance();
-            Log.d("OkHttpMethodHook", "stethoInterceptorIns: " + stethoInterceptorIns);
-            OkHttpClientDelegate.Builder.addNetworkInterceptor.invoke(
-                    param.thisObject,
-                    stethoInterceptorIns
-            );
-        } catch (Throwable th) {
-            th.printStackTrace();
-        }
+    protected void endHookedMethod(MethodHookParam param) throws Throwable {
+        Object stethoInterceptorIns = StethoInterceptorDelegate.constructor.newInstance();
+        Log.d("OkHttpMethodHook", "stethoInterceptorIns: " + stethoInterceptorIns);
+        OkHttpClientDelegate.Builder.addNetworkInterceptor.invoke(
+                param.thisObject,
+                stethoInterceptorIns
+        );
     }
 }

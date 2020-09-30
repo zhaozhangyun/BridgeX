@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import de.robv.android.xposed.XC_MethodHook;
 
-public abstract class XCMethodHook extends XC_MethodHook {
+public class XCMethodHook extends XC_MethodHook {
     private static final String TAG = "XC_MethodHook_Impl";
     public static final int INVALID = -1;
     private Activity activity;
@@ -26,12 +26,15 @@ public abstract class XCMethodHook extends XC_MethodHook {
         return activity;
     }
 
-    protected abstract Object executeHookedMethod(MethodHookParam param);
+    protected Object executeHookedMethod(MethodHookParam param) throws Throwable {
+        return null;
+    }
 
-    protected abstract void endHookedMethod(MethodHookParam param);
+    protected void endHookedMethod(MethodHookParam param) throws Throwable {
+    }
 
     @Override
-    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+    protected final void beforeHookedMethod(MethodHookParam param) throws Throwable {
         super.beforeHookedMethod(param);
         Log.d(TAG, "beforeHookedMethod: thisObject=" + param.thisObject.getClass().getName());
         Log.d(TAG, "beforeHookedMethod: method=" + param.method);
@@ -46,17 +49,27 @@ public abstract class XCMethodHook extends XC_MethodHook {
             }
         }
 
-        Object result = executeHookedMethod(param);
-        if (result != null) {
-            param.setResult(result);
+        try {
+            Log.d(TAG, "begin call executeHookedMethod ...");
+            Object result = executeHookedMethod(param);
+            Log.d(TAG, "end call executeHookedMethod result: \'" + result + "\'");
+            if (result != null) {
+                param.setResult(result);
+            }
+        } catch (Throwable th) {
+            throw new Exception(th);
         }
     }
 
     @Override
-    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+    protected final void afterHookedMethod(MethodHookParam param) throws Throwable {
         super.afterHookedMethod(param);
         Log.d(TAG, "afterHookedMethod: " + param.thisObject.getClass().getName());
         Log.d(TAG, "afterHookedMethod: args=" + Arrays.toString(param.args));
-        endHookedMethod(param);
+        try {
+            endHookedMethod(param);
+        } catch (Throwable th) {
+            throw new Exception(th);
+        }
     }
 }

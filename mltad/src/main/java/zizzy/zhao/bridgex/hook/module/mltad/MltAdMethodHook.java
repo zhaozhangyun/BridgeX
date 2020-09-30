@@ -24,7 +24,7 @@ public class MltAdMethodHook extends XCMethodHook {
     }
 
     @Override
-    protected Object executeHookedMethod(MethodHookParam param) {
+    protected Object executeHookedMethod(MethodHookParam param) throws Throwable {
         MltRewardVideoAdListener listener = new MltRewardVideoAdListener() {
             @Override
             public void onVideoCached() {
@@ -105,7 +105,7 @@ public class MltAdMethodHook extends XCMethodHook {
     }
 
     @Override
-    protected void endHookedMethod(MethodHookParam param) {
+    protected void endHookedMethod(MethodHookParam param) throws Throwable {
         Log.d(TAG, "endHookedMethod: method=" + param.method);
         Log.d(TAG, "endHookedMethod: args=" + Arrays.toString(param.args));
     }
