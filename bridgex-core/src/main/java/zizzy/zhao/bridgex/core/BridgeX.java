@@ -13,6 +13,8 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
 import zizzy.zhao.bridgex.base.reflect.Reflactor;
+import zizzy.zhao.bridgex.core.delegate.OkHttpClientDelegate;
+import zizzy.zhao.bridgex.hook.HookBridge;
 
 public class BridgeX {
 
@@ -43,6 +45,7 @@ public class BridgeX {
 
     private static void init(Context context) {
         sContext = context.getApplicationContext();
+        HookBridge.fire(sContext);
 
         if (logger == null) {
             synchronized (lock) {
@@ -80,6 +83,13 @@ public class BridgeX {
                         if (json.optBoolean("is_stetho_enabled")) {
                             try {
                                 StethoHelper.initializeStetho(sContext);
+
+                                HookBridge.executeHook(
+                                        OkHttpClientDelegate.Builder.getOrigClass().getName(),
+                                        "<init>",
+                                        "()V",
+                                        OkHttpMethodHook.class
+                                );
                             } catch (Throwable th) {
                                 th.printStackTrace();
                             }

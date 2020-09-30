@@ -27,7 +27,7 @@ android {
 }
 
 dependencies {
-    compileOnly fileTree(dir: 'libs', include: ['*.jar, *.aar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar, *.aar'])
 
     implementation project(path: ':bridgex-dexloader')
     compileOnly project(path: ':bridgex-base')

@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import de.robv.android.xposed.XC_MethodHook;
 
-public class XCMethodHook extends XC_MethodHook {
+public abstract class XCMethodHook extends XC_MethodHook {
     private static final String TAG = "XC_MethodHook_Impl";
     public static final int INVALID = -1;
     private Activity activity;
@@ -26,12 +26,9 @@ public class XCMethodHook extends XC_MethodHook {
         return activity;
     }
 
-    protected Object executeHookedMethod(MethodHookParam param) throws Throwable {
-        return null;
-    }
+    protected abstract Object executeHookedMethod(MethodHookParam param) throws Throwable;
 
-    protected void endHookedMethod(MethodHookParam param) throws Throwable {
-    }
+    protected abstract void endHookedMethod(MethodHookParam param) throws Throwable;
 
     @Override
     protected final void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -49,15 +46,11 @@ public class XCMethodHook extends XC_MethodHook {
             }
         }
 
-        try {
-            Log.d(TAG, "begin call executeHookedMethod ...");
-            Object result = executeHookedMethod(param);
-            Log.d(TAG, "end call executeHookedMethod result: \'" + result + "\'");
-            if (result != null) {
-                param.setResult(result);
-            }
-        } catch (Throwable th) {
-            throw new Exception(th);
+        Log.d(TAG, "begin call executeHookedMethod ...");
+        Object result = executeHookedMethod(param);
+        Log.d(TAG, "end call executeHookedMethod result: \'" + result + "\'");
+        if (result != null) {
+            param.setResult(result);
         }
     }
 

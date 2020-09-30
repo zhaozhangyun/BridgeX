@@ -14,6 +14,11 @@ public class OkHttpMethodHook extends XCMethodHook {
     }
 
     @Override
+    protected Object executeHookedMethod(MethodHookParam param) throws Throwable {
+        return null;
+    }
+
+    @Override
     protected void endHookedMethod(MethodHookParam param) throws Throwable {
         Object stethoInterceptorIns = StethoInterceptorDelegate.constructor.newInstance();
         Log.d("OkHttpMethodHook", "stethoInterceptorIns: " + stethoInterceptorIns);

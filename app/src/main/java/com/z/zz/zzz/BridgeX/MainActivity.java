@@ -12,7 +12,6 @@ import okhttp3.OkHttpClient;
 import zizzy.zhao.bridgex.base.reflect.base.ReflectClass;
 import zizzy.zhao.bridgex.core.LogBridge;
 import zizzy.zhao.bridgex.core.Logger;
-import zizzy.zhao.bridgex.core.delegate.OkHttpClientDelegate;
 import zizzy.zhao.bridgex.hook.HookBridge;
 
 public class MainActivity extends Activity {
@@ -26,25 +25,14 @@ public class MainActivity extends Activity {
 
         LogBridge.inject(new LoggerImpl());
 
-        try {
-            HookBridge.getInstance().executeHook(
-                    OkHttpClientDelegate.Builder.getOrigClass().getName(),
-                    "<init>",
-                    "()V",
-                    ReflectClass.load("zizzy.zhao.bridgex.core.OkHttpMethodHook").getOrigClass()
-            );
-        } catch (Throwable th) {
-            th.printStackTrace();
-        }
-
         new OkHttpClient.Builder().build();
 
         try {
-            HookBridge.getInstance().executeHook(
+            HookBridge.executeHook(
                     MainActivity.class.getName(),
                     "fuckBridge",
                     "Ljava/lang/String;",
-                    ReflectClass.load("zizzy.zhao.bridgex.hook.module.mltad.MltAdMethodHook").getOrigClass()
+                    "zizzy.zhao.bridgex.hook.module.mltad.MltAdMethodHook"
             );
         } catch (Throwable th) {
             th.printStackTrace();
