@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "com.mltad.sdk.demo"
-        minSdkVersion 14
-        targetSdkVersion 29
+        minSdkVersion 17
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar, *.aar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(path: ':bridgex-dexloader')
     compileOnly project(path: ':bridgex-base')
@@ -48,4 +48,13 @@ dependencies {
     //OkHttp
     implementation 'com.squareup.okhttp3:okhttp:3.4.2'
     implementation 'com.squareup.okio:okio:1.9.0'
+
+    implementation "com.android.support:appcompat-v7:28.0.0"
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+
+    implementation(name: 'mlt-adsdk', ext: 'aar')
+    implementation(name: 'GDT-4.232.1102', ext: 'aar')
+    implementation(name: 'ks_adsdk-3.1.0', ext: 'aar')
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.18'//需要添加此包，否则无法正常使用穿山甲开屏广告
+    implementation(name: 'CSJ-3.1.0.3', ext: 'aar')
 }
