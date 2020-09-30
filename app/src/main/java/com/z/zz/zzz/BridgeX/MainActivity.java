@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import okhttp3.OkHttpClient;
-import zizzy.zhao.bridgex.base.reflect.base.ReflectClass;
 import zizzy.zhao.bridgex.core.LogBridge;
 import zizzy.zhao.bridgex.core.Logger;
 import zizzy.zhao.bridgex.hook.HookBridge;
@@ -26,17 +25,6 @@ public class MainActivity extends Activity {
         LogBridge.inject(new LoggerImpl());
 
         new OkHttpClient.Builder().build();
-
-        try {
-            HookBridge.executeHook(
-                    MainActivity.class.getName(),
-                    "fuckBridge",
-                    "Ljava/lang/String;",
-                    "zizzy.zhao.bridgex.hook.module.mltad.MltAdMethodHook"
-            );
-        } catch (Throwable th) {
-            th.printStackTrace();
-        }
 
         fuckBridge("fuck !!!");
 

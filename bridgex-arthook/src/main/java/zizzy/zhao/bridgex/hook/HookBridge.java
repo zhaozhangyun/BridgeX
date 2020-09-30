@@ -7,6 +7,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import de.robv.android.xposed.DexposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import zizzy.zhao.bridgex.base.reflect.base.ReflectClass;
@@ -15,16 +19,18 @@ import zizzy.zhao.bridgex.base.utils.Util;
 
 public class HookBridge {
     private static final String TAG = "HookBridge";
-    private static Activity sActivity;
+    private static Context sContext;
+    private static Map<Class<?>, XCMethodHook> xcMethodHookCache = new LinkedHashMap<>();
 
     public static void fire(Context context) {
         Log.d(TAG, "call fire(): " + context);
+        sContext = context.getApplicationContext();
         if (context instanceof Application) {
             ((Application) context).registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
                 @Override
                 public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                     Log.v(TAG, String.format("====> [%s] created", activity.getLocalClassName()));
-                    sActivity = activity;
+                    setActivity(activity);
                 }
 
                 @Override
@@ -35,7 +41,7 @@ public class HookBridge {
                 @Override
                 public void onActivityResumed(Activity activity) {
                     Log.v(TAG, String.format("====> [%s] resumed", activity.getLocalClassName()));
-                    sActivity = activity;
+                    setActivity(activity);
                 }
 
                 @Override
@@ -63,11 +69,16 @@ public class HookBridge {
         }
     }
 
-    public static <T extends XCMethodHook> void executeHook(String className,
-                                                            String methodName,
-                                                            String paramSig,
-                                                            String xcMethodHookName) throws Throwable {
-        executeHook(className, methodName, paramSig, ReflectClass.load(xcMethodHookName).getOrigClass());
+    public static void executeHook(String className,
+                                   String methodName,
+                                   String paramSig,
+                                   String xcMethodHookName) {
+        try {
+            executeHook(className, methodName, paramSig,
+                    ReflectClass.load(xcMethodHookName).getOrigClass());
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
     }
 
     public static void executeHook(String className,
@@ -84,7 +95,10 @@ public class HookBridge {
                 ReflectClass sClass = ReflectClass.load(xcMethodHookClass);
                 ReflectConstructor ctor = sClass.getConstructor(Class[].class);
                 XCMethodHook xcMethodHookInstance = (XCMethodHook) ctor.newInstance((Object) srcArgs);
-                xcMethodHookInstance.setActivity(sActivity);
+                xcMethodHookInstance.install(sContext);
+                if (!xcMethodHookCache.containsKey(xcMethodHookClass)) {
+                    xcMethodHookCache.put(xcMethodHookClass, xcMethodHookInstance);
+                }
 
                 DexposedBridge.hookMethod(
                         XposedHelpers.findConstructorExact(ReflectClass.load(className).getOrigClass()),
@@ -113,8 +127,11 @@ public class HookBridge {
             ReflectClass sClass = ReflectClass.load(xcMethodHookClass);
             ReflectConstructor ctor = sClass.getConstructor(Class[].class);
             XCMethodHook xcMethodHookInstance = (XCMethodHook) ctor.newInstance((Object) srcArgs);
+            xcMethodHookInstance.install(sContext);
             mergedSrcArgs[srcArgs.length] = xcMethodHookInstance;
-            xcMethodHookInstance.setActivity(sActivity);
+            if (!xcMethodHookCache.containsKey(xcMethodHookClass)) {
+                xcMethodHookCache.put(xcMethodHookClass, xcMethodHookInstance);
+            }
 
             DexposedBridge.findAndHookMethod(
                     ReflectClass.load(className).getOrigClass(),
@@ -125,5 +142,17 @@ public class HookBridge {
         }
 
         return true;
+    }
+
+    private static void setActivity(Activity activity) {
+        Iterator<Map.Entry<Class<?>, XCMethodHook>> iterator = xcMethodHookCache.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Class<?>, XCMethodHook> entry = iterator.next();
+            try {
+                entry.getValue().setActivity(activity);
+            } catch (Throwable th) {
+                th.printStackTrace();
+            }
+        }
     }
 }

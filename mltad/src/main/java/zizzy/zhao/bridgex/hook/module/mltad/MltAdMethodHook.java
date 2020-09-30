@@ -1,9 +1,11 @@
 package zizzy.zhao.bridgex.hook.module.mltad;
 
+import android.content.Context;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.mltad.liby.MLTAdSDK;
 import com.mltad.liby.adspace.reward.MltRewardOption;
 import com.mltad.liby.adspace.reward.MltRewardVideo;
 import com.mltad.liby.adspace.reward.MltRewardVideoAdListener;
@@ -108,5 +110,11 @@ public class MltAdMethodHook extends XCMethodHook {
     protected void endHookedMethod(MethodHookParam param) throws Throwable {
         Log.d(TAG, "endHookedMethod: method=" + param.method);
         Log.d(TAG, "endHookedMethod: args=" + Arrays.toString(param.args));
+    }
+
+    @Override
+    public void install(Context context) {
+        Log.d(TAG, "call install: " + context);
+        MLTAdSDK.init(context, MLTADCfg.MLTAD_APPID);
     }
 }

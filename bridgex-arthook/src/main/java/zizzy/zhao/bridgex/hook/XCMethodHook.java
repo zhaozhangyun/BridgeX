@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import de.robv.android.xposed.XC_MethodHook;
 
-public abstract class XCMethodHook extends XC_MethodHook {
+public abstract class XCMethodHook extends XC_MethodHook implements Hook {
     private static final String TAG = "XC_MethodHook_Impl";
     public static final int INVALID = -1;
     private Activity activity;

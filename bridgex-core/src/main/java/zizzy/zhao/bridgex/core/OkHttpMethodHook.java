@@ -1,5 +1,6 @@
 package zizzy.zhao.bridgex.core;
 
+import android.content.Context;
 import android.util.Log;
 
 import zizzy.zhao.bridgex.core.delegate.OkHttpClientDelegate;
@@ -21,10 +22,15 @@ public class OkHttpMethodHook extends XCMethodHook {
     @Override
     protected void endHookedMethod(MethodHookParam param) throws Throwable {
         Object stethoInterceptorIns = StethoInterceptorDelegate.constructor.newInstance();
-        Log.d("OkHttpMethodHook", "stethoInterceptorIns: " + stethoInterceptorIns);
+        Log.d(TAG, "stethoInterceptorIns: " + stethoInterceptorIns);
         OkHttpClientDelegate.Builder.addNetworkInterceptor.invoke(
                 param.thisObject,
                 stethoInterceptorIns
         );
+    }
+
+    @Override
+    public void install(Context context) {
+        Log.d(TAG, "call install: " + context);
     }
 }
