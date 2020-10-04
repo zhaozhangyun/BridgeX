@@ -3,6 +3,9 @@ package zizzy.zhao.bridgex.hook;
 import android.app.Activity;
 import android.util.Log;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -12,11 +15,6 @@ public abstract class XCMethodHook extends XC_MethodHook implements Hook {
     public static final int INVALID = -1;
     private Activity activity;
     private int callbackIndex = INVALID;
-    private Class[] srcArgs;
-
-    public XCMethodHook(Class[] srcArgs) {
-        this.srcArgs = srcArgs;
-    }
 
     public final void setActivity(Activity activity) {
         this.activity = activity;
@@ -37,13 +35,36 @@ public abstract class XCMethodHook extends XC_MethodHook implements Hook {
         Log.d(TAG, "beforeHookedMethod: method=" + param.method);
         Log.d(TAG, "beforeHookedMethod: args=" + Arrays.toString(param.args));
 
-        for (int i = 0; i < srcArgs.length; ++i) {
-            Class interfaceClass = srcArgs[i];
-            if (interfaceClass.isInterface()) {
-                callbackIndex = i;
-                Log.d(TAG, "The interface [" + interfaceClass + "] index is " + callbackIndex);
-                break;
+        // find interface instance index from MethodHookParam args
+        try {
+            Class<?>[] parameterTypes = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                parameterTypes = ((Executable) param.method).getParameterTypes();
+            } else {
+                try {
+                    parameterTypes = ((Method) param.method).getParameterTypes();
+                } catch (Throwable th) {
+                    Log.e(TAG, "Failed to get parameter types: " + th);
+                    try {
+                        parameterTypes = ((Constructor) param.method).getParameterTypes();
+                    } catch (Throwable th1) {
+                        Log.e(TAG, "Failed to get parameter types: " + th);
+                    }
+                }
             }
+            if (parameterTypes != null) {
+                Log.d(TAG, "parameterTypes: " + Arrays.toString(parameterTypes));
+                for (int i = 0; i < parameterTypes.length; ++i) {
+                    Class type = parameterTypes[i];
+                    if (type.isInterface()) {
+                        callbackIndex = i;
+                        Log.d(TAG, "Class [" + type + "] index is " + callbackIndex);
+                        break;
+                    }
+                }
+            }
+        } catch (Throwable th) {
+            th.printStackTrace();
         }
 
         Log.d(TAG, "begin call executeHookedMethod ...");

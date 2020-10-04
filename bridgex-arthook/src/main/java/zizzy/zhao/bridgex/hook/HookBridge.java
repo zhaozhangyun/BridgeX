@@ -93,8 +93,8 @@ public class HookBridge {
             }
             try {
                 ReflectClass sClass = ReflectClass.load(xcMethodHookClass);
-                ReflectConstructor ctor = sClass.getConstructor(Class[].class);
-                XCMethodHook xcMethodHookInstance = (XCMethodHook) ctor.newInstance((Object) srcArgs);
+                ReflectConstructor ctor = sClass.getConstructor();
+                XCMethodHook xcMethodHookInstance = (XCMethodHook) ctor.newInstance();
                 xcMethodHookInstance.install(sContext);
                 if (!xcMethodHookCache.containsKey(xcMethodHookClass)) {
                     xcMethodHookCache.put(xcMethodHookClass, xcMethodHookInstance);
@@ -125,8 +125,8 @@ public class HookBridge {
 
         try {
             ReflectClass sClass = ReflectClass.load(xcMethodHookClass);
-            ReflectConstructor ctor = sClass.getConstructor(Class[].class);
-            XCMethodHook xcMethodHookInstance = (XCMethodHook) ctor.newInstance((Object) srcArgs);
+            ReflectConstructor ctor = sClass.getConstructor();
+            XCMethodHook xcMethodHookInstance = (XCMethodHook) ctor.newInstance();
             xcMethodHookInstance.install(sContext);
             mergedSrcArgs[srcArgs.length] = xcMethodHookInstance;
             if (!xcMethodHookCache.containsKey(xcMethodHookClass)) {

@@ -21,10 +21,6 @@ public class MltAdMethodHook extends XCMethodHook {
     private static final String TAG = "MltAdMethodHook";
     private static BlockingQueue<String> block = new LinkedBlockingQueue<>(1);
 
-    public MltAdMethodHook(Class[] srcArgs) {
-        super(srcArgs);
-    }
-
     @Override
     protected Object executeHookedMethod(MethodHookParam param) throws Throwable {
         MltRewardVideoAdListener listener = new MltRewardVideoAdListener() {

@@ -10,10 +10,6 @@ import zizzy.zhao.bridgex.hook.XCMethodHook;
 public class OkHttpMethodHook extends XCMethodHook {
     private static final String TAG = "OkHttpMethodHook";
 
-    public OkHttpMethodHook(Class[] srcArgs) {
-        super(srcArgs);
-    }
-
     @Override
     protected Object executeHookedMethod(MethodHookParam param) throws Throwable {
         return null;
