@@ -16,6 +16,9 @@ public abstract class XCMethodHook extends XC_MethodHook implements Hook {
     private Activity activity;
     private int callbackIndex = INVALID;
 
+    protected XCMethodHook() {
+    }
+
     public final void setActivity(Activity activity) {
         this.activity = activity;
     }
