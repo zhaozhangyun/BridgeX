@@ -32,7 +32,7 @@ public class OkHttpMethodHook extends XCMethodHook {
                 OkHttpClientDelegate.Builder.getOrigClass().getName(),
                 "<init>",
                 "()V",
-                getClass()
+                this
         );
     }
 }

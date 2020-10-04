@@ -115,7 +115,7 @@ public class MltAdMethodHook extends XCMethodHook {
                 "com.z.zz.zzz.BridgeX.MainActivity",
                 "fuckBridge",
                 "Ljava/lang/String;",
-                "zizzy.zhao.bridgex.hook.module.mltad.MltAdMethodHook"
+                this
         );
 
         MLTAdSDK.init(context, MLTADCfg.MLTAD_APPID);
