@@ -95,7 +95,6 @@ public class HookBridge {
                 ReflectClass sClass = ReflectClass.load(xcMethodHookClass);
                 ReflectConstructor ctor = sClass.getConstructor();
                 XCMethodHook xcMethodHookInstance = (XCMethodHook) ctor.newInstance();
-                xcMethodHookInstance.install(sContext);
                 if (!xcMethodHookCache.containsKey(xcMethodHookClass)) {
                     xcMethodHookCache.put(xcMethodHookClass, xcMethodHookInstance);
                 }
@@ -107,6 +106,33 @@ public class HookBridge {
                 th.printStackTrace();
             }
         } else if (!findAndHookMethod(className, methodName, paramSig, xcMethodHookClass)) {
+            Log.e(TAG, "Oops!!! Failed to find and hook method.");
+        }
+    }
+
+    public static void executeHook(String className,
+                                   String methodName,
+                                   String paramSig,
+                                   XCMethodHook xcMethodHookInstance) {
+        if ("<init>".equals(methodName)) {
+            Class[] srcArgs = Util.getMethodArgs(paramSig, null);
+            Object[] mergedSrcArgs = new Object[srcArgs.length];
+            for (int i = 0; i < srcArgs.length; ++i) {
+                mergedSrcArgs[i] = srcArgs[i];
+            }
+            try {
+                Class<?> xcMethodHookClass = xcMethodHookInstance.getClass();
+                if (!xcMethodHookCache.containsKey(xcMethodHookClass)) {
+                    xcMethodHookCache.put(xcMethodHookClass, xcMethodHookInstance);
+                }
+
+                DexposedBridge.hookMethod(
+                        XposedHelpers.findConstructorExact(ReflectClass.load(className).getOrigClass()),
+                        xcMethodHookInstance);
+            } catch (Throwable th) {
+                th.printStackTrace();
+            }
+        } else if (!findAndHookMethod(className, methodName, paramSig, xcMethodHookInstance)) {
             Log.e(TAG, "Oops!!! Failed to find and hook method.");
         }
     }
@@ -127,7 +153,36 @@ public class HookBridge {
             ReflectClass sClass = ReflectClass.load(xcMethodHookClass);
             ReflectConstructor ctor = sClass.getConstructor();
             XCMethodHook xcMethodHookInstance = (XCMethodHook) ctor.newInstance();
-            xcMethodHookInstance.install(sContext);
+            mergedSrcArgs[srcArgs.length] = xcMethodHookInstance;
+            if (!xcMethodHookCache.containsKey(xcMethodHookClass)) {
+                xcMethodHookCache.put(xcMethodHookClass, xcMethodHookInstance);
+            }
+
+            DexposedBridge.findAndHookMethod(
+                    ReflectClass.load(className).getOrigClass(),
+                    methodName,
+                    mergedSrcArgs);
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
+
+        return true;
+    }
+
+    private static boolean findAndHookMethod(String className,
+                                             String methodName,
+                                             String paramSig,
+                                             XCMethodHook xcMethodHookInstance) {
+        Log.i(TAG, "call findAndHookMethod(): className=" + className + ", methodName=" + methodName
+                + ", paramSig=" + paramSig + ", xcMethodHookClass=" + xcMethodHookInstance.getClass());
+        Class[] srcArgs = Util.getMethodArgs(paramSig, null);
+        Object[] mergedSrcArgs = new Object[srcArgs.length + 1];
+        for (int i = 0; i < srcArgs.length; ++i) {
+            mergedSrcArgs[i] = srcArgs[i];
+        }
+
+        try {
+            Class<?> xcMethodHookClass = xcMethodHookInstance.getClass();
             mergedSrcArgs[srcArgs.length] = xcMethodHookInstance;
             if (!xcMethodHookCache.containsKey(xcMethodHookClass)) {
                 xcMethodHookCache.put(xcMethodHookClass, xcMethodHookInstance);

@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class ReflectClass {
-    private final Class<?> mClass;
+    private Class<?> mClass;
 
     public static ReflectClass load(String className) throws ClassNotFoundException {
         return new ReflectClass(Class.forName(className));
@@ -43,8 +43,27 @@ public class ReflectClass {
 
     public ReflectMethod getDeclaredMethod(String name, Class<?>... argTypes)
             throws NoSuchMethodException {
-        Method method = mClass.getDeclaredMethod(name, argTypes);
+        Method method = null;
+
+        try {
+            method = mClass.getMethod(name, argTypes);
+        } catch (NoSuchMethodException e) {
+            do {
+                try {
+                    method = mClass.getDeclaredMethod(name, argTypes);
+                } catch (NoSuchMethodException ignore) {
+                }
+
+                mClass = mClass.getSuperclass();
+            } while (mClass != null);
+
+            if (method == null) {
+                throw new NoSuchMethodException();
+            }
+        }
+
         method.setAccessible(true);
+
         return new ReflectMethod(this, method);
     }
 

@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import zizzy.zhao.bridgex.hook.HookBridge;
 import zizzy.zhao.bridgex.hook.XCMethodHook;
 
 public class MltAdMethodHook extends XCMethodHook {
@@ -109,8 +110,14 @@ public class MltAdMethodHook extends XCMethodHook {
     }
 
     @Override
-    public void install(Context context) {
-        Log.d(TAG, "call install: " + context);
+    protected void bindMethodProxies(Context context) {
+        HookBridge.executeHook(
+                "com.z.zz.zzz.BridgeX.MainActivity",
+                "fuckBridge",
+                "Ljava/lang/String;",
+                "zizzy.zhao.bridgex.hook.module.mltad.MltAdMethodHook"
+        );
+
         MLTAdSDK.init(context, MLTADCfg.MLTAD_APPID);
     }
 }

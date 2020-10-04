@@ -5,6 +5,7 @@ import android.util.Log;
 
 import zizzy.zhao.bridgex.core.delegate.OkHttpClientDelegate;
 import zizzy.zhao.bridgex.core.delegate.StethoInterceptorDelegate;
+import zizzy.zhao.bridgex.hook.HookBridge;
 import zizzy.zhao.bridgex.hook.XCMethodHook;
 
 public class OkHttpMethodHook extends XCMethodHook {
@@ -26,7 +27,12 @@ public class OkHttpMethodHook extends XCMethodHook {
     }
 
     @Override
-    public void install(Context context) {
-        Log.d(TAG, "call install: " + context);
+    protected void bindMethodProxies(Context context) {
+        HookBridge.executeHook(
+                OkHttpClientDelegate.Builder.getOrigClass().getName(),
+                "<init>",
+                "()V",
+                getClass()
+        );
     }
 }
