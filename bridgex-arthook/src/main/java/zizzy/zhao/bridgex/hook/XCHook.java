@@ -94,8 +94,27 @@ public abstract class XCHook implements Hook {
 
     protected final void executeHook(String className, String methodName, String paramSig,
                                      XCMethodHook xcMethodHookInstance) {
-        Class<?> xcMethodHookClass = xcMethodHookInstance.getClass();
-        executeHook(className, methodName, paramSig, xcMethodHookClass);
+        if ("<init>".equals(methodName)) {
+            Class[] srcArgs = Util.getMethodArgs(paramSig, null);
+            Object[] mergedSrcArgs = new Object[srcArgs.length];
+            for (int i = 0; i < srcArgs.length; ++i) {
+                mergedSrcArgs[i] = srcArgs[i];
+            }
+            try {
+                Class<?> xcMethodHookClass = xcMethodHookInstance.getClass();
+                if (!xcMethodHookCache.containsKey(xcMethodHookClass)) {
+                    xcMethodHookCache.put(xcMethodHookClass, xcMethodHookInstance);
+                }
+
+                DexposedBridge.hookMethod(
+                        XposedHelpers.findConstructorExact(ReflectClass.load(className).getOrigClass()),
+                        xcMethodHookInstance);
+            } catch (Throwable th) {
+                th.printStackTrace();
+            }
+        } else if (!findAndHookMethod(className, methodName, paramSig, xcMethodHookInstance)) {
+            Log.e(TAG, "Oops!!! Failed to find and hook method.");
+        }
     }
 
     protected final void executeHook(String className, String methodName, String paramSig,
@@ -127,8 +146,30 @@ public abstract class XCHook implements Hook {
 
     private boolean findAndHookMethod(String className, String methodName, String paramSig,
                                       XCMethodHook xcMethodHookInstance) {
-        Class<?> xcMethodHookClass = xcMethodHookInstance.getClass();
-        return findAndHookMethod(className, methodName, paramSig, xcMethodHookClass);
+        Log.i(TAG, "call findAndHookMethod(): className=" + className + ", methodName=" + methodName
+                + ", paramSig=" + paramSig + ", xcMethodHookInstance=" + xcMethodHookInstance);
+        Class[] srcArgs = Util.getMethodArgs(paramSig, null);
+        Object[] mergedSrcArgs = new Object[srcArgs.length + 1];
+        for (int i = 0; i < srcArgs.length; ++i) {
+            mergedSrcArgs[i] = srcArgs[i];
+        }
+
+        try {
+            mergedSrcArgs[srcArgs.length] = xcMethodHookInstance;
+            Class<?> xcMethodHookClass = xcMethodHookInstance.getClass();
+            if (!xcMethodHookCache.containsKey(xcMethodHookClass)) {
+                xcMethodHookCache.put(xcMethodHookClass, xcMethodHookInstance);
+            }
+
+            DexposedBridge.findAndHookMethod(
+                    ReflectClass.load(className).getOrigClass(),
+                    methodName,
+                    mergedSrcArgs);
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
+
+        return true;
     }
 
     private boolean findAndHookMethod(String className, String methodName, String paramSig,

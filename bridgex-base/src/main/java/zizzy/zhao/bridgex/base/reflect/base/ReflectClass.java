@@ -27,22 +27,19 @@ public class ReflectClass {
         return mClass.getPackage() + "." + mClass.getName();
     }
 
-    public ReflectConstructor getDefaultConstructor()
-            throws NoSuchMethodException {
+    public ReflectConstructor getDefaultConstructor() throws NoSuchMethodException {
         Constructor constructor = mClass.getDeclaredConstructor();
         constructor.setAccessible(true);
         return new ReflectConstructor(this, constructor);
     }
 
-    public ReflectConstructor getConstructor(Class... paramTypes)
-            throws NoSuchMethodException {
+    public ReflectConstructor getConstructor(Class... paramTypes) throws NoSuchMethodException {
         Constructor constructor = mClass.getDeclaredConstructor(paramTypes);
         constructor.setAccessible(true);
         return new ReflectConstructor(this, constructor);
     }
 
-    public ReflectMethod getDeclaredMethod(String name, Class<?>... argTypes)
-            throws NoSuchMethodException {
+    public ReflectMethod getDeclaredMethod(String name, Class<?>... argTypes) throws NoSuchMethodException {
         Method method = null;
 
         try {

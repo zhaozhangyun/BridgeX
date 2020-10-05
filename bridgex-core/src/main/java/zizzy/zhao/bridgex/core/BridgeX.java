@@ -70,7 +70,7 @@ public class BridgeX {
                                 .build();
                         if (json.optBoolean("is_hook_pms_enabled")) {
                             try {
-                                Reflactor.hookPMS(context.getApplicationContext());
+                                Reflactor.hookPMS(sContext);
                             } catch (Throwable th) {
                                 th.printStackTrace();
                             }

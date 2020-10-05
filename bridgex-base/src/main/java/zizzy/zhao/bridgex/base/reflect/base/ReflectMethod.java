@@ -58,6 +58,10 @@ public class ReflectMethod<T> {
         return mIsStatic;
     }
 
+    public String getName() {
+        return mMethod.getName();
+    }
+
     @Override
     public String toString() {
         return "ReflectMethod{" +
