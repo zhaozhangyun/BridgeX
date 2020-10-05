@@ -1,11 +1,9 @@
 package zizzy.zhao.bridgex.hook.module.mltad;
 
-import android.content.Context;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.mltad.liby.MLTAdSDK;
 import com.mltad.liby.adspace.reward.MltRewardOption;
 import com.mltad.liby.adspace.reward.MltRewardVideo;
 import com.mltad.liby.adspace.reward.MltRewardVideoAdListener;
@@ -15,11 +13,10 @@ import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import zizzy.zhao.bridgex.hook.HookBridge;
 import zizzy.zhao.bridgex.hook.XCMethodHook;
 
-public class MltAdMethodHook extends XCMethodHook {
-    private static final String TAG = "MltAdMethodHook";
+public class MltRewardVideoAdHook extends XCMethodHook {
+    private static final String TAG = "MltRewardVideoAdHook";
     private static BlockingQueue<String> block = new LinkedBlockingQueue<>(1);
 
     @Override
@@ -107,17 +104,5 @@ public class MltAdMethodHook extends XCMethodHook {
     protected void endHookedMethod(MethodHookParam param) throws Throwable {
         Log.d(TAG, "endHookedMethod: method=" + param.method);
         Log.d(TAG, "endHookedMethod: args=" + Arrays.toString(param.args));
-    }
-
-    @Override
-    protected void bindMethodProxies(Context context) {
-        HookBridge.executeHook(
-                "com.z.zz.zzz.BridgeX.MainActivity",
-                "fuckBridge",
-                "Ljava/lang/String;",
-                this
-        );
-
-        MLTAdSDK.init(context, MLTADCfg.MLTAD_APPID);
     }
 }

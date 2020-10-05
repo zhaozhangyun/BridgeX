@@ -11,7 +11,6 @@ import android.util.Log;
 import okhttp3.OkHttpClient;
 import zizzy.zhao.bridgex.core.LogBridge;
 import zizzy.zhao.bridgex.core.Logger;
-import zizzy.zhao.bridgex.hook.HookBridge;
 
 public class MainActivity extends Activity {
 

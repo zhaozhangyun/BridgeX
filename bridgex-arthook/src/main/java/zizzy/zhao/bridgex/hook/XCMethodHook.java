@@ -1,7 +1,6 @@
 package zizzy.zhao.bridgex.hook;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 
 import java.lang.reflect.Constructor;
@@ -11,20 +10,13 @@ import java.util.Arrays;
 
 import de.robv.android.xposed.XC_MethodHook;
 
-public abstract class XCMethodHook extends XC_MethodHook implements Hook {
-    private static final String TAG = "XC_MethodHook_Impl";
+public abstract class XCMethodHook extends XC_MethodHook {
+    private static final String TAG = "XCMethodHook";
     public static final int INVALID = -1;
     private Activity activity;
     private int callbackIndex = INVALID;
 
     protected XCMethodHook() {
-    }
-
-    protected abstract void bindMethodProxies(Context context);
-
-    @Override
-    public final void install(Context context) {
-        bindMethodProxies(context);
     }
 
     public final void setActivity(Activity activity) {

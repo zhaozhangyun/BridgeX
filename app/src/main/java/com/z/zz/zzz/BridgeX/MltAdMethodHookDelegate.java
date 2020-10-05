@@ -21,7 +21,7 @@ public class MltAdMethodHookDelegate {
     }
 
     private static void initialize() throws ClassNotFoundException, NoSuchMethodException {
-        sClass = ReflectClass.load("zizzy.zhao.bridgex.hook.module.mltad.MltAdMethodHook");
+        sClass = ReflectClass.load("zizzy.zhao.bridgex.hook.module.mltad.MltAdHook");
 
         constructor = sClass.getDefaultConstructor();
 
