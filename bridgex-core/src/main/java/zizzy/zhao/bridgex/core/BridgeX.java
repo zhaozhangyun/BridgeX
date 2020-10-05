@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
-import zizzy.zhao.bridgex.base.reflect.Reflactor;
-
 public class BridgeX {
 
     private static String DEFAULT_TAG;

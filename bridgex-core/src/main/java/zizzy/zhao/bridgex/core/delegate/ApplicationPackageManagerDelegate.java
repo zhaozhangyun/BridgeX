@@ -1,9 +1,9 @@
-package zizzy.zhao.bridgex.base.reflect.delegate;
+package zizzy.zhao.bridgex.core.delegate;
 
 import android.os.IInterface;
 
-import zizzy.zhao.bridgex.base.reflect.base.ReflectObjectField;
 import zizzy.zhao.bridgex.base.reflect.base.ReflectClass;
+import zizzy.zhao.bridgex.base.reflect.base.ReflectObjectField;
 
 public class ApplicationPackageManagerDelegate {
     private static ReflectClass sClass = null;

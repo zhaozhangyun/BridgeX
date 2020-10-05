@@ -1,4 +1,4 @@
-package zizzy.zhao.bridgex.base.reflect;
+package zizzy.zhao.bridgex.core;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -17,13 +17,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 
-import zizzy.zhao.bridgex.base.reflect.base.ReflectObjectField;
-import zizzy.zhao.bridgex.base.reflect.delegate.ActivityThreadDelegate;
 import zizzy.zhao.bridgex.base.reflect.base.ReflectClass;
 import zizzy.zhao.bridgex.base.reflect.base.ReflectConstructor;
-import zizzy.zhao.bridgex.base.reflect.delegate.ApplicationPackageManagerDelegate;
-import zizzy.zhao.bridgex.base.reflect.delegate.ServiceManagerDelegate;
+import zizzy.zhao.bridgex.base.reflect.base.ReflectObjectField;
 import zizzy.zhao.bridgex.base.utils.HiddenApiWrapper;
+import zizzy.zhao.bridgex.core.delegate.ActivityThreadDelegate;
+import zizzy.zhao.bridgex.core.delegate.ApplicationPackageManagerDelegate;
+import zizzy.zhao.bridgex.core.delegate.ServiceManagerDelegate;
 
 public class Reflactor {
 
