@@ -18,12 +18,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-//        try {
-//            System.loadLibrary("bridgex-core");
-//        } catch (Throwable th) {
-//            th.printStackTrace();
-//        }
-
         BridgeX.attach(this);
 
         try {
