@@ -27,4 +27,8 @@ public class App extends Application {
             th.printStackTrace();
         }
     }
+
+    private void foo() {
+
+    }
 }

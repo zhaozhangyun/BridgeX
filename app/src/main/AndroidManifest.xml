@@ -43,6 +43,9 @@
         <meta-data
             android:name="bridgex.signature-hook-hashcode"
             android:value="-49852205" />
+        <meta-data
+            android:name="bridgex.com_bytedance_sdk_openadsdk-hook-appid"
+            android:value="5104543" />
 
         <provider
             android:name="com.bytedance.sdk.openadsdk.multipro.TTMultiProvider"

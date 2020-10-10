@@ -1,5 +1,8 @@
 package zizzy.zhao.bridgex.base.utils;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import java.lang.reflect.Member;
@@ -140,5 +143,24 @@ public class Util {
         }
 
         return arrayClassBuilder.toString();
+    }
+
+    public static <T> T getMateData(Context context, String metadata) {
+        T result;
+
+        try {
+            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(
+                    context.getPackageName(), PackageManager.GET_META_DATA);
+            if (applicationInfo == null
+                    || !applicationInfo.metaData.containsKey(metadata)
+                    || (result = (T) applicationInfo.metaData.get(metadata)) == null) {
+                return null;
+            }
+            return result;
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
+
+        return null;
     }
 }

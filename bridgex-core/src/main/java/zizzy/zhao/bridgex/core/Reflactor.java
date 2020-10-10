@@ -25,6 +25,8 @@ import zizzy.zhao.bridgex.core.delegate.ActivityThreadDelegate;
 import zizzy.zhao.bridgex.core.delegate.ApplicationPackageManagerDelegate;
 import zizzy.zhao.bridgex.core.delegate.ServiceManagerDelegate;
 
+import static zizzy.zhao.bridgex.base.utils.Util.getMateData;
+
 public class Reflactor {
 
     private static final String TAG = "Reflactor";
@@ -54,9 +56,9 @@ public class Reflactor {
             /**
              * signature-hook-mode: 0 text 1 hashcode
              */
-            int signMode = getMateDate(context, "bridgex.signature-hook-mode");
-            String signText = getMateDate(context, "bridgex.signature-hook-text");
-            int signHashCode = getMateDate(context, "bridgex.signature-hook-hashcode");
+            int signMode = getMateData(context, "bridgex.signature-hook-mode");
+            String signText = getMateData(context, "bridgex.signature-hook-text");
+            int signHashCode = getMateData(context, "bridgex.signature-hook-hashcode");
 
             // 准备好代理对象, 用来替换原始的对象
 //            Class iPackageManagerInterface = Reflection.forName("android.content.pm.IPackageManager");
@@ -154,25 +156,6 @@ public class Reflactor {
         ReflectClass sClass = ReflectClass.load("android.content.pm.IPackageManager$Stub$Proxy");
         ReflectConstructor constructor = (ReflectConstructor<IBinder>) sClass.getConstructor(IBinder.class);
         return constructor.newInstance(iBinder);
-    }
-
-    private static <T> T getMateDate(Context context, String metadata) {
-        T result;
-
-        try {
-            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(
-                    context.getPackageName(), PackageManager.GET_META_DATA);
-            if (applicationInfo == null
-                    || !applicationInfo.metaData.containsKey(metadata)
-                    || (result = (T) applicationInfo.metaData.get(metadata)) == null) {
-                return null;
-            }
-            return result;
-        } catch (Throwable th) {
-            th.printStackTrace();
-        }
-
-        return null;
     }
 
     static class HookHandler implements InvocationHandler {

@@ -43,7 +43,7 @@ dependencies {
     implementation project(path: ':bridgex-dexloader')
     compileOnly project(path: ':bridgex-base')
     compileOnly project(path: ':bridgex-core')
-    compileOnly project(path: ':mltad')
+    compileOnly project(path: ':ads-hook')
     implementation project(path: ':bridgex-arthook')
 
     //OkHttp
