@@ -21,22 +21,12 @@ public class App extends Application {
 
         BridgeX.attach(this);
 
-        try {
-            XCMethodHookDelegate delegate = new XCMethodHookDelegate();
-            delegate.install("zizzy.zhao.bridgex.hook.module.mltad.MltAdHook", this);
-        } catch (Throwable th) {
-            th.printStackTrace();
-        }
+        XCMethodHookDelegate.install("zizzy.zhao.bridgex.hook.module.mltad.MltAdHook", this);
 
         foo();
     }
 
     private void foo() {
-        try {
-            XCMethodHookDelegate delegate = new XCMethodHookDelegate();
-            delegate.install("zizzy.zhao.bridgex.hook.module.ttads.TTAdConfigHook", this);
-        } catch (Throwable th) {
-            th.printStackTrace();
-        }
+        XCMethodHookDelegate.install("zizzy.zhao.bridgex.hook.module.ttads.TTAdConfigHook", this);
     }
 }
