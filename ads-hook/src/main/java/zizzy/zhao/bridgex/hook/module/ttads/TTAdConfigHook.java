@@ -10,8 +10,8 @@ public class TTAdConfigHook extends XCHook {
     protected void bindXCMethods(Context context) {
         executeHook(
                 TTAdConfigDelegate.getOrigClass().getName(),
-                TTAdConfigDelegate.setAppId.getName(),
-                "Ljava/lang/String;",
+                TTAdConfigDelegate.getAppId.getName(),
+                "",
                 TTAdConfigMethodHook.class
         );
     }

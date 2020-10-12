@@ -5,7 +5,7 @@ import zizzy.zhao.bridgex.base.reflect.base.ReflectMethod;
 
 public class TTAdConfigDelegate {
     private static ReflectClass sClass = null;
-    public static ReflectMethod setAppId;
+    public static ReflectMethod getAppId;
 
     static {
         try {
@@ -19,9 +19,8 @@ public class TTAdConfigDelegate {
     private static void initialize() throws ClassNotFoundException, NoSuchMethodException {
         sClass = ReflectClass.load("com.bytedance.sdk.openadsdk.TTAdConfig");
 
-        setAppId = sClass.getDeclaredMethod(
-                "setAppId",
-                String.class
+        getAppId = sClass.getDeclaredMethod(
+                "getAppId"
         );
     }
 
