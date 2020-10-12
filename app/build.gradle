@@ -44,7 +44,7 @@ dependencies {
     compileOnly project(path: ':bridgex-base')
     compileOnly project(path: ':bridgex-core')
     compileOnly project(path: ':ads-hook')
-    implementation project(path: ':bridgex-arthook')
+    compileOnly project(path: ':bridgex-arthook')
 
     //OkHttp
     implementation 'com.squareup.okhttp3:okhttp:3.4.2'

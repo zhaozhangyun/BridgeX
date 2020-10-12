@@ -76,8 +76,8 @@ class AssetsManager {
                     }
                 }
             }
-            Log.i(TAG, String.format("###### install %s from assets/%s cost %dms", Arrays.toString(fileNames),
-                    assetsDexPath, (System.currentTimeMillis() - startTime)));
+            Log.i(TAG, String.format("###### copy multidex from assets/%s cost %dms", assetsDexPath,
+                    (System.currentTimeMillis() - startTime)));
         } catch (Throwable th) {
             th.printStackTrace();
         }
