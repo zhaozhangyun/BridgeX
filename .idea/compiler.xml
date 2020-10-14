@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="BridgeX.ads-hook" target="1.8" />
+      <module name="BridgeX.app" target="1.8" />
+      <module name="BridgeX.bridgex-arthook" target="1.8" />
+      <module name="BridgeX.bridgex-base" target="1.8" />
+      <module name="BridgeX.bridgex-core" target="1.8" />
+      <module name="BridgeX.bridgex-dexloader" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

@@ -29,6 +29,25 @@ android {
             jniLibs.srcDirs = ['src/main/jni']
         }
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            def fileName = outputFile.getName()
+            if (outputFile != null && outputFile.name != null && outputFile.name.endsWith(".apk")) {
+                if (variant.buildType.name == 'release') {
+                    def versionName = variant.mergedFlavor.versionName
+                    def flavor = variant.getFlavorName()
+                    fileName = "bridgex_release_${flavor}_v${versionName}.apk"
+                } else if (variant.buildType.name == 'debug') {
+                    def versionName = variant.mergedFlavor.versionName
+                    def flavor = variant.getFlavorName()
+                    fileName = "bridgex_debug_${flavor}_v${versionName}.apk"
+                }
+                output.outputFileName = fileName
+            }
+        }
+    }
 }
 
 repositories {
