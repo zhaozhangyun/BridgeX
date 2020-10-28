@@ -10,7 +10,7 @@ public class TTAdConfigMethodHook extends XCMethodHook {
         if (TTAdConfigDelegate.getAppId.getName().equals(param.method.getName())) {
             String appId = Util.getMateData(getActivity(),
                     "bridgex.com_bytedance_sdk_openadsdk-hook-appid");
-            return appId;
+            return appId.trim();
         }
         return null;
     }

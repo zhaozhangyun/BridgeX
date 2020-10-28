@@ -8,9 +8,13 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 import okhttp3.OkHttpClient;
 import zizzy.zhao.bridgex.core.LogBridge;
-import zizzy.zhao.bridgex.core.Logger;
 
 public class MainActivity extends Activity {
 
@@ -21,23 +25,17 @@ public class MainActivity extends Activity {
 
         checkAPP(this);
 
-        LogBridge.inject(new LoggerImpl());
-
         new OkHttpClient.Builder().build();
 
-        fuckBridge("fuck !!!");
-
-        /*
-        Logger.log();
-        Logger.log("hello, world");
-        Logger.log(1, "call create", "call create1", "uin");
-        Logger.log("{ when=0 what=3 target=com.bytedance.sdk.openadsdk.utils.WeakHandler }");
-        Logger.log(1);
-        Logger.log(true);
-        Logger.log(1.0f);
-        Logger.log(10000000000000000L);
-        Logger.log("abc", "lalala");
-        fuckBridge("fuck !!!");
+        LogBridge.log();
+        LogBridge.log("hello, world");
+        LogBridge.log(1, "call create", "call create1", "uin");
+        LogBridge.log("{ when=0 what=3 target=com.bytedance.sdk.openadsdk.utils.WeakHandler }");
+        LogBridge.log(1);
+        LogBridge.log(true);
+        LogBridge.log(1.0f);
+        LogBridge.log(10000000000000000L);
+        LogBridge.log("abc", "lalala");
 
         InputStream is = null;
         try {
@@ -50,10 +48,10 @@ public class MainActivity extends Activity {
                 @Override
                 public void run() {
                     for (int i = 0; i < 3; i++) {
-                        Logger.log(Thread.currentThread().getName(), json);
+                        LogBridge.log(Thread.currentThread().getName() + i, json);
                     }
                 }
-            }, "thread-a").start();
+            }, "thread-").start();
         } catch (Throwable th) {
             // ignored
         } finally {
@@ -64,7 +62,6 @@ public class MainActivity extends Activity {
                 }
             }
         }
-         */
 
 //        try {
 //            is = getResources().getAssets().open("package_pattern.json");
@@ -76,7 +73,7 @@ public class MainActivity extends Activity {
 //                @Override
 //                public void run() {
 //                    for (int i = 0; i < 3; i++) {
-//                        Logger.log(Thread.currentThread().getName(), json);
+//                        LogBridge.log(Thread.currentThread().getName(), json);
 //                    }
 //                }
 //            }, "thread-b").start();
@@ -92,12 +89,14 @@ public class MainActivity extends Activity {
 //        }
 
 //        BridgeX.writeToFile("test.txt", "abc");
+
+        fuckBridge("fuck !!!");
     }
 
     private void fuckBridge(String fuck) {
-        Logger.log();
-        Logger.log(fuck);
-        Logger.log("sick", fuck);
+        LogBridge.log();
+        LogBridge.log(fuck);
+        LogBridge.log("sick", fuck);
     }
 
     private void checkAPP(Context context) {

@@ -16,14 +16,14 @@ public class BridgeX {
 
     private static String DEFAULT_TAG;
     private static boolean DEBUGGABLE;
-    private static Logger logger;
+    private static LogBridge logBridge;
     private static Object lock = new Object[0];
     private static Context sContext;
     private static File EXTERNAL_DIR;
 
     static {
         DEFAULT_TAG = BridgeX.class.getSimpleName();
-        DEBUGGABLE = true;
+        DEBUGGABLE = false;
     }
 
     private static boolean ensureCreated(File folder) {
@@ -42,9 +42,9 @@ public class BridgeX {
     private static void init(Context context) {
         sContext = context.getApplicationContext();
 
-        if (logger == null) {
+        if (logBridge == null) {
             synchronized (lock) {
-                if (logger == null) {
+                if (logBridge == null) {
                     InputStream is = null;
                     try {
                         is = context.getResources().getAssets().open("bridgex_conf.json");
@@ -54,19 +54,19 @@ public class BridgeX {
                         JSONObject json = new JSONObject(new String(buffer));
                         DEBUGGABLE = json.optBoolean("debuggable");
                         EXTERNAL_DIR = new File(json.optString("external_dir"));
-                        logger = new Logger.LoggerBuilder(context)
-                                .defaultTag(json.optJSONObject("logger").optString("default_tag"))
+                        logBridge = new LogBridge.Builder(context)
+                                .defaultTag(json.optJSONObject("log_bridge").optString("default_tag"))
                                 .debuggable(DEBUGGABLE)
                                 .externalDir(EXTERNAL_DIR.getName())
-                                .showAllStack(json.optJSONObject("logger").optBoolean("show_all_stack"))
-                                .maxLogStackIndex(json.optJSONObject("logger").optInt("max_stack_index"))
-                                .enableStackPackage(json.optJSONObject("logger").optJSONObject("stack_package")
+                                .showAllStack(json.optJSONObject("log_bridge").optBoolean("show_all_stack"))
+                                .maxLogStackIndex(json.optJSONObject("log_bridge").optInt("max_stack_index"))
+                                .enableStackPackage(json.optJSONObject("log_bridge").optJSONObject("stack_package")
                                         .optBoolean("enable"))
-                                .startIndex(json.optJSONObject("logger").optJSONObject("stack_package")
+                                .startIndex(json.optJSONObject("log_bridge").optJSONObject("stack_package")
                                         .optInt("start_index"))
-                                .stackPackage(json.optJSONObject("logger").optJSONObject("stack_package")
+                                .stackPackage(json.optJSONObject("log_bridge").optJSONObject("stack_package")
                                         .optString("package"))
-                                .exportJson(json.optJSONObject("logger").optBoolean("export_json"))
+                                .exportJson(json.optJSONObject("log_bridge").optBoolean("export_json"))
                                 .build();
                         if (json.optBoolean("is_hook_pms_enabled")) {
                             try {

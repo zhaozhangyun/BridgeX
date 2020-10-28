@@ -2,7 +2,7 @@
   "multi_dex": {
     "force_clear_old_dex_cache": true
   },
-  "logger": {
+  "log_bridge": {
     "default_tag": "bridgex",
     "show_all_stack": true,
     "max_stack_index": 16,
