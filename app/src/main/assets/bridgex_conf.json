@@ -2,17 +2,6 @@
   "multi_dex": {
     "force_clear_old_dex_cache": true
   },
-  "log_bridge": {
-    "default_tag": "bridgex",
-    "show_all_stack": true,
-    "max_stack_index": 16,
-    "stack_package": {
-      "enable": false,
-      "start_index": 0,
-      "package": ""
-    },
-    "export_json": true
-  },
   "debuggable": true,
   "is_hook_pms_enabled": true,
   "is_stetho_enabled": true,

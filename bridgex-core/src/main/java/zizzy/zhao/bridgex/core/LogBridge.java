@@ -14,6 +14,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 import java.lang.ref.WeakReference;
 import java.net.UnknownHostException;
@@ -29,14 +30,11 @@ public class LogBridge {
 
     private static final String TAG = LogBridge.class.getSimpleName();
     private static LogBridge instance;
-    private static boolean DEBUG;
-
-    static {
-        DEBUG = false;
-    }
+    private static Object lock = new Object[0];
 
     private AtomicInteger atomI;
     private String defaultTag;
+    private boolean enabled;
     private boolean debuggable;
     private int maxLogStackIndex;
     private boolean showAllStack;
@@ -47,9 +45,52 @@ public class LogBridge {
     private File exportJsonDir;
     private Map<String, String> fileCache;
 
-    LogBridge(Builder builder) {
-        instance = this;
+    public static void init(Context context) {
+        Context ctx = context.getApplicationContext();
+        if (instance == null) {
+            synchronized (lock) {
+                if (instance == null) {
+                    InputStream is = null;
+                    try {
+                        is = ctx.getResources().getAssets().open("logbridge_conf.json");
+                        int size = is.available();
+                        byte[] buffer = new byte[size];
+                        is.read(buffer);
+                        JSONObject jo = new JSONObject(new String(buffer));
+                        instance = new LogBridge.Builder(ctx)
+                                .defaultTag(jo.optString("default_tag"))
+                                .enabled(jo.optBoolean("enabled"))
+                                .debuggable(jo.optBoolean("debuggable"))
+                                .externalDir(new File(jo.optString("external_dir",
+                                        "logbridge")).getName())
+                                .showAllStack(jo.optBoolean("show_all_stack"))
+                                .maxLogStackIndex(jo.optInt("max_stack_index"))
+                                .enableStackPackage(jo.optJSONObject("stack_package")
+                                        .optBoolean("enabled"))
+                                .startIndex(jo.optJSONObject("stack_package")
+                                        .optInt("start_index"))
+                                .stackPackage(jo.optJSONObject("stack_package")
+                                        .optString("package"))
+                                .exportJson(jo.optBoolean("export_json"))
+                                .build();
+                    } catch (Throwable th) {
+                        Log.e(TAG, "parse bridgex_conf.json error", th);
+                    } finally {
+                        if (is != null) {
+                            try {
+                                is.close();
+                            } catch (IOException e) {
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private LogBridge(Builder builder) {
         defaultTag = builder.tag;
+        enabled = builder.enabled;
         debuggable = builder.debuggable;
         showAllStack = builder.showAllStack;
         maxLogStackIndex = builder.maxLogStackIndex;
@@ -58,6 +99,11 @@ public class LogBridge {
         stackPackage = builder.stackPackage;
         exportJson = builder.exportJson;
         exportJsonDir = builder.exportJsonDir;
+
+        if (!enabled) {
+            Log.w(defaultTag, "Oooooooooooooooooooooooooooooooops! LogBridge is not enabled.");
+            debuggable = false;
+        }
 
         atomI = new AtomicInteger(0);
         fileCache = new LinkedHashMap<>();
@@ -173,6 +219,10 @@ public class LogBridge {
     }
 
     private void log(String tag, int priority, Object source, Throwable th) {
+        if (!enabled) {
+            return;
+        }
+
         if (!TextUtils.isEmpty(tag) && !defaultTag.equalsIgnoreCase(tag)) {
             tag = defaultTag + "-" + tag;
         } else {
@@ -186,8 +236,8 @@ public class LogBridge {
         }
 
         Throwable throwable = new Throwable();
-        if (debuggable && DEBUG) {
-            Log.v(tag + " ++++++", getFormatLog(source), throwable);
+        if (debuggable) {
+            Log.v(defaultTag + " ++++++", getFormatLog(source), throwable);
         }
 
         int currentIndex = atomI.incrementAndGet() + startIndex;
@@ -526,11 +576,12 @@ public class LogBridge {
         public final static int LOGGER_ENTRY_MAX_PAYLOAD = 4000;
     }
 
-    static class Builder {
+    private static class Builder {
 
         private static final String EXT_DIR_NAME = "bridgex";
         private Context context;
         private String tag;
+        private boolean enabled;
         private boolean debuggable;
         private boolean showAllStack;
         private int maxLogStackIndex;
@@ -541,38 +592,43 @@ public class LogBridge {
         private File exportJsonDir;
         private File externalDir;
 
-        Builder(Context context) {
+        private Builder(Context context) {
             this.context = context.getApplicationContext();
             this.tag = LogBridge.class.getSimpleName();
             maxLogStackIndex = 16;
         }
 
-        Builder debuggable(boolean debuggable) {
+        private Builder enabled(boolean enabled) {
+            this.enabled = enabled;
+            return this;
+        }
+
+        private Builder debuggable(boolean debuggable) {
             this.debuggable = debuggable;
             return this;
         }
 
-        Builder defaultTag(String tag) {
+        private Builder defaultTag(String tag) {
             this.tag = tag;
             return this;
         }
 
-        Builder showAllStack(boolean showAllStack) {
+        private Builder showAllStack(boolean showAllStack) {
             this.showAllStack = showAllStack;
             return this;
         }
 
-        Builder maxLogStackIndex(int maxLogStackIndex) {
+        private Builder maxLogStackIndex(int maxLogStackIndex) {
             this.maxLogStackIndex = maxLogStackIndex;
             return this;
         }
 
-        Builder enableStackPackage(boolean enableStackPackage) {
+        private Builder enableStackPackage(boolean enableStackPackage) {
             this.enableStackPackage = enableStackPackage;
             return this;
         }
 
-        Builder startIndex(int index) {
+        private Builder startIndex(int index) {
             if (index < 0) {
                 index = 0;
             }
@@ -580,7 +636,7 @@ public class LogBridge {
             return this;
         }
 
-        Builder stackPackage(String stackPackage) {
+        private Builder stackPackage(String stackPackage) {
             if (TextUtils.isEmpty(stackPackage)) {
                 stackPackage = context.getPackageName();
             }
@@ -588,7 +644,7 @@ public class LogBridge {
             return this;
         }
 
-        Builder exportJson(boolean exportJson) {
+        private Builder exportJson(boolean exportJson) {
 //            int permission1 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
 //                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
 //            int permission2 = ContextCompat.checkSelfPermission(context.getApplicationContext(),
@@ -612,7 +668,7 @@ public class LogBridge {
             return this;
         }
 
-        Builder externalDir(String dir) {
+        private Builder externalDir(String dir) {
             if (TextUtils.isEmpty(dir)) {
                 dir = EXT_DIR_NAME;
             }
@@ -633,7 +689,7 @@ public class LogBridge {
             return this;
         }
 
-        LogBridge build() {
+        private LogBridge build() {
             return new LogBridge(this);
         }
     }

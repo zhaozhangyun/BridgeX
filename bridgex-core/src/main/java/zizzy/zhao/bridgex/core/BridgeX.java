@@ -16,7 +16,6 @@ public class BridgeX {
 
     private static String DEFAULT_TAG;
     private static boolean DEBUGGABLE;
-    private static LogBridge logBridge;
     private static Object lock = new Object[0];
     private static Context sContext;
     private static File EXTERNAL_DIR;
@@ -42,56 +41,40 @@ public class BridgeX {
     private static void init(Context context) {
         sContext = context.getApplicationContext();
 
-        if (logBridge == null) {
-            synchronized (lock) {
-                if (logBridge == null) {
-                    InputStream is = null;
+        synchronized (lock) {
+            LogBridge.init(context);
+
+            InputStream is = null;
+            try {
+                is = context.getResources().getAssets().open("bridgex_conf.json");
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                is.read(buffer);
+                JSONObject json = new JSONObject(new String(buffer));
+                DEBUGGABLE = json.optBoolean("debuggable");
+                EXTERNAL_DIR = new File(json.optString("external_dir"));
+                if (json.optBoolean("is_hook_pms_enabled")) {
                     try {
-                        is = context.getResources().getAssets().open("bridgex_conf.json");
-                        int size = is.available();
-                        byte[] buffer = new byte[size];
-                        is.read(buffer);
-                        JSONObject json = new JSONObject(new String(buffer));
-                        DEBUGGABLE = json.optBoolean("debuggable");
-                        EXTERNAL_DIR = new File(json.optString("external_dir"));
-                        logBridge = new LogBridge.Builder(context)
-                                .defaultTag(json.optJSONObject("log_bridge").optString("default_tag"))
-                                .debuggable(DEBUGGABLE)
-                                .externalDir(EXTERNAL_DIR.getName())
-                                .showAllStack(json.optJSONObject("log_bridge").optBoolean("show_all_stack"))
-                                .maxLogStackIndex(json.optJSONObject("log_bridge").optInt("max_stack_index"))
-                                .enableStackPackage(json.optJSONObject("log_bridge").optJSONObject("stack_package")
-                                        .optBoolean("enable"))
-                                .startIndex(json.optJSONObject("log_bridge").optJSONObject("stack_package")
-                                        .optInt("start_index"))
-                                .stackPackage(json.optJSONObject("log_bridge").optJSONObject("stack_package")
-                                        .optString("package"))
-                                .exportJson(json.optJSONObject("log_bridge").optBoolean("export_json"))
-                                .build();
-                        if (json.optBoolean("is_hook_pms_enabled")) {
-                            try {
-                                Reflactor.hookPMS(sContext);
-                            } catch (Throwable th) {
-                                th.printStackTrace();
-                            }
-                        }
-                        if (json.optBoolean("is_stetho_enabled")) {
-                            try {
-                                StethoHelper.initializeStetho(sContext);
-                                new OkHttpHook().install(sContext);
-                            } catch (Throwable th) {
-                                th.printStackTrace();
-                            }
-                        }
+                        Reflactor.hookPMS(sContext);
                     } catch (Throwable th) {
-                        Log.e(DEFAULT_TAG, "parse bridgex_conf.json error", th);
-                    } finally {
-                        if (is != null) {
-                            try {
-                                is.close();
-                            } catch (IOException e) {
-                            }
-                        }
+                        th.printStackTrace();
+                    }
+                }
+                if (json.optBoolean("is_stetho_enabled")) {
+                    try {
+                        StethoHelper.initializeStetho(sContext);
+                        new OkHttpHook().install(sContext);
+                    } catch (Throwable th) {
+                        th.printStackTrace();
+                    }
+                }
+            } catch (Throwable th) {
+                Log.e(DEFAULT_TAG, "parse bridgex_conf.json error", th);
+            } finally {
+                if (is != null) {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
                     }
                 }
             }

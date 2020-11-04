@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "debuggable": false,
+  "default_tag": "bridgex",
+  "export_json": true,
+  "external_dir": "bridgex",
+  "show_all_stack": true,
+  "max_stack_index": 16,
+  "stack_package": {
+    "enabled": false,
+    "start_index": 0,
+    "package": ""
+  }
+}
