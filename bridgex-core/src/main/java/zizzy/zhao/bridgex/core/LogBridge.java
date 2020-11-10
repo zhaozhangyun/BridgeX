@@ -256,18 +256,14 @@ public class LogBridge {
         }
 
         if (wr != null) {
-            source = instance.formatJson(source);
+            source = instance.format(instance.formatJson(source));
             if (instance.exportJson) {
                 String jsonFilePath = instance.exportJson(source);
                 if (!TextUtils.isEmpty(jsonFilePath)) {
-                    builder.append("\n++++++ : ").append(jsonFilePath);
+                    builder.append("\n++++++>>>>>> ").append(jsonFilePath);
                 }
             }
-            source = instance.format(source);
-        }
-
-        // check bundle
-        if (source instanceof Bundle) {
+        } else if (source instanceof Bundle) { // check bundle
             source = instance.formatBundle((Bundle) source);
         }
         builder.append(source);
