@@ -74,7 +74,8 @@ public class LogBridge {
                                 .exportJson(jo.optBoolean("export_json"))
                                 .build();
                     } catch (Throwable th) {
-                        Log.e(TAG, "parse bridgex_conf.json error", th);
+                        Log.e(TAG, "Error to parse bridgex_conf.json with " + th);
+                        instance = new LogBridge.Builder(ctx).build();
                     } finally {
                         if (is != null) {
                             try {
@@ -219,7 +220,7 @@ public class LogBridge {
     }
 
     private void log(String tag, int priority, Object source, Throwable th) {
-        if (!enabled) {
+        if (!enabled && !Log.isLoggable(defaultTag, priority)) {
             return;
         }
 
@@ -578,7 +579,7 @@ public class LogBridge {
 
     private static class Builder {
 
-        private static final String EXT_DIR_NAME = "bridgex";
+        private static final String EXT_DIR_NAME = "logbridge";
         private Context context;
         private String tag;
         private boolean enabled;
@@ -594,7 +595,7 @@ public class LogBridge {
 
         private Builder(Context context) {
             this.context = context.getApplicationContext();
-            this.tag = LogBridge.class.getSimpleName();
+            this.tag = "logbridge";
             maxLogStackIndex = 16;
         }
 
