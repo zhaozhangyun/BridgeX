@@ -2,6 +2,7 @@ package zizzy.zhao.bridgex.core;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.DeadSystemException;
 import android.text.TextUtils;
 import android.util.Log;
@@ -171,6 +172,7 @@ public class LogBridge {
         }
 
         instance.atomI.incrementAndGet();
+
         List<Object> list = new ArrayList<>();
         list.add(source);
         log(list.toArray());
@@ -191,6 +193,33 @@ public class LogBridge {
         StringBuilder builder = new StringBuilder();
         boolean isFirst = true;
         for (Object arg : args) {
+            // check json
+            WeakReference wr = null;
+            try {
+                wr = new WeakReference<>(new JSONObject(arg.toString()));
+            } catch (Throwable th1) {
+                try {
+                    wr = new WeakReference<>(new JSONArray(arg.toString()));
+                } catch (Throwable th2) {
+                }
+            }
+
+            if (wr != null) {
+                arg = instance.formatJson(arg);
+                if (instance.exportJson) {
+                    String jsonFilePath = instance.exportJson(arg);
+                    if (!TextUtils.isEmpty(jsonFilePath)) {
+                        builder.append("\n++++++ : ").append(jsonFilePath);
+                    }
+                }
+                arg = instance.format(arg);
+            }
+
+            // check bundle
+            if (arg instanceof Bundle) {
+                arg = instance.formatBundle((Bundle) arg);
+            }
+
             if (isFirst) {
                 isFirst = false;
                 builder.append(arg);
@@ -212,7 +241,38 @@ public class LogBridge {
         }
 
         instance.atomI.incrementAndGet();
-        instance.log(tag, Log.DEBUG, source, null);
+
+        StringBuilder builder = new StringBuilder();
+
+        // check json
+        WeakReference wr = null;
+        try {
+            wr = new WeakReference<>(new JSONObject(source.toString()));
+        } catch (Throwable th1) {
+            try {
+                wr = new WeakReference<>(new JSONArray(source.toString()));
+            } catch (Throwable th2) {
+            }
+        }
+
+        if (wr != null) {
+            source = instance.formatJson(source);
+            if (instance.exportJson) {
+                String jsonFilePath = instance.exportJson(source);
+                if (!TextUtils.isEmpty(jsonFilePath)) {
+                    builder.append("\n++++++ : ").append(jsonFilePath);
+                }
+            }
+            source = instance.format(source);
+        }
+
+        // check bundle
+        if (source instanceof Bundle) {
+            source = instance.formatBundle((Bundle) source);
+        }
+        builder.append(source);
+
+        instance.log(tag, Log.DEBUG, builder.toString(), null);
     }
 
     private static boolean ensureCreated(File folder) {
@@ -222,6 +282,20 @@ public class LogBridge {
         } else {
             return true;
         }
+    }
+
+    private String formatBundle(Bundle bundle) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n--------------------------------------------------------------------------");
+        for (String key : bundle.keySet()) {
+            sb.append(formatString("\n|\t%-32s |\t%-32s |", key, bundle.get(key)));
+            sb.append("\n--------------------------------------------------------------------------");
+        }
+        return sb.toString();
+    }
+
+    private String formatString(String format, Object... args) {
+        return String.format(Locale.US, format, args);
     }
 
     private void log(String tag, int priority, Object source, Throwable th) {
@@ -257,7 +331,6 @@ public class LogBridge {
         String methodClass;
         int lineNumber;
         String space = " ";
-        String jsonFilePath = null;
 
         StackTraceElement[] stacks = throwable.fillInStackTrace().getStackTrace();
         int stackSize = maxLogStackIndex + currentIndex + 1;
@@ -265,27 +338,6 @@ public class LogBridge {
         if (debuggable) {
             Log.v(defaultTag, "stackSize: " + stacks.length);
             Log.v(defaultTag, "maxStackSize: " + maxStackSize);
-        }
-
-        if (source != null) {
-            // check json
-            WeakReference wr = null;
-            try {
-                wr = new WeakReference<>(new JSONObject(source.toString()));
-            } catch (Throwable th1) {
-                try {
-                    wr = new WeakReference<>(new JSONArray(source.toString()));
-                } catch (Throwable th2) {
-                }
-            }
-
-            if (wr != null) {
-                source = formatJson(source);
-                if (exportJson) {
-                    jsonFilePath = exportJson(source);
-                }
-                source = format(source);
-            }
         }
 
         StringBuilder stackBuilder = new StringBuilder();
@@ -318,10 +370,6 @@ public class LogBridge {
                 } else {
                     stackBuilder.append(String.format("--- [%s] %s.%s %s", fileName, className,
                             methodClass, getFormatLog(source)));
-                }
-
-                if (!TextUtils.isEmpty(jsonFilePath)) {
-                    stackBuilder.append("\n++++++ : ").append(jsonFilePath);
                 }
             } else if (showAllStack && i > currentIndex) {
                 if (enableStackPackage) {

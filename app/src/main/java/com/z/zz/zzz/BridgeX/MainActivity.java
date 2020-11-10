@@ -37,6 +37,12 @@ public class MainActivity extends Activity {
         LogBridge.log(10000000000000000L);
         LogBridge.log("abc", "lalala");
 
+        Bundle bundle = new Bundle();
+        bundle.putString("key1", "hello");
+        bundle.putInt("key2", 666);
+        bundle.putBoolean("key3", true);
+        LogBridge.log(bundle);
+
         InputStream is = null;
         try {
             is = getResources().getAssets().open("bridgex_conf.json");
