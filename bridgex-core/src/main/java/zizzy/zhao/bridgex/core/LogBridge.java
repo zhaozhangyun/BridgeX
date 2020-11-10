@@ -278,10 +278,10 @@ public class LogBridge {
 
     private String formatBundle(Bundle bundle) {
         StringBuilder sb = new StringBuilder();
-        sb.append("\n").append(getSplitter(74));
+        sb.append("\n").append(getSplitter(87));
         for (String key : bundle.keySet()) {
-            sb.append(formatString("\n|\t%-32s |\t%-32s |", key, bundle.get(key)));
-            sb.append("\n").append(getSplitter(74));
+            sb.append(formatString("\n| %-40s | %-40s |", key, bundle.get(key)));
+            sb.append("\n").append(getSplitter(87));
         }
         return sb.toString();
     }
