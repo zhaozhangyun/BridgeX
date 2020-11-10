@@ -29,7 +29,7 @@ import zizzy.zhao.bridgex.base.utils.Md5Util;
 
 public class LogBridge {
 
-    private static final String TAG = LogBridge.class.getSimpleName();
+    private static final String TAG = "logbridge";
     private static LogBridge instance;
     private static Object lock = new Object[0];
 
@@ -600,7 +600,7 @@ public class LogBridge {
 
         private Builder(Context context) {
             this.context = context.getApplicationContext();
-            this.tag = "logbridge";
+            this.tag = TAG;
             maxLogStackIndex = 16;
         }
 
