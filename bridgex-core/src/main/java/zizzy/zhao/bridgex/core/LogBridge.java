@@ -21,6 +21,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -199,6 +200,10 @@ public class LogBridge {
         }
 
         log(null, builder.toString());
+    }
+
+    public static void logFormat(String format, Object... args) {
+        log(String.format(Locale.US, format, args));
     }
 
     public static void log(String tag, Object source) {
