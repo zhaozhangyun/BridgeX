@@ -1,9 +1,9 @@
 {
   "enabled": true,
   "debuggable": false,
-  "default_tag": "bridgex",
+  "default_tag": "logbridge",
   "export_json": true,
-  "external_dir": "bridgex",
+  "external_dir": "logbridge",
   "show_all_stack": true,
   "max_stack_index": 16,
   "stack_package": {
