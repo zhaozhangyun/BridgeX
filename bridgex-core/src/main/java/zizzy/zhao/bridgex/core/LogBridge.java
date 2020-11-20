@@ -154,7 +154,7 @@ public class LogBridge {
         }
 
         instance.atomI.incrementAndGet();
-        log(Boolean.valueOf(source));
+        log(String.valueOf(source));
     }
 
     public static void log() {
@@ -172,59 +172,7 @@ public class LogBridge {
         }
 
         instance.atomI.incrementAndGet();
-
-        List<Object> list = new ArrayList<>();
-        list.add(source);
-        log(list.toArray());
-    }
-
-    public static void log(Object... args) {
-        if (instance == null) {
-            throw new NullPointerException("The Logger instance is null!");
-        }
-
-        instance.atomI.incrementAndGet();
-
-        if (args == null || args.length == 0) {
-            log(null, null);
-            return;
-        }
-
-        StringBuilder builder = new StringBuilder();
-        boolean isFirst = true;
-        for (Object arg : args) {
-            // check json
-            WeakReference wr = null;
-            try {
-                wr = new WeakReference<>(new JSONObject(arg.toString()));
-            } catch (Throwable th1) {
-                try {
-                    wr = new WeakReference<>(new JSONArray(arg.toString()));
-                } catch (Throwable th2) {
-                }
-            }
-
-            if (wr != null) {
-                arg = instance.formatJson(instance.format(arg));
-                if (instance.exportJson) {
-                    String jsonFilePath = instance.exportJson(arg);
-                    if (!TextUtils.isEmpty(jsonFilePath)) {
-                        builder.append("\n++++++>>>>>> ").append(jsonFilePath);
-                    }
-                }
-            } else if (arg instanceof Bundle) { // check bundle
-                arg = instance.formatBundle((Bundle) arg);
-            }
-
-            if (isFirst) {
-                isFirst = false;
-                builder.append(arg);
-            } else {
-                builder.append(", " + arg);
-            }
-        }
-
-        log(null, builder.toString());
+        log(instance.defaultTag, source);
     }
 
     public static void logFormat(String format, Object... args) {

@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 
         LogBridge.log();
         LogBridge.log("hello, world");
-        LogBridge.log(1, "call create", "call create1", "uin");
+        LogBridge.logFormat("%d, %s, %s, %s", 1, "call create", "call create1", "uin");
         LogBridge.log("{ when=0 what=3 target=com.bytedance.sdk.openadsdk.utils.WeakHandler }");
         LogBridge.log(1);
         LogBridge.log(true);
@@ -53,6 +53,8 @@ public class MainActivity extends Activity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    LogBridge.log(json);
+
                     for (int i = 0; i < 3; i++) {
                         LogBridge.log(Thread.currentThread().getName() + i, json);
                     }
