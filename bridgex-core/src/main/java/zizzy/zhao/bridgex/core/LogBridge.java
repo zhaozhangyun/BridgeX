@@ -48,18 +48,17 @@ public class LogBridge {
     private Map<String, String> fileCache;
 
     public static void init(Context context) {
-        Context ctx = context.getApplicationContext();
         if (instance == null) {
             synchronized (lock) {
                 if (instance == null) {
                     InputStream is = null;
                     try {
-                        is = ctx.getResources().getAssets().open("logbridge_conf.json");
+                        is = context.getResources().getAssets().open("logbridge_conf.json");
                         int size = is.available();
                         byte[] buffer = new byte[size];
                         is.read(buffer);
                         JSONObject jo = new JSONObject(new String(buffer));
-                        instance = new LogBridge.Builder(ctx)
+                        instance = new LogBridge.Builder(context)
                                 .defaultTag(jo.optString("default_tag"))
                                 .enabled(jo.optBoolean("enabled"))
                                 .debuggable(jo.optBoolean("debuggable"))
@@ -77,7 +76,7 @@ public class LogBridge {
                                 .build();
                     } catch (Throwable th) {
                         Log.e(TAG, "Error to parse bridgex_conf.json with " + th);
-                        instance = new LogBridge.Builder(ctx).build();
+                        instance = new LogBridge.Builder(context).build();
                     } finally {
                         if (is != null) {
                             try {
@@ -587,7 +586,7 @@ public class LogBridge {
         private File externalDir;
 
         private Builder(Context context) {
-            this.context = context.getApplicationContext();
+            this.context = context;
             this.tag = TAG;
             maxLogStackIndex = 16;
         }

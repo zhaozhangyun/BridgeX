@@ -39,14 +39,14 @@ public class BridgeX {
     }
 
     private static void init(Context context) {
-        sContext = context.getApplicationContext();
+        sContext = context.getApplicationContext() == null ? context : context.getApplicationContext();
 
         synchronized (lock) {
-            LogBridge.init(context);
+            LogBridge.init(sContext);
 
             InputStream is = null;
             try {
-                is = context.getResources().getAssets().open("bridgex_conf.json");
+                is = sContext.getResources().getAssets().open("bridgex_conf.json");
                 int size = is.available();
                 byte[] buffer = new byte[size];
                 is.read(buffer);
