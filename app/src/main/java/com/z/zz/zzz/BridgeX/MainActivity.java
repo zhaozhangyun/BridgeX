@@ -36,6 +36,7 @@ public class MainActivity extends Activity {
         LogBridge.log(1.0f);
         LogBridge.log(10000000000000000L);
         LogBridge.log("abc", "lalala");
+        LogBridge.logs(123, "hello", true, "jk123");
 
         Bundle bundle = new Bundle();
         bundle.putString("key1", "hello");

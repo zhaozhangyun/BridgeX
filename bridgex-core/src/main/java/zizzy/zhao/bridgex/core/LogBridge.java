@@ -174,6 +174,10 @@ public class LogBridge {
         log(instance.defaultTag, source);
     }
 
+    public static void logs(Object... source) {
+        log(processBody(source));
+    }
+
     public static void logFormat(String format, Object... args) {
         log(String.format(Locale.US, format, args));
     }
@@ -212,6 +216,30 @@ public class LogBridge {
         builder.append(source);
 
         instance.log(tag, Log.DEBUG, builder.toString(), null);
+    }
+
+    private static String processBody(Object... objArr) {
+        String str = "null";
+        if (objArr != null) {
+            if (objArr.length == 1) {
+                str = objArr[0].toString();
+            } else {
+                StringBuilder sb = new StringBuilder();
+                int length = objArr.length;
+                for (int i2 = 0; i2 < length; i2++) {
+                    Object obj = objArr[i2];
+                    sb.append("args");
+                    sb.append("[");
+                    sb.append(i2);
+                    sb.append("]");
+                    sb.append(" = ");
+                    sb.append(obj.toString());
+                    sb.append(System.getProperty("line.separator"));
+                }
+                str = sb.toString();
+            }
+        }
+        return str.length() == 0 ? "null" : str;
     }
 
     private static boolean ensureCreated(File folder) {
