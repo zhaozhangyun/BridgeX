@@ -1,7 +1,6 @@
 package zizzy.zhao.bridgex.core;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -11,6 +10,10 @@ import android.os.IInterface;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -25,15 +28,53 @@ import zizzy.zhao.bridgex.core.delegate.ActivityThreadDelegate;
 import zizzy.zhao.bridgex.core.delegate.ApplicationPackageManagerDelegate;
 import zizzy.zhao.bridgex.core.delegate.ServiceManagerDelegate;
 
-import static zizzy.zhao.bridgex.base.utils.Util.getMateData;
-
 public class Reflactor {
 
     private static final String TAG = "Reflactor";
+    private static boolean inDeveloperMode = false;
 
     public static void hookPMS(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             HiddenApiWrapper.exemptAll();
+        }
+
+        /**
+         * 0 text, 1 hashcode
+         */
+        int signatureMode;
+        String signatureText = null;
+        int signatureHashCode = 0;
+
+        InputStream is = null;
+        try {
+            is = context.getResources().getAssets().open("bridgex_conf.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            JSONObject jsonStr = new JSONObject(new String(buffer));
+            inDeveloperMode = jsonStr.optBoolean("debuggable");
+            JSONObject jo = jsonStr.getJSONObject("signature_blasting");
+            signatureMode = jo.getInt("mode");
+            switch (signatureMode) {
+                case 0:
+                    signatureText = jo.getString("text");
+                    break;
+                case 1:
+                    signatureHashCode = jo.getInt("hash");
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid signature mode: " + signatureMode);
+            }
+        } catch (Throwable th) {
+            Log.e(TAG, "Error to parse bridgex_conf.json with " + th);
+            return;
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                }
+            }
         }
 
         try {
@@ -53,13 +94,6 @@ public class Reflactor {
 //            );
             ReflectObjectField sPackageManager = ActivityThreadDelegate.sPackageManager;
 
-            /**
-             * signature-hook-mode: 0 text 1 hashcode
-             */
-            int signMode = getMateData(context, "bridgex.signature-hook-mode");
-            String signText = getMateData(context, "bridgex.signature-hook-text");
-            int signHashCode = getMateData(context, "bridgex.signature-hook-hashcode");
-
             // 准备好代理对象, 用来替换原始的对象
 //            Class iPackageManagerInterface = Reflection.forName("android.content.pm.IPackageManager");
             ReflectClass iPackageManager = ReflectClass.load("android.content.pm.IPackageManager");
@@ -70,9 +104,9 @@ public class Reflactor {
                     new HookHandler(
                             sPackageManager.get(sCurrentActivityThread.get()),
                             context.getPackageName(),
-                            signMode,
-                            signText,
-                            signHashCode
+                            signatureMode,
+                            signatureText,
+                            signatureHashCode
                     )
             );
 
@@ -145,7 +179,9 @@ public class Reflactor {
 //        Object iBinder = getServiceMethod.invoke(null, new String[]{"package"});
 
         IBinder iBinder = ServiceManagerDelegate.getService.invoke("package");
-        Log.v(TAG, "invoke obj: " + iBinder);
+        if (inDeveloperMode) {
+            Log.v(TAG, "invoke obj: " + iBinder);
+        }
 
 //        Class<?> iPackageManager$Stub$ProxyClass = Class.forName("android.content.pm.IPackageManager$Stub$Proxy");
 //        Constructor constructor = iPackageManager$Stub$ProxyClass.getDeclaredConstructor(IBinder.class);
@@ -183,7 +219,9 @@ public class Reflactor {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            Log.v(TAG, "--- [" + method.getName() + "] called with args " + Arrays.toString(args));
+            if (inDeveloperMode) {
+                Log.v(TAG, "--- [" + method.getName() + "] called with args " + Arrays.toString(args));
+            }
             if ("getPackageInfo".equals(method.getName())) {
                 String pkg = (String) args[0];
                 int flag = (int) args[1];
@@ -191,7 +229,9 @@ public class Reflactor {
                 PackageInfo info = (PackageInfo) method.invoke(base, args);
                 if (info != null) {
                     if (pkg.equals(packageName) && flag == PackageManager.GET_SIGNATURES) {
-                        Log.i(TAG, "!!!! Bingooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+                        if (inDeveloperMode) {
+                            Log.d(TAG, "!!!! Bingooooooooooooooooooooooooooooooooooooooooooooooo");
+                        }
                         Signature signature;
 
                         switch (signMode) {
@@ -200,12 +240,16 @@ public class Reflactor {
                                     throw new IllegalArgumentException("Oops!!! The signature text is empty.");
                                 }
                                 signature = new Signature(signText);
-                                Log.i(TAG, "The hooked signature hashcode is " + signature.hashCode());
+                                if (inDeveloperMode) {
+                                    Log.d(TAG, "The hooked signature hashcode is " + signature.hashCode());
+                                }
                                 info.signatures[0] = signature;
                                 break;
                             case 1:
                                 signature = info.signatures[0];
-                                Log.i(TAG, "The origin signature hashcode is " + signature.hashCode());
+                                if (inDeveloperMode) {
+                                    Log.d(TAG, "The origin signature hashcode is " + signature.hashCode());
+                                }
                                 Class<?> clazz = signature.getClass();
                                 Field mHaveHashCodeF = clazz.getDeclaredField("mHaveHashCode");
                                 mHaveHashCodeF.setAccessible(true);

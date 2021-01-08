@@ -19,6 +19,7 @@ public class BridgeX {
     private static Object lock = new Object[0];
     private static Context sContext;
     private static File EXTERNAL_DIR;
+    private static JSONObject jStr;
 
     static {
         DEFAULT_TAG = BridgeX.class.getSimpleName();
@@ -50,20 +51,12 @@ public class BridgeX {
                 int size = is.available();
                 byte[] buffer = new byte[size];
                 is.read(buffer);
-                JSONObject json = new JSONObject(new String(buffer));
-                DEBUGGABLE = json.optBoolean("debuggable");
-                EXTERNAL_DIR = new File(json.optString("external_dir"));
-                if (json.optBoolean("is_hook_pms_enabled")) {
+                jStr = new JSONObject(new String(buffer));
+                DEBUGGABLE = jStr.optBoolean("debuggable");
+                EXTERNAL_DIR = new File(jStr.optString("external_dir"));
+                if (jStr.optBoolean("is_hook_pms_enabled")) {
                     try {
                         Reflactor.hookPMS(sContext);
-                    } catch (Throwable th) {
-                        th.printStackTrace();
-                    }
-                }
-                if (json.optBoolean("is_stetho_enabled")) {
-                    try {
-                        StethoHelper.initializeStetho(sContext);
-                        new OkHttpHook().install(sContext);
                     } catch (Throwable th) {
                         th.printStackTrace();
                     }
@@ -78,6 +71,24 @@ public class BridgeX {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Call on onCreate in Application
+     */
+    public static void initializeStetho(Context context) {
+        try {
+            if (jStr.optBoolean("is_stetho_enabled")) {
+                try {
+                    StethoHelper.initializeStetho(context);
+                    new OkHttpHook().install(context);
+                } catch (Throwable th) {
+                    th.printStackTrace();
+                }
+            }
+        } catch (Throwable th) {
+            th.printStackTrace();
         }
     }
 

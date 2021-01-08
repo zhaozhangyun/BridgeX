@@ -22,6 +22,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        BridgeX.initializeStetho(this);
 
         XCMethodHookDelegate.install("zizzy.zhao.bridgex.hook.module.mltad.MltAdHook", this);
 
