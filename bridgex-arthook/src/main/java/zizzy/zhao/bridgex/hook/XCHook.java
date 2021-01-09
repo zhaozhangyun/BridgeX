@@ -78,7 +78,7 @@ public abstract class XCHook implements Hook {
                 }
             });
         } else {
-            throw new IllegalStateException("Oops!!! The context must be Application.");
+            Log.w(TAG, "Oops!!! The context must be Application.");
         }
     }
 

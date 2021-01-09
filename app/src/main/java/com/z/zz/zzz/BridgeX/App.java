@@ -24,6 +24,8 @@ public class App extends Application {
         super.onCreate();
         BridgeX.initializeStetho(this);
 
+        System.loadLibrary("epic");
+
         XCMethodHookDelegate.install("zizzy.zhao.bridgex.hook.module.mltad.MltAdHook", this);
 
         foo();
