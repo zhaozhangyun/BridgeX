@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
 
 class AssetsManager {
 
@@ -26,9 +25,9 @@ class AssetsManager {
         long startTime = System.currentTimeMillis();
 
         try {
-            File dex = context.getDir(codeCacheSecondaryFolderName, Context.MODE_PRIVATE);
-            if (!dex.exists()) {
-                dex.mkdirs();
+            File dexDir = context.getDir(codeCacheSecondaryFolderName, Context.MODE_PRIVATE);
+            if (!dexDir.exists()) {
+                dexDir.mkdirs();
             }
             String assetsDexPath = TextUtils.isEmpty(assetsDexDir) ? DEFAULT_ASSETS_DEX_DIR : assetsDexDir;
             Log.v(TAG, "assetsDexPath: " + assetsDexPath);
@@ -38,7 +37,7 @@ class AssetsManager {
                     continue;
                 }
                 String assetsFile = TextUtils.isEmpty(assetsDexPath) ? fileName : assetsDexPath + "/" + fileName;
-                File dexFile = new File(dex, fileName);
+                File dexFile = new File(dexDir, fileName);
                 if (MD5.compareToAssetsFile(context, dexFile, assetsFile)) {
                     continue;
                 } else if (dexFile.exists()) {
@@ -58,7 +57,6 @@ class AssetsManager {
                     while ((read = in.read(buffer)) != -1) {
                         out.write(buffer, 0, read);
                     }
-                    out.flush();
                 } catch (Throwable th) {
                     th.printStackTrace();
                 } finally {
@@ -70,6 +68,7 @@ class AssetsManager {
                     }
                     if (out != null) {
                         try {
+                            out.flush();
                             out.close();
                         } catch (Exception e) {
                         }

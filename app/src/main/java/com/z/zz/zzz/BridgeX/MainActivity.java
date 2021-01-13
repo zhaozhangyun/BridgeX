@@ -13,7 +13,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 
-import okhttp3.OkHttpClient;
 import zizzy.zhao.bridgex.core.LogBridge;
 
 public class MainActivity extends Activity {
@@ -24,8 +23,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         checkAPP(this);
-
-        new OkHttpClient.Builder().build();
 
         LogBridge.log();
         LogBridge.log("hello, world");

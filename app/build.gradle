@@ -59,22 +59,34 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(path: ':bridgex-dexloader')
-    compileOnly project(path: ':bridgex-base')
-    compileOnly project(path: ':bridgex-core')
-    compileOnly project(path: ':ads-hook')
-    compileOnly project(path: ':bridgex-arthook')
+//    implementation project(path: ':bridgex-dexloader')
+    implementation project(path: ':bridgex-base')
+    implementation project(path: ':bridgex-core')
+//    compileOnly project(path: ':ads-hook')
+//    implementation project(path: ':bridgex-arthook')
 
     //OkHttp
-    implementation 'com.squareup.okhttp3:okhttp:3.4.2'
-    implementation 'com.squareup.okio:okio:1.9.0'
+//    implementation 'com.squareup.okhttp3:okhttp:3.4.2'
+//    implementation 'com.squareup.okio:okio:1.9.0'
 
     implementation "com.android.support:appcompat-v7:28.0.0"
     implementation 'com.android.support:recyclerview-v7:28.0.0'
 
-    implementation(name: 'mlt-adsdk', ext: 'aar')
-    implementation(name: 'GDT-4.232.1102', ext: 'aar')
-    implementation(name: 'ks_adsdk-3.1.0', ext: 'aar')
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.18'//需要添加此包，否则无法正常使用穿山甲开屏广告
-    implementation(name: 'CSJ-3.1.0.3', ext: 'aar')
+//    implementation "me.weishu:free_reflection:2.2.0"
+//    implementation 'me.weishu.exposed:exposed-xposedapi:0.4.5'
+
+//    implementation 'com.facebook.stetho:stetho:+'
+//    implementation 'com.facebook.stetho:stetho-okhttp3:+'//okhttp3.0以上使用
+//    implementation 'com.facebook.stetho:stetho-okhttp:+'
+//    implementation 'com.facebook.stetho:stetho-urlconnection:+'
+//    implementation 'com.facebook.stetho:stetho-js-rhino:+'
+
+//    implementation(name: 'mlt-adsdk', ext: 'aar')
+//    implementation(name: 'GDT-4.232.1102', ext: 'aar')
+//    implementation(name: 'ks_adsdk-3.1.0', ext: 'aar')
+//    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.18'//需要添加此包，否则无法正常使用穿山甲开屏广告
+//    implementation(name: 'CSJ-3.1.0.3', ext: 'aar')
+//    implementation(name: 'epic-core', ext: 'aar')
+
+//    implementation "androidx.multidex:multidex:2.0.1"
 }

@@ -36,6 +36,7 @@
             android:name="bridgex.com_bytedance_sdk_openadsdk-hook-appid"
             android:value="\ 5104543" />
 
+        <!--
         <provider
             android:name="com.bytedance.sdk.openadsdk.multipro.TTMultiProvider"
             android:authorities="${applicationId}.TTMultiProvider"
@@ -50,6 +51,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/mlt_file_paths" />
         </provider>
+        -->
     </application>
 
 </manifest>

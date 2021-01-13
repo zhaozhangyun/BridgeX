@@ -2,7 +2,6 @@ package zizzy.zhao.bridgex.multidex;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
@@ -140,24 +139,9 @@ public class MultiDeX {
                  * dalvik.system.DexPathList pathList field to append additional
                  * DEX file entries.
                  */
-                ClassLoader loader;
-                try {
-                    loader = ctx.getClassLoader();
-                } catch (RuntimeException e) {
-                    /*
-                     * Ignore those exceptions so that we don't break tests
-                     * relying on Context like a android.test.mock.MockContext
-                     * or a android.content.ContextWrapper with a null base
-                     * Context.
-                     */
-                    throw new Exception("Failure while trying to obtain Context class loader. "
-                            + "Must be running in test mode. Skip patching. " + e);
-                }
+                ClassLoader loader = getDexClassloader(context);
                 if (loader == null) {
-                    // Note, the context class loader is null when running
-                    // Robolectric tests.
-                    throw new Exception("Context class loader is null. Must be running in test mode. "
-                            + "Skip patching.");
+                    return;
                 }
 
                 // 获取dex文件列表
@@ -225,6 +209,38 @@ public class MultiDeX {
         Log.i(TAG, "###### install multidex cost " + (endtime - starttime) + "ms");
     }
 
+    /**
+     * Returns a classloader from the {@link Context} that is capable of reading dex
+     * bytecode or null if the Classloader is not dex-capable e.g: when running on a JVM testing
+     * environment such as Robolectric.
+     */
+    private static ClassLoader getDexClassloader(Context context) {
+        ClassLoader loader;
+        try {
+            loader = context.getClassLoader();
+        } catch (RuntimeException e) {
+            /* Ignore those exceptions so that we don't break tests relying on Context like
+             * a android.test.mock.MockContext or a android.content.ContextWrapper with a
+             * null base Context.
+             */
+            Log.w(TAG, "Failure while trying to obtain Context class loader. "
+                    + "Must be running in test mode. Skip patching.", e);
+            return null;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            if (loader instanceof dalvik.system.BaseDexClassLoader) {
+                return loader;
+            }
+        } else if (loader instanceof dalvik.system.DexClassLoader
+                || loader instanceof dalvik.system.PathClassLoader) {
+            return loader;
+        }
+        Log.e(TAG, "Context class loader is null or not dex-capable. "
+                + "Must be running in test mode. Skip patching.");
+        return null;
+    }
+
 //    private static ApplicationInfo getApplicationInfo(Context context) throws Exception {
 //        PackageManager pm;
 //        String packageName;
@@ -274,9 +290,9 @@ public class MultiDeX {
             throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException,
             InvocationTargetException, NoSuchMethodException, IOException {
         if (!files.isEmpty()) {
-            if (Build.VERSION.SDK_INT >= 19) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 V19.install(loader, files, dexDir);
-            } else if (Build.VERSION.SDK_INT >= 14) {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 V14.install(loader, files, dexDir);
             } else {
                 V4.install(loader, files);
@@ -486,11 +502,21 @@ public class MultiDeX {
                                                 File optimizedDirectory,
                                                 ArrayList<IOException> suppressedExceptions)
                 throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-//            Method makeDexElements = findMethod(dexPathList, "makeDexElements",
-//                    ArrayList.class, File.class, ArrayList.class);
-            Method makeDexElements = Build.VERSION.SDK_INT >= 23 ?
-                    findMethod(dexPathList, "makePathElements", List.class, File.class, List.class) :
-                    findMethod(dexPathList, "makeDexElements", ArrayList.class, File.class, ArrayList.class);
+            Method makeDexElements;
+            try {
+                makeDexElements = findMethod(dexPathList, "makeDexElements",
+                        ArrayList.class, File.class, ArrayList.class);
+            } catch (NoSuchMethodException ignored) {
+                try {
+                    makeDexElements = findMethod(dexPathList, "makePathElements",
+                            List.class, File.class, List.class);
+                } catch (NoSuchMethodException e) {
+                    throw e;
+                }
+            }
+//            Method makeDexElements = Build.VERSION.SDK_INT >= 23 ?
+//                    findMethod(dexPathList, "makePathElements", List.class, File.class, List.class) :
+//                    findMethod(dexPathList, "makeDexElements", ArrayList.class, File.class, ArrayList.class);
 
             return (Object[]) makeDexElements.invoke(dexPathList, files, optimizedDirectory,
                     suppressedExceptions);

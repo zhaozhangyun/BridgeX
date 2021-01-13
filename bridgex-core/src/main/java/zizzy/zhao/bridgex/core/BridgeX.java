@@ -74,24 +74,6 @@ public class BridgeX {
         }
     }
 
-    /**
-     * Call on onCreate in Application
-     */
-    public static void initializeStetho(Context context) {
-        try {
-            if (jStr.optBoolean("is_stetho_enabled")) {
-                try {
-                    StethoHelper.initializeStetho(context);
-                    new OkHttpHook().install(context);
-                } catch (Throwable th) {
-                    th.printStackTrace();
-                }
-            }
-        } catch (Throwable th) {
-            th.printStackTrace();
-        }
-    }
-
     public static String getExternalDatabaseName(String name) {
 //        if (ContextCompat.checkSelfPermission(sContext,
 //                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
