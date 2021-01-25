@@ -5,6 +5,7 @@ import android.content.Context;
 
 import zizzy.zhao.bridgex.core.BridgeX;
 import zizzy.zhao.bridgex.core.LogBridge;
+import zizzy.zhao.bridgex.core.Logger;
 
 public class App extends Application {
 
@@ -14,6 +15,8 @@ public class App extends Application {
 
         BridgeX.attach(base);
         LogBridge.log(base);
+
+        Logger.d(base);
     }
 
     @Override
