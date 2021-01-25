@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import zizzy.zhao.bridgex.core.LogBridge;
+import zizzy.zhao.bridgex.core.Logger;
 
 public class MainActivity extends Activity {
 
@@ -41,6 +42,15 @@ public class MainActivity extends Activity {
         bundle.putBoolean("key3", true);
         LogBridge.log(bundle);
 
+        Logger.log("123");
+        Logger.log(123);
+        Logger.log(123L);
+        Logger.log(123.00);
+        Logger.log(true);
+        Logger.log(new String[]{"123", "321"});
+        Logger.log(new int[]{123, 321});
+        Logger.log(bundle);
+
         InputStream is = null;
         try {
             is = getResources().getAssets().open("bridgex_conf.json");
@@ -55,6 +65,7 @@ public class MainActivity extends Activity {
 
                     for (int i = 0; i < 3; i++) {
                         LogBridge.log(Thread.currentThread().getName() + i, json);
+                        Logger.log(json);
                     }
                 }
             }, "thread-").start();

@@ -15,8 +15,7 @@ public class App extends Application {
 
         BridgeX.attach(base);
         LogBridge.log(base);
-
-        Logger.d(base);
+        Logger.log(base);
     }
 
     @Override
