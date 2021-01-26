@@ -39,6 +39,7 @@ public class Logger {
     private final String tag;
     private final int logLevel;
     private final AtomicInteger atomI;
+    private boolean forceLog;
 
     private static class Holder {
         private volatile static Logger DEFAULT_LOGGER = new Logger(TAG);
@@ -47,6 +48,7 @@ public class Logger {
     public Logger(String tag) {
         this.tag = tag;
         this.logLevel = Log.INFO;
+        this.forceLog = false;
         this.atomI = new AtomicInteger(0);
     }
 
@@ -57,49 +59,8 @@ public class Logger {
         return Holder.DEFAULT_LOGGER;
     }
 
-    private boolean canLog(int level) {
-        return logLevel <= level || Log.isLoggable(tag, level);
-    }
-
-    public void logV(Object source) {
-        if (canLog(Log.VERBOSE)) {
-            atomI.incrementAndGet();
-            println(source, Log.VERBOSE);
-        }
-    }
-
-    public void logD(Object source) {
-        if (canLog(Log.DEBUG)) {
-            atomI.incrementAndGet();
-            println(source, Log.DEBUG);
-        }
-    }
-
-    public void logI(String source) {
-        if (canLog(Log.INFO)) {
-            atomI.incrementAndGet();
-            println(source, Log.INFO);
-        }
-    }
-
-    public void logW(String source) {
-        if (canLog(Log.WARN)) {
-            atomI.incrementAndGet();
-            println(source, Log.WARN);
-        }
-    }
-
-    public void logE(String source) {
-        if (canLog(Log.ERROR)) {
-            atomI.incrementAndGet();
-            println(source, Log.ERROR);
-        }
-    }
-
-    public void logE(String source, Throwable th) {
-        if (canLog(Log.ERROR)) {
-            Log.e(tag, source, th);
-        }
+    public static void setForceLogEnabled(boolean enabled) {
+        getLogger().forceLogEnabled(enabled);
     }
 
     public static void v(String source) {
@@ -165,6 +126,55 @@ public class Logger {
     public static void printlnF(String format, Object... args) {
         getLogger().atomI.incrementAndGet();
         getLogger().println(String.format(Locale.US, format, args), Log.DEBUG);
+    }
+
+    public void forceLogEnabled(boolean enabled) {
+        forceLog = enabled;
+    }
+
+    private boolean canLog(int level) {
+        return forceLog || (logLevel <= level || Log.isLoggable(tag, level));
+    }
+
+    public void logV(Object source) {
+        if (canLog(Log.VERBOSE)) {
+            atomI.incrementAndGet();
+            println(source, Log.VERBOSE);
+        }
+    }
+
+    public void logD(Object source) {
+        if (canLog(Log.DEBUG)) {
+            atomI.incrementAndGet();
+            println(source, Log.DEBUG);
+        }
+    }
+
+    public void logI(String source) {
+        if (canLog(Log.INFO)) {
+            atomI.incrementAndGet();
+            println(source, Log.INFO);
+        }
+    }
+
+    public void logW(String source) {
+        if (canLog(Log.WARN)) {
+            atomI.incrementAndGet();
+            println(source, Log.WARN);
+        }
+    }
+
+    public void logE(String source) {
+        if (canLog(Log.ERROR)) {
+            atomI.incrementAndGet();
+            println(source, Log.ERROR);
+        }
+    }
+
+    public void logE(String source, Throwable th) {
+        if (canLog(Log.ERROR)) {
+            Log.e(tag, source, th);
+        }
     }
 
     private void println(Object source, int priority) {
