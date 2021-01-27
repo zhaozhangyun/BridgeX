@@ -182,7 +182,7 @@ public class Logger {
             return;
         }
 
-        synchronized (Holder.DEFAULT_LOGGER) {
+        synchronized (Logger.class) {
             StringBuilder builder = new StringBuilder();
 
 //            // check json
