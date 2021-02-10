@@ -105,16 +105,16 @@ public class Logger {
         d(String.valueOf(source));
     }
 
+    public static void logs(Object... source) {
+        d(processBody(source));
+    }
+
     public static void printlnF(String format, Object... args) {
         getLogger().println(String.format(Locale.US, format, args), Log.DEBUG);
     }
 
     public void forceLogEnabled(boolean enabled) {
         forceLog = enabled;
-    }
-
-    private boolean canLog(int level) {
-        return forceLog || (logLevel <= level || Log.isLoggable(tag, level));
     }
 
     public void logV(Object source) {
@@ -151,6 +151,34 @@ public class Logger {
         if (canLog(Log.ERROR)) {
             Log.e(tag, source, th);
         }
+    }
+
+    private boolean canLog(int level) {
+        return forceLog || (logLevel <= level || Log.isLoggable(tag, level));
+    }
+
+    private static String processBody(Object... objArr) {
+        String str = "null";
+        if (objArr != null) {
+            if (objArr.length == 1) {
+                str = objArr[0].toString();
+            } else {
+                StringBuilder sb = new StringBuilder();
+                int length = objArr.length;
+                for (int i2 = 0; i2 < length; i2++) {
+                    Object obj = objArr[i2];
+                    sb.append("args");
+                    sb.append("[");
+                    sb.append(i2);
+                    sb.append("]");
+                    sb.append(" = ");
+                    sb.append(obj.toString());
+                    sb.append(System.getProperty("line.separator"));
+                }
+                str = sb.toString();
+            }
+        }
+        return str.length() == 0 ? "null" : str;
     }
 
     private void println(Object source, int priority) {

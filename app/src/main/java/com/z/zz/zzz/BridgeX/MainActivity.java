@@ -50,6 +50,7 @@ public class MainActivity extends Activity {
         Logger.log(new String[]{"123", "321"});
         Logger.log(new int[]{123, 321});
         Logger.log(bundle);
+        Logger.logs(123, "hello", true, "jk123");
 
         InputStream is = null;
         try {
