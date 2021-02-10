@@ -25,10 +25,10 @@ import org.json.JSONObject;
 
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.lang.ref.WeakReference;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Default logger that logs to android.util.Log.
@@ -38,18 +38,12 @@ public class Logger {
 
     private final String tag;
     private final int logLevel;
-    private final AtomicInteger atomI;
     private boolean forceLog;
-
-    private static class Holder {
-        private volatile static Logger DEFAULT_LOGGER = new Logger(TAG);
-    }
 
     public Logger(String tag) {
         this.tag = tag;
         this.logLevel = Log.INFO;
         this.forceLog = false;
-        this.atomI = new AtomicInteger(0);
     }
 
     /**
@@ -64,67 +58,54 @@ public class Logger {
     }
 
     public static void v(String source) {
-        getLogger().atomI.incrementAndGet();
         getLogger().logV(source);
     }
 
     public static void d(String source) {
-        getLogger().atomI.incrementAndGet();
         getLogger().logD(source);
     }
 
     public static void i(String source) {
-        getLogger().atomI.incrementAndGet();
         getLogger().logI(source);
     }
 
     public static void w(String source) {
-        getLogger().atomI.incrementAndGet();
         getLogger().logW(source);
     }
 
     public static void e(String source) {
-        getLogger().atomI.incrementAndGet();
         getLogger().logE(source);
     }
 
     public static void e(String source, Throwable th) {
-        getLogger().atomI.incrementAndGet();
         getLogger().logE(source, th);
     }
 
     public static void log(Object source) {
-        getLogger().atomI.incrementAndGet();
         getLogger().logD(source);
     }
 
     public static void log(int source) {
-        getLogger().atomI.incrementAndGet();
         d(String.valueOf(source));
     }
 
     public static void log(long source) {
-        getLogger().atomI.incrementAndGet();
         d(String.valueOf(source));
     }
 
     public static void log(float source) {
-        getLogger().atomI.incrementAndGet();
         d(String.valueOf(source));
     }
 
     public static void log(double source) {
-        getLogger().atomI.incrementAndGet();
         d(String.valueOf(source));
     }
 
     public static void log(boolean source) {
-        getLogger().atomI.incrementAndGet();
         d(String.valueOf(source));
     }
 
     public static void printlnF(String format, Object... args) {
-        getLogger().atomI.incrementAndGet();
         getLogger().println(String.format(Locale.US, format, args), Log.DEBUG);
     }
 
@@ -138,35 +119,30 @@ public class Logger {
 
     public void logV(Object source) {
         if (canLog(Log.VERBOSE)) {
-            atomI.incrementAndGet();
             println(source, Log.VERBOSE);
         }
     }
 
     public void logD(Object source) {
         if (canLog(Log.DEBUG)) {
-            atomI.incrementAndGet();
             println(source, Log.DEBUG);
         }
     }
 
     public void logI(String source) {
         if (canLog(Log.INFO)) {
-            atomI.incrementAndGet();
             println(source, Log.INFO);
         }
     }
 
     public void logW(String source) {
         if (canLog(Log.WARN)) {
-            atomI.incrementAndGet();
             println(source, Log.WARN);
         }
     }
 
     public void logE(String source) {
         if (canLog(Log.ERROR)) {
-            atomI.incrementAndGet();
             println(source, Log.ERROR);
         }
     }
@@ -185,27 +161,19 @@ public class Logger {
         synchronized (Logger.class) {
             StringBuilder builder = new StringBuilder();
 
-//            // check json
-//            WeakReference wr = null;
-//            try {
-//                wr = new WeakReference<>(new JSONObject(source.toString()));
-//            } catch (Throwable th1) {
-//                try {
-//                    wr = new WeakReference<>(new JSONArray(source.toString()));
-//                } catch (Throwable th2) {
-//                }
-//            }
-//
-//            if (wr != null) {
-//                source = formatJson(formatJsonBody(source));
-//            } else if (source instanceof Bundle) { // check bundle
-//                source = formatBundle((Bundle) source);
-//            }
-
-            if (source instanceof JSONObject
-                    || source instanceof JSONArray) {
+            // check json
+            WeakReference wr = null;
+            try {
+                wr = new WeakReference<>(new JSONObject(source.toString()));
+            } catch (Throwable th1) {
+                try {
+                    wr = new WeakReference<>(new JSONArray(source.toString()));
+                } catch (Throwable th2) {
+                }
+            }
+            if (wr != null) {
                 source = formatJson(formatJsonBody(source));
-            } else if (source instanceof Bundle) {
+            } else if (source instanceof Bundle) { // check bundle
                 source = formatBundle((Bundle) source);
             } else if (source instanceof Object[]) {
                 source = Arrays.toString((Object[]) source);
@@ -223,9 +191,8 @@ public class Logger {
                 source = Arrays.toString((byte[]) source);
             }
 
-            int currentIndex = atomI.incrementAndGet();
             StackTraceElement[] stacks = new Throwable().fillInStackTrace().getStackTrace();
-            StackTraceElement element = stacks[currentIndex];
+            StackTraceElement element = stacks[4];
             String fileName = element.getFileName();
             String className = element.getClassName();
             String methodClass = element.getMethodName();
@@ -240,8 +207,6 @@ public class Logger {
             }
 
             printlns(priority, tag, builder.toString(), null);
-
-            atomI.getAndSet(0);
         }
     }
 
@@ -359,6 +324,10 @@ public class Logger {
         lbbw.flush();
 
         return logWriter.getWritten();
+    }
+
+    private static class Holder {
+        private volatile static Logger DEFAULT_LOGGER = new Logger(TAG);
     }
 
     /**

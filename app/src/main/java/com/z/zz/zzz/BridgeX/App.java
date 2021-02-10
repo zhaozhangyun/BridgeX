@@ -14,8 +14,9 @@ public class App extends Application {
         super.attachBaseContext(base);
 
         BridgeX.attach(base);
-        LogBridge.log(base);
-        Logger.log(base);
+        LogBridge.init(this);
+        LogBridge.log(this);
+        Logger.log(this);
     }
 
     @Override

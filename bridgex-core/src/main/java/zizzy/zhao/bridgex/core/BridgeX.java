@@ -43,8 +43,6 @@ public class BridgeX {
         sContext = context.getApplicationContext() == null ? context : context.getApplicationContext();
 
         synchronized (lock) {
-            LogBridge.init(sContext);
-
             InputStream is = null;
             try {
                 is = sContext.getResources().getAssets().open("bridgex_conf.json");
