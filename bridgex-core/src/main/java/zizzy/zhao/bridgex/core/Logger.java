@@ -110,44 +110,44 @@ public class Logger {
     }
 
     public static void printlnF(String format, Object... args) {
-        getLogger().println(String.format(Locale.US, format, args), Log.DEBUG);
+        d(String.format(Locale.US, format, args));
     }
 
     public void forceLogEnabled(boolean enabled) {
         forceLog = enabled;
     }
 
-    public void logV(Object source) {
+    private void logV(Object source) {
         if (canLog(Log.VERBOSE)) {
             println(source, Log.VERBOSE);
         }
     }
 
-    public void logD(Object source) {
+    private void logD(Object source) {
         if (canLog(Log.DEBUG)) {
             println(source, Log.DEBUG);
         }
     }
 
-    public void logI(String source) {
+    private void logI(String source) {
         if (canLog(Log.INFO)) {
             println(source, Log.INFO);
         }
     }
 
-    public void logW(String source) {
+    private void logW(String source) {
         if (canLog(Log.WARN)) {
             println(source, Log.WARN);
         }
     }
 
-    public void logE(String source) {
+    private void logE(String source) {
         if (canLog(Log.ERROR)) {
             println(source, Log.ERROR);
         }
     }
 
-    public void logE(String source, Throwable th) {
+    private void logE(String source, Throwable th) {
         if (canLog(Log.ERROR)) {
             Log.e(tag, source, th);
         }

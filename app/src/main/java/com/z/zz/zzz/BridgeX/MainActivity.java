@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
         Logger.log(new int[]{123, 321});
         Logger.log(bundle);
         Logger.logs(123, "hello", true, "jk123");
+        Logger.printlnF("%d, %s, %s, %s", 1, "call create", "call create1", "uin");
 
         InputStream is = null;
         try {
