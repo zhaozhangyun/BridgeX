@@ -82,7 +82,7 @@ public class Logger {
     }
 
     public static void log(Object source) {
-        getLogger().logD(source);
+        d(source.toString());
     }
 
     public static void log(int source) {
