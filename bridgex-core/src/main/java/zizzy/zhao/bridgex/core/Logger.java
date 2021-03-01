@@ -82,7 +82,11 @@ public class Logger {
     }
 
     public static void log(Object source) {
-        d(source.toString());
+        if (source == null) {
+            d("null");
+        } else {
+            d(source.toString());
+        }
     }
 
     public static void log(int source) {
