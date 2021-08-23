@@ -11,6 +11,7 @@ import android.os.IInterface;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -235,13 +236,23 @@ public class Reflactor {
             this.hookPackageName = hookPackageName;
             this.hookPackageVersionName = hookPackageVersionName;
             this.hookPackageVersionCode = hookPackageVersionCode;
-            Log.i(TAG, "HookHandler<init>: packageName=" + packageName
-                    + ", signMode=" + signMode
-                    + ", signText=" + signText
-                    + ", signHashcode=" + signHashcode
-                    + ", hookPackageName" + hookPackageName
-                    + ", hookPackageVersionName" + hookPackageVersionName
-                    + ", hookPackageVersionCode" + hookPackageVersionCode);
+
+            try {
+                if (inDeveloperMode) {
+                    Log.d(TAG, "new HookHandler(...):\n" + new JSONObject()
+                            .put("packageName", packageName)
+                            .put("signMode", signMode)
+                            .put("signText", signText)
+                            .put("signHashcode", signHashcode)
+                            .put("hookPackageName", hookPackageName)
+                            .put("hookPackageVersionName", hookPackageVersionName)
+                            .put("hookPackageVersionCode", hookPackageVersionCode)
+                            .toString(2)
+                            + "\n");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         @SuppressLint("SoonBlockedPrivateApi")
