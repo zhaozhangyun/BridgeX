@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.zip.ZipFile;
 
 import dalvik.system.DexFile;
+import zizzy.zhao.bridgex.base.utils.BootstrapClass;
 
 public class MultiDeX {
 
@@ -49,8 +50,9 @@ public class MultiDeX {
     }
 
     static {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            HiddenApiWrapper.exemptAll();
+        Log.i(TAG, "Running on sdk version: " + Build.VERSION.SDK_INT);
+        if (!BootstrapClass.exemptAll()) {
+            Log.w(TAG, "WTF!!! Failed to exempt bootstrap class.");
         }
     }
 

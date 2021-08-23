@@ -2,16 +2,42 @@ package com.z.zz.zzz.BridgeX;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import zizzy.zhao.bridgex.core.LogBridge;
 import zizzy.zhao.bridgex.core.Logger;
@@ -23,7 +49,20 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        startActivity(new Intent(Intent.ACTION_VIEW,
+//                Uri.parse("sinaweibo://cardlist?containerid=102803" +
+//                        "&extparam=from_push_-_mid_4564277162148357_-_category_1760" +
+//                        "&need_head_cards=1" +
+//                        "&luicode=10000404" +
+//                        "&lfid=gtpl_9999_shipin084" +
+//                        "&launchid=10000404-gtpl_9999_shipin084")));
+
         checkAPP(this);
+
+        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensorManager.getSensors();
+        List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
+        Logger.log(sensorList);
 
         LogBridge.log();
         LogBridge.log("hello, world");
@@ -125,9 +164,111 @@ public class MainActivity extends Activity {
             Signature[] signs = packageInfo.signatures;
             Signature sign = signs[0];
             int hashcode = sign.hashCode();
+            Log.i("test", "signText : " + sign.toCharsString());
             Log.i("test", "hashCode : " + hashcode);
+            Log.i("test", "packageName : " + packageInfo.packageName);
+            Log.i("test", "packageVersionName : " + packageInfo.versionName);
+            Log.i("test", "packageVersionCode : " + packageInfo.versionCode);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    void send_data(final String data) {
+        URL url = null;
+        try {
+            url = new URL("http://192.168.18.134");
+            final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        DataOutputStream out = new DataOutputStream(conn.getOutputStream());
+                        out.writeBytes(enc(data));
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        final String text = in.readLine();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+//                                ((TextView) findViewById(R.id.textView)).setText(text);
+//                                dec(text);
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    String enc(String data) {
+        try {
+            String pre_shared_key = "aaaaaaaaaaaaaaaa"; //assume that this key was not hardcoded
+            String generated_iv = "bbbbbbbbbbbbbbbb";
+            Cipher my_cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            my_cipher.init(Cipher.ENCRYPT_MODE,
+                    new SecretKeySpec(pre_shared_key.getBytes("UTF-8"), "AES"),
+                    new IvParameterSpec(generated_iv.getBytes("UTF-8")));
+            byte[] x = my_cipher.doFinal(data.getBytes());
+            System.out.println(new String(Base64.encode(x, Base64.DEFAULT)));
+            return new String(Base64.encode(x, Base64.DEFAULT));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    String dec(String data) {
+        try {
+            byte[] decoded_data = Base64.decode(data.getBytes(), Base64.DEFAULT);
+            String pre_shared_key = "aaaaaaaaaaaaaaaa"; //assume that this key was not hardcoded
+            String generated_iv = "bbbbbbbbbbbbbbbb";
+            Cipher my_cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            my_cipher.init(Cipher.DECRYPT_MODE,
+                    new SecretKeySpec(pre_shared_key.getBytes("UTF-8"), "AES"),
+                    new IvParameterSpec(generated_iv.getBytes("UTF-8")));
+            String plain = new String(my_cipher.doFinal(decoded_data));
+            return plain;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "fuck frida!!!";
     }
 }

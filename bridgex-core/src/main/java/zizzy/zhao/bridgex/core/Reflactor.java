@@ -1,5 +1,6 @@
 package zizzy.zhao.bridgex.core;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -23,7 +24,7 @@ import java.util.Arrays;
 import zizzy.zhao.bridgex.base.reflect.base.ReflectClass;
 import zizzy.zhao.bridgex.base.reflect.base.ReflectConstructor;
 import zizzy.zhao.bridgex.base.reflect.base.ReflectObjectField;
-import zizzy.zhao.bridgex.base.utils.HiddenApiWrapper;
+import zizzy.zhao.bridgex.base.utils.BootstrapClass;
 import zizzy.zhao.bridgex.core.delegate.ActivityThreadDelegate;
 import zizzy.zhao.bridgex.core.delegate.ApplicationPackageManagerDelegate;
 import zizzy.zhao.bridgex.core.delegate.ServiceManagerDelegate;
@@ -33,17 +34,23 @@ public class Reflactor {
     private static final String TAG = "Reflactor";
     private static boolean inDeveloperMode = false;
 
-    public static void hookPMS(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            HiddenApiWrapper.exemptAll();
+    static {
+        Log.i(TAG, "Running on sdk version: " + Build.VERSION.SDK_INT);
+        if (!BootstrapClass.exemptAll()) {
+            Log.w(TAG, "WTF!!! Failed to exempt bootstrap class.");
         }
+    }
 
+    public static void hookPMS(Context context) {
         /**
          * 0 text, 1 hashcode
          */
-        int signatureMode;
+        int signMode;
         String signatureText = null;
         int signatureHashCode = 0;
+        String hookPackageName = null;
+        String hookPackageVersionName = null;
+        int hookPackageVersionCode = 0;
 
         InputStream is = null;
         try {
@@ -52,10 +59,10 @@ public class Reflactor {
             byte[] buffer = new byte[size];
             is.read(buffer);
             JSONObject jsonStr = new JSONObject(new String(buffer));
-            inDeveloperMode = jsonStr.optBoolean("debuggable");
+            inDeveloperMode = jsonStr.optBoolean("debuggable", false);
             JSONObject jo = jsonStr.getJSONObject("signature_blasting");
-            signatureMode = jo.getInt("mode");
-            switch (signatureMode) {
+            signMode = jo.optInt("mode", 0);
+            switch (signMode) {
                 case 0:
                     signatureText = jo.getString("text");
                     break;
@@ -63,7 +70,12 @@ public class Reflactor {
                     signatureHashCode = jo.getInt("hash");
                     break;
                 default:
-                    throw new IllegalArgumentException("Invalid signature mode: " + signatureMode);
+                    throw new IllegalArgumentException("Invalid signature mode: " + signMode);
+            }
+            hookPackageName = jo.optString("hook_package");
+            if (!TextUtils.isEmpty(hookPackageName)) {
+                hookPackageVersionName = jo.getString("hook_package_version_name");
+                hookPackageVersionCode = jo.getInt("hook_package_versoin_code");
             }
         } catch (Throwable th) {
             Log.e(TAG, "Error to parse bridgex_conf.json with " + th);
@@ -104,9 +116,12 @@ public class Reflactor {
                     new HookHandler(
                             sPackageManager.get(sCurrentActivityThread.get()),
                             context.getPackageName(),
-                            signatureMode,
+                            signMode,
                             signatureText,
-                            signatureHashCode
+                            signatureHashCode,
+                            hookPackageName,
+                            hookPackageVersionName,
+                            hookPackageVersionCode
                     )
             );
 
@@ -201,34 +216,46 @@ public class Reflactor {
         private int signMode;
         private String signText;
         private int signHashcode;
+        private String hookPackageName;
+        private String hookPackageVersionName;
+        private int hookPackageVersionCode;
 
         /**
          * @param signText hex-encoded string representing the signature
          *                 {@link Signature#toCharsString()}
          *                 Signatures are expected to be a hex-encoded ASCII string.
          */
-        HookHandler(Object base, String packageName, int signMode, String signText, int signHashcode) {
+        HookHandler(Object base, String packageName, int signMode, String signText, int signHashcode,
+                    String hookPackageName, String hookPackageVersionName, int hookPackageVersionCode) {
             this.base = base;
             this.packageName = packageName;
             this.signMode = signMode;
             this.signText = signText;
             this.signHashcode = signHashcode;
-            Log.i(TAG, "HookHandler<init>: packageName=" + packageName + ", signMode=" + signMode
-                    + ", signText=" + signText + ", signHashcode=" + signHashcode);
+            this.hookPackageName = hookPackageName;
+            this.hookPackageVersionName = hookPackageVersionName;
+            this.hookPackageVersionCode = hookPackageVersionCode;
+            Log.i(TAG, "HookHandler<init>: packageName=" + packageName
+                    + ", signMode=" + signMode
+                    + ", signText=" + signText
+                    + ", signHashcode=" + signHashcode
+                    + ", hookPackageName" + hookPackageName
+                    + ", hookPackageVersionName" + hookPackageVersionName
+                    + ", hookPackageVersionCode" + hookPackageVersionCode);
         }
 
+        @SuppressLint("SoonBlockedPrivateApi")
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             if (inDeveloperMode) {
                 Log.v(TAG, "--- [" + method.getName() + "] called with args " + Arrays.toString(args));
             }
             if ("getPackageInfo".equals(method.getName())) {
-                String pkg = (String) args[0];
-                int flag = (int) args[1];
-
                 PackageInfo info = (PackageInfo) method.invoke(base, args);
                 if (info != null) {
-                    if (pkg.equals(packageName) && flag == PackageManager.GET_SIGNATURES) {
+                    int flag = (int) args[1];
+
+                    if (flag == PackageManager.GET_SIGNATURES) {
                         if (inDeveloperMode) {
                             Log.d(TAG, "!!!! Bingooooooooooooooooooooooooooooooooooooooooooooooo");
                         }
@@ -254,15 +281,24 @@ public class Reflactor {
                                 Field mHaveHashCodeF = clazz.getDeclaredField("mHaveHashCode");
                                 mHaveHashCodeF.setAccessible(true);
                                 mHaveHashCodeF.set(signature, true);
+                                mHaveHashCodeF.setAccessible(false);
 
                                 Field mHashCodeF = clazz.getDeclaredField("mHashCode");
                                 mHashCodeF.setAccessible(true);
                                 mHashCodeF.set(signature, signHashcode);
+                                mHashCodeF.setAccessible(false);
                                 break;
                             default:
                                 throw new IllegalArgumentException("Invalid signature mode: " + signMode);
                         }
                     }
+
+                    if (!TextUtils.isEmpty(hookPackageName)) {
+                        info.packageName = hookPackageName;
+                        info.versionName = hookPackageVersionName;
+                        info.versionCode = hookPackageVersionCode;
+                    }
+
                     return info;
                 }
             }
