@@ -2,17 +2,14 @@ package com.z.zz.zzz.BridgeX;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -40,7 +37,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import zizzy.zhao.bridgex.core.LogBridge;
-import zizzy.zhao.bridgex.core.Logger;
+import zizzy.zhao.bridgex.l.L;
 
 public class MainActivity extends Activity {
 
@@ -62,7 +59,7 @@ public class MainActivity extends Activity {
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorManager.getSensors();
         List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
-        Logger.log(sensorList);
+        L.d(sensorList);
 
         LogBridge.log();
         LogBridge.log("hello, world");
@@ -81,16 +78,16 @@ public class MainActivity extends Activity {
         bundle.putBoolean("key3", true);
         LogBridge.log(bundle);
 
-        Logger.log("123");
-        Logger.log(123);
-        Logger.log(123L);
-        Logger.log(123.00);
-        Logger.log(true);
-        Logger.log(new String[]{"123", "321"});
-        Logger.log(new int[]{123, 321});
-        Logger.log(bundle);
-        Logger.logs(123, "hello", true, "jk123");
-        Logger.printlnF("%d, %s, %s, %s", 1, "call create", "call create1", "uin");
+        L.d("123");
+        L.d(123);
+        L.d(123L);
+        L.d(123.00);
+        L.d(true);
+        L.d(new String[]{"123", "321"});
+        L.d(new int[]{123, 321});
+        L.d(bundle);
+        L.logs(123, "hello", true, "jk123");
+        L.printlnF("%d, %s, %s, %s", 1, "call create", "call create1", "uin");
 
         InputStream is = null;
         try {
@@ -106,7 +103,7 @@ public class MainActivity extends Activity {
 
                     for (int i = 0; i < 3; i++) {
                         LogBridge.log(Thread.currentThread().getName() + i, json);
-                        Logger.log(json);
+                        L.d(json);
                     }
                 }
             }, "thread-").start();

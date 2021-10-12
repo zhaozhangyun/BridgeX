@@ -1,6 +1,7 @@
 include ':app'
 include ':bridgex-base'
 include ':bridgex-core'
+include ':bridgex-l'
 include ':bridgex-dexloader'
 include ':bridgex-arthook'
 include ':ads-hook'

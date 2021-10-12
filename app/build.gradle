@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
 
     defaultConfig {
         applicationId "com.mltad.sdk.demo"
-        minSdkVersion 17
-        targetSdkVersion 28
+        minSdkVersion 14
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
@@ -62,6 +62,7 @@ dependencies {
 //    implementation project(path: ':bridgex-dexloader')
     implementation project(path: ':bridgex-base')
     implementation project(path: ':bridgex-core')
+    implementation project(path: ':bridgex-l')
 //    compileOnly project(path: ':ads-hook')
 //    implementation project(path: ':bridgex-arthook')
 
@@ -69,8 +70,8 @@ dependencies {
 //    implementation 'com.squareup.okhttp3:okhttp:3.4.2'
 //    implementation 'com.squareup.okio:okio:1.9.0'
 
-    implementation "com.android.support:appcompat-v7:28.0.0"
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation "com.android.support:appcompat-v7:29.0.0"
+    implementation 'com.android.support:recyclerview-v7:29.0.0'
 
 //    implementation "me.weishu:free_reflection:2.2.0"
 //    implementation 'me.weishu.exposed:exposed-xposedapi:0.4.5'

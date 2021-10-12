@@ -1,4 +1,4 @@
-package zizzy.zhao.bridgex.core;
+package zizzy.zhao.bridgex.l;
 
 // Copyright 2019 Google LLC
 //
@@ -14,15 +14,19 @@ package zizzy.zhao.bridgex.core;
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.DeadSystemException;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.lang.ref.WeakReference;
@@ -33,35 +37,61 @@ import java.util.Locale;
 /**
  * Default logger that logs to android.util.Log.
  */
-public class Logger {
-    public static final String TAG = "--bridgex--";
+public class L {
 
-    private final String tag;
-    private final int logLevel;
-    private boolean forceLog;
+    private static final String TAG = "--bridgex--";
 
-    public Logger(String tag) {
-        this.tag = tag;
-        this.logLevel = Log.INFO;
-        this.forceLog = false;
+    private Config config;
+
+    private L(Config config) {
+        this.config = config;
+    }
+
+    public static void attach(Context context) {
+        synchronized (L.class) {
+            InputStream is = null;
+            try {
+                is = context.getResources().getAssets().open("logger_conf.json");
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                is.read(buffer);
+                JSONObject jo = new JSONObject(new String(buffer));
+                String tag = jo.optString("default_tag");
+                int logLevel = jo.optInt("log_level");
+                Holder.INSTANCE = new L(
+                        new Config.Builder(TextUtils.isEmpty(tag) ? TAG : tag)
+                                .logLevel(logLevel == 0 ? Log.INFO : logLevel)
+                                .showShortClass(jo.optBoolean("show_short_class"))
+                                .build());
+            } catch (Throwable th) {
+                Log.e(TAG, "Error to parse logger_conf.json with " + th);
+            } finally {
+                if (is != null) {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                    }
+                }
+            }
+        }
+    }
+
+    public static void setConfig(Config config) {
+        getLogger().config = config;
     }
 
     /**
-     * Returns the global {@link Logger}.
+     * Returns the global {@link L}.
      */
-    private static Logger getLogger() {
-        return Holder.DEFAULT_LOGGER;
-    }
-
-    public static void setForceLogEnabled(boolean enabled) {
-        getLogger().forceLogEnabled(enabled);
+    private static L getLogger() {
+        return Holder.INSTANCE;
     }
 
     public static void v(String source) {
         getLogger().logV(source);
     }
 
-    public static void d(String source) {
+    public static void d(Object source) {
         getLogger().logD(source);
     }
 
@@ -81,44 +111,12 @@ public class Logger {
         getLogger().logE(source, th);
     }
 
-    public static void log(Object source) {
-        if (source == null) {
-            d("null");
-        } else {
-            d(source.toString());
-        }
-    }
-
-    public static void log(int source) {
-        d(String.valueOf(source));
-    }
-
-    public static void log(long source) {
-        d(String.valueOf(source));
-    }
-
-    public static void log(float source) {
-        d(String.valueOf(source));
-    }
-
-    public static void log(double source) {
-        d(String.valueOf(source));
-    }
-
-    public static void log(boolean source) {
-        d(String.valueOf(source));
-    }
-
     public static void logs(Object... source) {
         d(processBody(source));
     }
 
     public static void printlnF(String format, Object... args) {
-        d(String.format(Locale.US, format, args));
-    }
-
-    public void forceLogEnabled(boolean enabled) {
-        forceLog = enabled;
+        getLogger().logD(String.format(Locale.US, format, args));
     }
 
     private void logV(Object source) {
@@ -133,36 +131,36 @@ public class Logger {
         }
     }
 
-    private void logI(String source) {
+    private void logI(Object source) {
         if (canLog(Log.INFO)) {
             println(source, Log.INFO);
         }
     }
 
-    private void logW(String source) {
+    private void logW(Object source) {
         if (canLog(Log.WARN)) {
             println(source, Log.WARN);
         }
     }
 
-    private void logE(String source) {
+    private void logE(Object source) {
         if (canLog(Log.ERROR)) {
             println(source, Log.ERROR);
         }
     }
 
-    private void logE(String source, Throwable th) {
+    private void logE(Object source, Throwable th) {
         if (canLog(Log.ERROR)) {
-            Log.e(tag, source, th);
+            println(source + "\n" + th, Log.ERROR);
         }
     }
 
     private boolean canLog(int level) {
-        return forceLog || (logLevel <= level || Log.isLoggable(tag, level));
+        return config.logLevel <= level || Log.isLoggable(config.tag, level);
     }
 
     private static String processBody(Object... objArr) {
-        String str = "null";
+        String str = null;
         if (objArr != null) {
             if (objArr.length == 1) {
                 str = objArr[0].toString();
@@ -182,7 +180,7 @@ public class Logger {
                 str = sb.toString();
             }
         }
-        return str.length() == 0 ? "null" : str;
+        return TextUtils.isEmpty(str) ? "(no content)" : str;
     }
 
     private void println(Object source, int priority) {
@@ -190,8 +188,12 @@ public class Logger {
             return;
         }
 
-        synchronized (Logger.class) {
-            StringBuilder builder = new StringBuilder();
+        if (source == null) {
+            source = "(no content)";
+        }
+
+        synchronized (L.class) {
+            StringBuilder sb = new StringBuilder();
 
             // check json
             WeakReference wr = null;
@@ -224,21 +226,33 @@ public class Logger {
             }
 
             StackTraceElement[] stacks = new Throwable().fillInStackTrace().getStackTrace();
-            StackTraceElement element = stacks[4];
+            StackTraceElement element = stacks[3];
             String fileName = element.getFileName();
             String className = element.getClassName();
             String methodClass = element.getMethodName();
             int lineNumber = element.getLineNumber();
 
-            if (lineNumber != -2) {
-                builder.append(String.format("--- [%s:%s] %s.%s %s", fileName, lineNumber, className,
-                        methodClass, getFormatLog(source)));
+            if (config.showShortClass) {
+                if (lineNumber != -2) {
+                    sb.append(String.format("--- [%s:%s] %s.%s %s", fileName, lineNumber,
+                            className.substring(className.lastIndexOf(".") + 1),
+                            methodClass, getFormatLog(source)));
+                } else {
+                    sb.append(String.format("--- [%s] %s.%s %s", fileName,
+                            className.substring(className.lastIndexOf(".") + 1),
+                            methodClass, getFormatLog(source)));
+                }
             } else {
-                builder.append(String.format("--- [%s] %s.%s %s", fileName, className,
-                        methodClass, getFormatLog(source)));
+                if (lineNumber != -2) {
+                    sb.append(String.format("--- [%s:%s] %s.%s %s", fileName, lineNumber,
+                            className, methodClass, getFormatLog(source)));
+                } else {
+                    sb.append(String.format("--- [%s] %s.%s %s", fileName, className,
+                            methodClass, getFormatLog(source)));
+                }
             }
 
-            printlns(priority, tag, builder.toString(), null);
+            printlns(priority, config.tag, sb.toString(), null);
         }
     }
 
@@ -280,22 +294,22 @@ public class Logger {
     }
 
     private String getSplitter(int length) {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
-            builder.append("-");
+            sb.append("-");
         }
-        return builder.toString();
+        return sb.toString();
     }
 
     private String formatJson(Object source) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("\n");
-        builder.append(getSplitter(100));
-        builder.append("\n");
-        builder.append(source);
-        builder.append("\n");
-        builder.append(getSplitter(100));
-        return builder.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        sb.append(getSplitter(100));
+        sb.append("\n");
+        sb.append(source);
+        sb.append("\n");
+        sb.append(getSplitter(100));
+        return sb.toString();
     }
 
     private Object getJsonObjFromStr(Object test) {
@@ -359,7 +373,10 @@ public class Logger {
     }
 
     private static class Holder {
-        private volatile static Logger DEFAULT_LOGGER = new Logger(TAG);
+        private volatile static L INSTANCE = new L(new Config.Builder(TAG)
+                .logLevel(Log.INFO)
+                .showShortClass(false)
+                .build());
     }
 
     /**
@@ -367,7 +384,7 @@ public class Logger {
      * a JNI call during logging.
      */
     static class PreloadHolder {
-        public final static int LOGGER_ENTRY_MAX_PAYLOAD = 4000;
+        private final static int LOGGER_ENTRY_MAX_PAYLOAD = 4000;
     }
 
     /**
@@ -682,6 +699,44 @@ public class Logger {
         private void writeBuffer(int length) {
             if (length > 0) {
                 super.write(buffer, 0, length);
+            }
+        }
+    }
+
+    public static class Config {
+
+        private String tag;
+        private int logLevel;
+        private boolean showShortClass;
+
+        private Config(Builder builder) {
+            this.tag = builder.tag;
+            this.logLevel = builder.logLevel;
+            this.showShortClass = builder.showShortClass;
+        }
+
+        public static class Builder {
+
+            private String tag;
+            private int logLevel;
+            private boolean showShortClass;
+
+            public Builder(String tag) {
+                this.tag = tag;
+            }
+
+            public Builder logLevel(int level) {
+                this.logLevel = level;
+                return this;
+            }
+
+            public Builder showShortClass(boolean enabled) {
+                this.showShortClass = enabled;
+                return this;
+            }
+
+            public Config build() {
+                return new Config(this);
             }
         }
     }
