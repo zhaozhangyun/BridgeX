@@ -3,7 +3,10 @@ package zizzy.zhao.bridgex.base.utils;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.lang.reflect.Member;
 import java.util.ArrayList;
@@ -99,9 +102,11 @@ public class Util {
         try {
             if (classLoader != null) {
                 if ("<init>".equals(methodName)) {
-                    method = Class.forName(className, true, classLoader).getDeclaredConstructor(params);
+                    method = Class.forName(className, true, classLoader)
+                            .getDeclaredConstructor(params);
                 } else {
-                    method = Class.forName(className, true, classLoader).getDeclaredMethod(methodName, params);
+                    method = Class.forName(className, true, classLoader)
+                            .getDeclaredMethod(methodName, params);
                 }
             } else {
                 if ("<init>".equals(methodName)) {
@@ -162,5 +167,11 @@ public class Util {
         }
 
         return null;
+    }
+
+    public static void showToast(final Context context, final String toast, final boolean isLong) {
+        new Handler(Looper.getMainLooper()).post(() -> {
+            Toast.makeText(context, toast, isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
+        });
     }
 }
