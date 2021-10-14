@@ -1,12 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 29
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
 
@@ -38,6 +37,6 @@ dependencies {
     compileOnly project(':bridgex-base')
     compileOnly project(':bridgex-arthook')
 
-    compileOnly "me.weishu:free_reflection:2.2.0"
-    compileOnly 'me.weishu.exposed:exposed-xposedapi:0.4.5'
+    compileOnly 'me.weishu:free_reflection:+'
+    compileOnly 'me.weishu.exposed:exposed-xposedapi:+'
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.IInterface;
 import android.text.TextUtils;
@@ -25,7 +24,6 @@ import java.util.Arrays;
 import zizzy.zhao.bridgex.base.reflect.base.ReflectClass;
 import zizzy.zhao.bridgex.base.reflect.base.ReflectConstructor;
 import zizzy.zhao.bridgex.base.reflect.base.ReflectObjectField;
-import zizzy.zhao.bridgex.base.utils.BootstrapClass;
 import zizzy.zhao.bridgex.core.delegate.ActivityThreadDelegate;
 import zizzy.zhao.bridgex.core.delegate.ApplicationPackageManagerDelegate;
 import zizzy.zhao.bridgex.core.delegate.ServiceManagerDelegate;
@@ -34,13 +32,6 @@ public class Reflactor {
 
     private static final String TAG = "Reflactor";
     private static boolean inDeveloperMode = false;
-
-    static {
-        Log.i(TAG, "Running on sdk version: " + Build.VERSION.SDK_INT);
-        if (!BootstrapClass.exemptAll()) {
-            Log.w(TAG, "WTF!!! Failed to exempt bootstrap class.");
-        }
-    }
 
     public static void hookPMS(Context context) {
         /**

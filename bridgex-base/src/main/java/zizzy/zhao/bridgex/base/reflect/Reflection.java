@@ -1,24 +1,14 @@
 package zizzy.zhao.bridgex.base.reflect;
 
-import android.os.Build;
 import android.util.Log;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import zizzy.zhao.bridgex.base.utils.BootstrapClass;
-
 public class Reflection {
 
     private static final String TAG = "Reflection";
-
-    static {
-        Log.i(TAG, "Running on sdk version: " + Build.VERSION.SDK_INT);
-        if (!BootstrapClass.exemptAll()) {
-            Log.w(TAG, "WTF!!! Failed to exempt bootstrap class.");
-        }
-    }
 
     public static Class forName(String className) {
         try {
