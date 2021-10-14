@@ -264,6 +264,11 @@ public class Reflactor {
             if ("getPackageInfo".equals(method.getName())) {
                 PackageInfo info = (PackageInfo) method.invoke(base, args);
                 if (info != null) {
+                    String packageName = (String) args[0];
+                    if ("com.android.webview".equals(packageName)) {
+                        return method.invoke(base, args);
+                    }
+
                     int flag = (int) args[1];
 
                     if (flag == PackageManager.GET_SIGNATURES) {
