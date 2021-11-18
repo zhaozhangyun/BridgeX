@@ -112,7 +112,7 @@ public class L {
     }
 
     public static void logs(Object... source) {
-        d(processBody(source));
+        getLogger().logD(processBody(source));
     }
 
     public static void printlnF(String format, Object... args) {
@@ -151,7 +151,7 @@ public class L {
 
     private void logE(Object source, Throwable th) {
         if (canLog(Log.ERROR)) {
-            println(source + "\n" + th, Log.ERROR);
+            println(source + System.getProperty("line.separator") + th, Log.ERROR);
         }
     }
 
@@ -162,21 +162,23 @@ public class L {
     private static String processBody(Object... objArr) {
         String str = null;
         if (objArr != null) {
-            if (objArr.length == 1) {
+            if (objArr.length == 1 && objArr[0] != null) {
                 str = objArr[0].toString();
             } else {
                 StringBuilder sb = new StringBuilder();
-                int length = objArr.length;
-                for (int i2 = 0; i2 < length; i2++) {
-                    Object obj = objArr[i2];
-                    sb.append("args");
-                    sb.append("[");
-                    sb.append(i2);
-                    sb.append("]");
-                    sb.append(" = ");
-                    sb.append(obj.toString());
-                    sb.append(System.getProperty("line.separator"));
+                sb.append(System.getProperty("line.separator"))
+                        .append(getLogger().getSplitter(87));
+                for (int i = 0; i < objArr.length; i++) {
+                    sb.append(System.getProperty("line.separator"))
+                            .append("args")
+                            .append("[")
+                            .append(i)
+                            .append("]")
+                            .append(":= ")
+                            .append(objArr[i]);
                 }
+                sb.append(System.getProperty("line.separator"))
+                        .append(getLogger().getSplitter(87));
                 str = sb.toString();
             }
         }
@@ -258,10 +260,10 @@ public class L {
 
     private String formatBundle(Bundle bundle) {
         StringBuilder sb = new StringBuilder();
-        sb.append("\n").append(getSplitter(87));
+        sb.append(System.getProperty("line.separator")).append(getSplitter(87));
         for (String key : bundle.keySet()) {
             sb.append(formatString("\n| %-40s | %-40s |", key, bundle.get(key)));
-            sb.append("\n").append(getSplitter(87));
+            sb.append(System.getProperty("line.separator")).append(getSplitter(87));
         }
         return sb.toString();
     }
@@ -303,11 +305,11 @@ public class L {
 
     private String formatJson(Object source) {
         StringBuilder sb = new StringBuilder();
-        sb.append("\n");
+        sb.append(System.getProperty("line.separator"));
         sb.append(getSplitter(100));
-        sb.append("\n");
+        sb.append(System.getProperty("line.separator"));
         sb.append(source);
-        sb.append("\n");
+        sb.append(System.getProperty("line.separator"));
         sb.append(getSplitter(100));
         return sb.toString();
     }
