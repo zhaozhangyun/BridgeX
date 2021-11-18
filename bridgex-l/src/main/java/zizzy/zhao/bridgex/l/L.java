@@ -234,7 +234,7 @@ public class L {
 
             if (config.showShortClass) {
                 if (lineNumber != -2) {
-                    sb.append(String.format("--- [%s:%s] %s.%s %s", fileName, lineNumber,
+                    sb.append(String.format("--- %s : %s.%s %s", lineNumber,
                             className.substring(className.lastIndexOf(".") + 1),
                             methodClass, getFormatLog(source)));
                 } else {
