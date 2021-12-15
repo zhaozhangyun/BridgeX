@@ -40,15 +40,15 @@ import java.util.Locale;
 public class L {
 
     private static final String TAG = "--bridgex--";
+    private static Config sConfig;
+    private static Object lock = new Object[0];
 
-    private Config config;
-
-    private L(Config config) {
-        this.config = config;
+    public static void setConfiguration(Config config) {
+        sConfig = config;
     }
 
     public static void attach(Context context) {
-        synchronized (L.class) {
+        synchronized (lock) {
             InputStream is = null;
             try {
                 is = context.getResources().getAssets().open("logger_conf.json");
@@ -58,11 +58,10 @@ public class L {
                 JSONObject jo = new JSONObject(new String(buffer));
                 String tag = jo.optString("default_tag");
                 int logLevel = jo.optInt("log_level");
-                Holder.INSTANCE = new L(
-                        new Config.Builder(TextUtils.isEmpty(tag) ? TAG : tag)
-                                .logLevel(logLevel == 0 ? Log.INFO : logLevel)
-                                .showShortClass(jo.optBoolean("show_short_class"))
-                                .build());
+                sConfig = new Config.Builder(TextUtils.isEmpty(tag) ? TAG : tag)
+                        .logLevel(logLevel == 0 ? Log.INFO : logLevel)
+                        .showShortClass(jo.optBoolean("show_short_class"))
+                        .build();
             } catch (Throwable th) {
                 Log.e(TAG, "Error to parse logger_conf.json with " + th);
             } finally {
@@ -76,87 +75,56 @@ public class L {
         }
     }
 
-    public static void setConfig(Config config) {
-        getLogger().config = config;
-    }
-
-    /**
-     * Returns the global {@link L}.
-     */
-    private static L getLogger() {
-        return Holder.INSTANCE;
-    }
-
     public static void v(String source) {
-        getLogger().logV(source);
-    }
-
-    public static void d(Object source) {
-        getLogger().logD(source);
-    }
-
-    public static void i(String source) {
-        getLogger().logI(source);
-    }
-
-    public static void w(String source) {
-        getLogger().logW(source);
-    }
-
-    public static void e(String source) {
-        getLogger().logE(source);
-    }
-
-    public static void e(String source, Throwable th) {
-        getLogger().logE(source, th);
-    }
-
-    public static void logs(Object... source) {
-        getLogger().logD(processBody(source));
-    }
-
-    public static void printlnF(String format, Object... args) {
-        getLogger().logD(String.format(Locale.US, format, args));
-    }
-
-    private void logV(Object source) {
         if (canLog(Log.VERBOSE)) {
             println(source, Log.VERBOSE);
         }
     }
 
-    private void logD(Object source) {
+    public static void d(Object source) {
         if (canLog(Log.DEBUG)) {
             println(source, Log.DEBUG);
         }
     }
 
-    private void logI(Object source) {
+    public static void i(String source) {
         if (canLog(Log.INFO)) {
             println(source, Log.INFO);
         }
     }
 
-    private void logW(Object source) {
+    public static void w(String source) {
         if (canLog(Log.WARN)) {
             println(source, Log.WARN);
         }
     }
 
-    private void logE(Object source) {
+    public static void e(String source) {
         if (canLog(Log.ERROR)) {
             println(source, Log.ERROR);
         }
     }
 
-    private void logE(Object source, Throwable th) {
+    public static void e(String source, Throwable th) {
         if (canLog(Log.ERROR)) {
             println(source + System.getProperty("line.separator") + th, Log.ERROR);
         }
     }
 
-    private boolean canLog(int level) {
-        return config.logLevel <= level || Log.isLoggable(config.tag, level);
+    public static void logs(Object... source) {
+        if (canLog(Log.DEBUG)) {
+            println(processBody(source), Log.DEBUG);
+        }
+    }
+
+    public static void printlnF(String format, Object... args) {
+        if (canLog(Log.DEBUG)) {
+            println(String.format(Locale.US, format, args), Log.DEBUG);
+        }
+    }
+
+    private static boolean canLog(int level) {
+        return sConfig.logLevel <= level || Log.isLoggable(sConfig.tag, level);
     }
 
     private static String processBody(Object... objArr) {
@@ -167,7 +135,7 @@ public class L {
             } else {
                 StringBuilder sb = new StringBuilder();
                 sb.append(System.getProperty("line.separator"))
-                        .append(getLogger().getSplitter(87));
+                        .append(getSplitter(87));
                 for (int i = 0; i < objArr.length; i++) {
                     sb.append(System.getProperty("line.separator"))
                             .append("args")
@@ -178,14 +146,14 @@ public class L {
                             .append(objArr[i]);
                 }
                 sb.append(System.getProperty("line.separator"))
-                        .append(getLogger().getSplitter(87));
+                        .append(getSplitter(87));
                 str = sb.toString();
             }
         }
         return TextUtils.isEmpty(str) ? "(no content)" : str;
     }
 
-    private void println(Object source, int priority) {
+    private static void println(Object source, int priority) {
         if (!canLog(priority)) {
             return;
         }
@@ -194,7 +162,7 @@ public class L {
             source = "(no content)";
         }
 
-        synchronized (L.class) {
+        synchronized (lock) {
             StringBuilder sb = new StringBuilder();
 
             // check json
@@ -228,13 +196,13 @@ public class L {
             }
 
             StackTraceElement[] stacks = new Throwable().fillInStackTrace().getStackTrace();
-            StackTraceElement element = stacks[3];
+            StackTraceElement element = stacks[2];
             String fileName = element.getFileName();
             String className = element.getClassName();
             String methodClass = element.getMethodName();
             int lineNumber = element.getLineNumber();
 
-            if (config.showShortClass) {
+            if (sConfig.showShortClass) {
                 if (lineNumber != -2) {
                     sb.append(String.format("--- %s : %s.%s %s", lineNumber,
                             className.substring(className.lastIndexOf(".") + 1),
@@ -254,11 +222,11 @@ public class L {
                 }
             }
 
-            printlns(priority, config.tag, sb.toString(), null);
+            printlns(priority, sConfig.tag, sb.toString(), null);
         }
     }
 
-    private String formatBundle(Bundle bundle) {
+    private static String formatBundle(Bundle bundle) {
         StringBuilder sb = new StringBuilder();
         sb.append(System.getProperty("line.separator")).append(getSplitter(87));
         for (String key : bundle.keySet()) {
@@ -268,15 +236,15 @@ public class L {
         return sb.toString();
     }
 
-    private String formatString(String format, Object... args) {
+    private static String formatString(String format, Object... args) {
         return String.format(Locale.US, format, args);
     }
 
-    private String getFormatLog(Object o) {
+    private static String getFormatLog(Object o) {
         return o == null ? String.format("---> <CALL>") : String.format("---> %s", o);
     }
 
-    private String formatJsonBody(Object source) {
+    private static String formatJsonBody(Object source) {
         Object o = getJsonObjFromStr(source);
         if (o != null) {
             try {
@@ -295,7 +263,7 @@ public class L {
         }
     }
 
-    private String getSplitter(int length) {
+    private static String getSplitter(int length) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
             sb.append("-");
@@ -303,7 +271,7 @@ public class L {
         return sb.toString();
     }
 
-    private String formatJson(Object source) {
+    private static String formatJson(Object source) {
         StringBuilder sb = new StringBuilder();
         sb.append(System.getProperty("line.separator"));
         sb.append(getSplitter(100));
@@ -314,7 +282,7 @@ public class L {
         return sb.toString();
     }
 
-    private Object getJsonObjFromStr(Object test) {
+    private static Object getJsonObjFromStr(Object test) {
         Object o = null;
         try {
             o = new JSONObject(test.toString());
@@ -330,7 +298,7 @@ public class L {
         return o;
     }
 
-    private int printlns(int priority, String tag, String msg, Throwable tr) {
+    private static int printlns(int priority, String tag, String msg, Throwable tr) {
         ImmediateLogWriter logWriter = new ImmediateLogWriter(priority, tag);
         // Acceptable buffer size. Get the native buffer size, subtract two zero terminators,
         // and the length of the tag.
@@ -372,13 +340,6 @@ public class L {
         lbbw.flush();
 
         return logWriter.getWritten();
-    }
-
-    private static class Holder {
-        private volatile static L INSTANCE = new L(new Config.Builder(TAG)
-                .logLevel(Log.INFO)
-                .showShortClass(false)
-                .build());
     }
 
     /**

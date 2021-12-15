@@ -61,22 +61,22 @@ public class MainActivity extends Activity {
         List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
         L.d(sensorList);
 
-        LogBridge.log();
-        LogBridge.log("hello, world");
-        LogBridge.logFormat("%d, %s, %s, %s", 1, "call create", "call create1", "uin");
-        LogBridge.log("{ when=0 what=3 target=com.bytedance.sdk.openadsdk.utils.WeakHandler }");
-        LogBridge.log(1);
-        LogBridge.log(true);
-        LogBridge.log(1.0f);
-        LogBridge.log(10000000000000000L);
-        LogBridge.log("abc", "lalala");
-        LogBridge.logs(123, "hello", true, "jk123");
+//        LogBridge.log();
+//        LogBridge.log("hello, world");
+//        LogBridge.logFormat("%d, %s, %s, %s", 1, "call create", "call create1", "uin");
+//        LogBridge.log("{ when=0 what=3 target=com.bytedance.sdk.openadsdk.utils.WeakHandler }");
+//        LogBridge.log(1);
+//        LogBridge.log(true);
+//        LogBridge.log(1.0f);
+//        LogBridge.log(10000000000000000L);
+//        LogBridge.log("abc", "lalala");
+//        LogBridge.logs(123, "hello", true, "jk123");
 
         Bundle bundle = new Bundle();
         bundle.putString("key1", "hello");
         bundle.putInt("key2", 666);
         bundle.putBoolean("key3", true);
-        LogBridge.log(bundle);
+//        LogBridge.log(bundle);
 
         L.d("123");
         L.d(123);
@@ -96,15 +96,13 @@ public class MainActivity extends Activity {
             byte[] buffer = new byte[size];
             is.read(buffer);
             final JSONObject json = new JSONObject(new String(buffer));
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    LogBridge.log(json);
+            new Thread(() -> {
+//                LogBridge.log(json);
+                L.d(json);
 
-                    for (int i = 0; i < 3; i++) {
-                        LogBridge.log(Thread.currentThread().getName() + i, json);
-                        L.d(json);
-                    }
+                for (int i = 0; i < 3; i++) {
+//                    LogBridge.log(Thread.currentThread().getName() + i, json);
+                    L.d(json);
                 }
             }, "thread-").start();
         } catch (Throwable th) {
