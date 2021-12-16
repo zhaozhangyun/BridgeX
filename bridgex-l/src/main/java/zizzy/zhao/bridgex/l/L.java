@@ -76,51 +76,41 @@ public class L {
     }
 
     public static void v(String source) {
-        if (canLog(Log.VERBOSE)) {
-            println(source, Log.VERBOSE);
-        }
+        println(source, Log.VERBOSE);
     }
 
     public static void d(Object source) {
-        if (canLog(Log.DEBUG)) {
-            println(source, Log.DEBUG);
-        }
+        println(source, Log.DEBUG);
     }
 
     public static void i(String source) {
-        if (canLog(Log.INFO)) {
-            println(source, Log.INFO);
-        }
+        println(source, Log.INFO);
     }
 
     public static void w(String source) {
-        if (canLog(Log.WARN)) {
-            println(source, Log.WARN);
-        }
+        println(source, Log.WARN);
     }
 
     public static void e(String source) {
-        if (canLog(Log.ERROR)) {
-            println(source, Log.ERROR);
-        }
+        println(source, Log.ERROR);
     }
 
     public static void e(String source, Throwable th) {
-        if (canLog(Log.ERROR)) {
-            println(source + System.getProperty("line.separator") + th, Log.ERROR);
-        }
+        println(source + System.getProperty("line.separator") + th, Log.ERROR);
     }
 
     public static void logs(Object... source) {
-        if (canLog(Log.DEBUG)) {
-            println(processBody(source), Log.DEBUG);
-        }
+        println(processBody(source), Log.DEBUG);
     }
 
-    public static void printlnF(String format, Object... args) {
-        if (canLog(Log.DEBUG)) {
-            println(String.format(Locale.US, format, args), Log.DEBUG);
-        }
+    public static void logF(String format, Object... args) {
+        println(String.format(Locale.US, format, args), Log.DEBUG);
+    }
+
+    public static void showBacktrace() {
+        println("\r\n" + getSplitter(100) + "\r\n"
+                + Log.getStackTraceString(new Exception())
+                + "\r\n" + getSplitter(100) + "\r\n", Log.DEBUG);
     }
 
     private static boolean canLog(int level) {
@@ -196,7 +186,8 @@ public class L {
             }
 
             StackTraceElement[] stacks = new Throwable().fillInStackTrace().getStackTrace();
-            StackTraceElement element = stacks[2];
+            int stackTop = 2;
+            StackTraceElement element = stacks[stackTop];
             String fileName = element.getFileName();
             String className = element.getClassName();
             String methodClass = element.getMethodName();
@@ -222,7 +213,7 @@ public class L {
                 }
             }
 
-            printlns(priority, sConfig.tag, sb.toString(), null);
+            println(priority, sConfig.tag, sb.toString(), null);
         }
     }
 
@@ -298,7 +289,7 @@ public class L {
         return o;
     }
 
-    private static int printlns(int priority, String tag, String msg, Throwable tr) {
+    private static int println(int priority, String tag, String msg, Throwable tr) {
         ImmediateLogWriter logWriter = new ImmediateLogWriter(priority, tag);
         // Acceptable buffer size. Get the native buffer size, subtract two zero terminators,
         // and the length of the tag.

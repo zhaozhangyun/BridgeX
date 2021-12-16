@@ -60,6 +60,7 @@ public class MainActivity extends Activity {
         sensorManager.getSensors();
         List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
         L.d(sensorList);
+        L.showBacktrace();
 
 //        LogBridge.log();
 //        LogBridge.log("hello, world");
@@ -87,7 +88,7 @@ public class MainActivity extends Activity {
         L.d(new int[]{123, 321});
         L.d(bundle);
         L.logs(123, "hello", true, "jk123");
-        L.printlnF("%d, %s, %s, %s", 1, "call create", "call create1", "uin");
+        L.logF("%d, %s, %s, %s", 1, "call create", "call create1", "uin");
 
         InputStream is = null;
         try {
