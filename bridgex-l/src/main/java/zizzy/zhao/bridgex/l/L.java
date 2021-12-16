@@ -75,7 +75,7 @@ public class L {
         }
     }
 
-    public static void v(String source) {
+    public static void v(Object source) {
         println(source, Log.VERBOSE);
     }
 
@@ -83,19 +83,19 @@ public class L {
         println(source, Log.DEBUG);
     }
 
-    public static void i(String source) {
+    public static void i(Object source) {
         println(source, Log.INFO);
     }
 
-    public static void w(String source) {
+    public static void w(Object source) {
         println(source, Log.WARN);
     }
 
-    public static void e(String source) {
+    public static void e(Object source) {
         println(source, Log.ERROR);
     }
 
-    public static void e(String source, Throwable th) {
+    public static void e(Object source, Throwable th) {
         println(source + System.getProperty("line.separator") + th, Log.ERROR);
     }
 
