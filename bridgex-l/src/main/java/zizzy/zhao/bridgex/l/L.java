@@ -56,9 +56,11 @@ public class L {
                 byte[] buffer = new byte[size];
                 is.read(buffer);
                 JSONObject jo = new JSONObject(new String(buffer));
+                boolean enabled = jo.optBoolean("enabled");
                 String tag = jo.optString("default_tag");
                 int logLevel = jo.optInt("log_level");
                 sConfig = new Config.Builder(TextUtils.isEmpty(tag) ? TAG : tag)
+                        .enabled(enabled)
                         .logLevel(logLevel == 0 ? Log.INFO : logLevel)
                         .showShortClass(jo.optBoolean("show_short_class"))
                         .build();
@@ -114,7 +116,7 @@ public class L {
     }
 
     private static boolean canLog(int level) {
-        return sConfig.logLevel <= level || Log.isLoggable(sConfig.tag, level);
+        return sConfig.enabled && (sConfig.logLevel <= level || Log.isLoggable(sConfig.tag, level));
     }
 
     private static String processBody(Object... objArr) {
@@ -659,11 +661,13 @@ public class L {
 
     public static class Config {
 
+        private boolean enabled;
         private String tag;
         private int logLevel;
         private boolean showShortClass;
 
         private Config(Builder builder) {
+            this.enabled = builder.enabled;
             this.tag = builder.tag;
             this.logLevel = builder.logLevel;
             this.showShortClass = builder.showShortClass;
@@ -671,6 +675,7 @@ public class L {
 
         public static class Builder {
 
+            private boolean enabled;
             private String tag;
             private int logLevel;
             private boolean showShortClass;
@@ -679,13 +684,18 @@ public class L {
                 this.tag = tag;
             }
 
+            public Builder enabled(boolean enabled) {
+                this.enabled = enabled;
+                return this;
+            }
+
             public Builder logLevel(int level) {
                 this.logLevel = level;
                 return this;
             }
 
-            public Builder showShortClass(boolean enabled) {
-                this.showShortClass = enabled;
+            public Builder showShortClass(boolean showShortClass) {
+                this.showShortClass = showShortClass;
                 return this;
             }
 

@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -144,7 +142,7 @@ public class MainActivity extends Activity {
 
 //        BridgeX.writeToFile("test.txt", "abc");
 
-        fuckBridge("fuck !!!");
+//        fuckBridge("fuck !!!");
     }
 
     private void fuckBridge(String fuck) {
@@ -262,7 +260,6 @@ public class MainActivity extends Activity {
         return "";
     }
 
-    @NonNull
     @Override
     public String toString() {
         return "fuck frida!!!";
