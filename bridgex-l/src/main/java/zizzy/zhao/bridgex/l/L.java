@@ -40,7 +40,7 @@ import java.util.Locale;
 public class L {
 
     private static final String TAG = "--bridgex--";
-    private static Config sConfig;
+    private static Config sConfig = new Config.Builder(TAG).build();
     private static Object lock = new Object[0];
 
     public static void setConfiguration(Config config) {
@@ -682,6 +682,9 @@ public class L {
 
             public Builder(String tag) {
                 this.tag = tag;
+                if (TextUtils.isEmpty(tag)) {
+                    throw new IllegalArgumentException("Oops!!! You must set TAG.");
+                }
             }
 
             public Builder enabled(boolean enabled) {
