@@ -16,7 +16,7 @@ public class App extends Application {
         BridgeX.attach(base);
         LogBridge.init(this);
         LogBridge.log(this);
-        L.attach(this);
+        L.fire(this, new L.Config.Builder().build());
         L.d(this);
     }
 

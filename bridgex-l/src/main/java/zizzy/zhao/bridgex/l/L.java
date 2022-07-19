@@ -39,39 +39,55 @@ import java.util.Locale;
  */
 public class L {
 
-    private static final String TAG = "--bridgex--";
-    private static Config sConfig = new Config.Builder(TAG).build();
+    private static final String TAG = "bridgex";
+    private static Config sConf = null;
     private static Object lock = new Object[0];
 
-    public static void setConfiguration(Config config) {
-        sConfig = config;
+    public static void fire(Context context, Config conf) {
+        if (sConf == null) {
+            synchronized (L.class) {
+                attach(context);
+
+                if (sConf == null) {
+                    if (conf == null) {
+                        conf = new Config.Builder()
+                                .enabled(true)
+                                .defaultTag(TAG)
+                                .logLevel(Log.INFO)
+                                .showShortClass(true)
+                                .build();
+                    }
+                    sConf = conf;
+                }
+            }
+        }
     }
 
-    public static void attach(Context context) {
-        synchronized (lock) {
-            InputStream is = null;
-            try {
-                is = context.getResources().getAssets().open("logger_conf.json");
-                int size = is.available();
-                byte[] buffer = new byte[size];
-                is.read(buffer);
-                JSONObject jo = new JSONObject(new String(buffer));
-                boolean enabled = jo.optBoolean("enabled");
-                String tag = jo.optString("default_tag");
-                int logLevel = jo.optInt("log_level");
-                sConfig = new Config.Builder(TextUtils.isEmpty(tag) ? TAG : tag)
-                        .enabled(enabled)
-                        .logLevel(logLevel == 0 ? Log.INFO : logLevel)
-                        .showShortClass(jo.optBoolean("show_short_class"))
-                        .build();
-            } catch (Throwable th) {
-                Log.e(TAG, "Error to parse logger_conf.json with " + th);
-            } finally {
-                if (is != null) {
-                    try {
-                        is.close();
-                    } catch (IOException e) {
-                    }
+    private static void attach(Context context) {
+        InputStream is = null;
+        try {
+            is = context.getResources().getAssets().open("logger_conf.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            JSONObject jo = new JSONObject(new String(buffer));
+            boolean enabled = jo.optBoolean("enabled");
+            String tag = jo.optString("default_tag");
+            int logLevel = jo.optInt("log_level");
+            boolean showShortClass = jo.optBoolean("show_short_class");
+            sConf = new Config.Builder()
+                    .enabled(enabled)
+                    .defaultTag(tag)
+                    .logLevel(logLevel == 0 ? Log.INFO : logLevel)
+                    .showShortClass(showShortClass)
+                    .build();
+        } catch (Throwable th) {
+            Log.e(TAG, "Error to parse logger_conf.json with " + th);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
                 }
             }
         }
@@ -116,7 +132,7 @@ public class L {
     }
 
     private static boolean canLog(int level) {
-        return sConfig.enabled && (sConfig.logLevel <= level || Log.isLoggable(sConfig.tag, level));
+        return sConf.enabled && (sConf.logLevel <= level || Log.isLoggable(sConf.defaultTag, level));
     }
 
     private static String processBody(Object... objArr) {
@@ -195,7 +211,7 @@ public class L {
             String methodClass = element.getMethodName();
             int lineNumber = element.getLineNumber();
 
-            if (sConfig.showShortClass) {
+            if (sConf.showShortClass) {
                 if (lineNumber != -2) {
                     sb.append(String.format("--- %s : %s.%s %s", lineNumber,
                             className.substring(className.lastIndexOf(".") + 1),
@@ -215,7 +231,12 @@ public class L {
                 }
             }
 
-            println(priority, sConfig.tag, sb.toString(), null);
+            String logStr = sb.toString();
+            if (logStr.length() < 2048) {
+                Log.println(priority, sConf.defaultTag, logStr);
+            } else {
+                println(priority, sConf.defaultTag, logStr, null);
+            }
         }
     }
 
@@ -662,13 +683,13 @@ public class L {
     public static class Config {
 
         private boolean enabled;
-        private String tag;
+        private String defaultTag;
         private int logLevel;
         private boolean showShortClass;
 
         private Config(Builder builder) {
             this.enabled = builder.enabled;
-            this.tag = builder.tag;
+            this.defaultTag = builder.defaultTag;
             this.logLevel = builder.logLevel;
             this.showShortClass = builder.showShortClass;
         }
@@ -676,19 +697,27 @@ public class L {
         public static class Builder {
 
             private boolean enabled;
-            private String tag;
+            private String defaultTag;
             private int logLevel;
             private boolean showShortClass;
 
-            public Builder(String tag) {
-                this.tag = tag;
-                if (TextUtils.isEmpty(tag)) {
-                    throw new IllegalArgumentException("Oops!!! You must set TAG.");
-                }
+            public Builder() {
+                this.enabled = true;
+                this.defaultTag = TAG;
+                this.logLevel = Log.INFO;
+                this.showShortClass = true;
             }
 
             public Builder enabled(boolean enabled) {
                 this.enabled = enabled;
+                return this;
+            }
+
+            public Builder defaultTag(String tag) {
+                this.defaultTag = tag;
+                if (TextUtils.isEmpty(defaultTag)) {
+                    this.defaultTag = TAG;
+                }
                 return this;
             }
 
